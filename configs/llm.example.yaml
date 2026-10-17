@@ -1,0 +1,20 @@
+# Copy this file to configs/llm.yaml and choose a provider. API keys are read from
+# environment variables, never from this file:
+#   openai -> OPENAI_API_KEY    gemini -> GEMINI_API_KEY        groq -> GROQ_API_KEY
+#   openrouter -> OPENROUTER_API_KEY   deepseek -> DEEPSEEK_API_KEY   ollama / lmstudio -> no key
+#
+# Check it works:        python -m mrta.llm --config configs/llm.yaml --ping
+# See available models:  python -m mrta.llm --config configs/llm.yaml --list-models
+
+provider: gemini          # openai | gemini | groq | openrouter | deepseek | ollama | lmstudio | mock
+model: CHANGE-ME          # a model id from --list-models; record the exact id in your report
+temperature: 0.0          # set to null for models that reject a temperature
+max_tokens: 4096
+json_mode: true           # turned off automatically if the provider rejects it
+timeout_s: 180
+max_retries: 5            # retries with back-off on rate limits and timeouts
+cache_dir: .cache/llm     # identical requests are answered from disk; delete to re-query
+
+# base_url: https://...   # only for an OpenAI-compatible endpoint not listed above
+# api_key_env: MY_KEY     # only to read the key from a different variable
+# extra: {}               # passed straight to the API, e.g. {reasoning_effort: low}

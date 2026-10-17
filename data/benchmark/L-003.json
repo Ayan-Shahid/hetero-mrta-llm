@@ -1,0 +1,394 @@
+{
+ "tier": "L",
+ "seed": 3,
+ "scenario": {
+  "id": "L-003",
+  "horizon": 900.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "office roof",
+    "x": -51.0,
+    "y": -79.0,
+    "zone": "roof"
+   },
+   {
+    "name": "warehouse roof",
+    "x": -117.0,
+    "y": -58.0,
+    "zone": "roof"
+   },
+   {
+    "name": "electrical room",
+    "x": 18.0,
+    "y": 33.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workshop",
+    "x": -135.0,
+    "y": 122.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "pump house",
+    "x": 11.0,
+    "y": 77.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "loading dock",
+    "x": 13.0,
+    "y": -98.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "east fence",
+    "x": 116.0,
+    "y": -111.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "antenna mast",
+    "x": -119.0,
+    "y": 59.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "water tank",
+    "x": -83.0,
+    "y": -128.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "site B",
+    "x": -86.0,
+    "y": -28.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 10.0,
+    "endurance": 2400.0,
+    "start": "base"
+   },
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 8.5,
+    "payload": 2.0,
+    "endurance": 900.0,
+    "start": "base"
+   },
+   {
+    "id": "M2",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 8.0,
+    "endurance": 2400.0,
+    "start": "base"
+   },
+   {
+    "id": "M3",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 9.0,
+    "endurance": 2520.0,
+    "start": "base"
+   },
+   {
+    "id": "M4",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 9.0,
+    "endurance": 3420.0,
+    "start": "base"
+   },
+   {
+    "id": "M5",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.0,
+    "payload": 8.0,
+    "endurance": 2580.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 6.0,
+    "payload": 2.0,
+    "endurance": 1260.0,
+    "start": "base"
+   },
+   {
+    "id": "D3",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 7.5,
+    "payload": 2.0,
+    "endurance": 1440.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "inspect_roof",
+    "description": "Inspect office roof with a camera",
+    "location": "office roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "inspect_roof",
+    "description": "Inspect office roof with a camera",
+    "location": "office roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": 420.0
+   },
+   {
+    "id": "T3",
+    "kind": "inspect_roof",
+    "description": "Inspect office roof with a camera",
+    "location": "office roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "deliver",
+    "description": "Deliver the toolkit (2 kg) to workshop",
+    "location": "workshop",
+    "required": [
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "valve_service",
+    "description": "Tighten the valve at pump house",
+    "location": "pump house",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T6",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (1 kg) to antenna mast",
+    "location": "antenna mast",
+    "required": [
+     "carry"
+    ],
+    "payload": 1.0,
+    "duration": 30.0,
+    "deadline": 120.0
+   },
+   {
+    "id": "T7",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at workshop",
+    "location": "workshop",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": null
+   },
+   {
+    "id": "T8",
+    "kind": "deliver",
+    "description": "Deliver the pressure gauge (10 kg) to pump house",
+    "location": "pump house",
+    "required": [
+     "carry"
+    ],
+    "payload": 10.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T9",
+    "kind": "valve_service",
+    "description": "Tighten the valve at workshop",
+    "location": "workshop",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": 660.0
+   },
+   {
+    "id": "T10",
+    "kind": "photo_survey",
+    "description": "Photograph loading dock for the condition report",
+    "location": "loading dock",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T11",
+    "kind": "photo_survey",
+    "description": "Photograph antenna mast for the condition report",
+    "location": "antenna mast",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 60.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T12",
+    "kind": "photo_survey",
+    "description": "Photograph site B for the condition report",
+    "location": "site B",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": 240.0
+   },
+   {
+    "id": "T13",
+    "kind": "photo_survey",
+    "description": "Photograph loading dock for the condition report",
+    "location": "loading dock",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": 300.0
+   },
+   {
+    "id": "T14",
+    "kind": "inspect_roof",
+    "description": "Inspect office roof with a camera",
+    "location": "office roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T15",
+    "kind": "photo_survey",
+    "description": "Photograph water tank for the condition report",
+    "location": "water tank",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T16",
+    "kind": "photo_survey",
+    "description": "Photograph east fence for the condition report",
+    "location": "east fence",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [],
+  "standby": [
+   {
+    "robot_type": "quadcopter",
+    "count": 1
+   }
+  ],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF L-003\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- office roof: (-51, -79), roof\n- warehouse roof: (-117, -58), roof\n- electrical room: (18, 33), indoor\n- workshop: (-135, 122), indoor\n- pump house: (11, 77), indoor\n- loading dock: (13, -98), outdoor\n- east fence: (116, -111), outdoor\n- antenna mast: (-119, 59), outdoor\n- water tank: (-83, -128), outdoor\n- site B: (-86, -28), outdoor\n\nRobots:\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 10 kg), robotic arm, camera. Endurance: 2400 s, including the return to its start.\n- D1 (quadcopter): starts at base. Flies in straight lines at 8.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 900 s, including the return to its start.\n- M2 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 8 kg), robotic arm, camera. Endurance: 2400 s, including the return to its start.\n- M3 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 9 kg), robotic arm, camera. Endurance: 2520 s, including the return to its start.\n- M4 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 9 kg), robotic arm, camera. Endurance: 3420 s, including the return to its start.\n- M5 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 8 kg), robotic arm, camera. Endurance: 2580 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 6 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1260 s, including the return to its start.\n- D3 (quadcopter): starts at base. Flies in straight lines at 7.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1440 s, including the return to its start.\n\nTasks:\n- T1: Inspect office roof with a camera. Location: office roof. Duration: 90 s. Needs: camera.\n- T2: Inspect office roof with a camera. Location: office roof. Duration: 150 s. Needs: camera. Deadline: finished by t = 420 s.\n- T3: Inspect office roof with a camera. Location: office roof. Duration: 120 s. Needs: camera.\n- T4: Deliver the toolkit (2 kg) to workshop. Location: workshop. Duration: 60 s. Needs: cargo carrier (payload 2 kg).\n- T5: Tighten the valve at pump house. Location: pump house. Duration: 120 s. Needs: robotic arm. Deadline: finished by t = 360 s.\n- T6: Deliver the cable reel (1 kg) to antenna mast. Location: antenna mast. Duration: 30 s. Needs: cargo carrier (payload 1 kg). Deadline: finished by t = 120 s.\n- T7: Replace the filter cartridge at workshop. Location: workshop. Duration: 210 s. Needs: robotic arm.\n- T8: Deliver the pressure gauge (10 kg) to pump house. Location: pump house. Duration: 30 s. Needs: cargo carrier (payload 10 kg).\n- T9: Tighten the valve at workshop. Location: workshop. Duration: 210 s. Needs: robotic arm. Deadline: finished by t = 660 s.\n- T10: Photograph loading dock for the condition report. Location: loading dock. Duration: 90 s. Needs: camera.\n- T11: Photograph antenna mast for the condition report. Location: antenna mast. Duration: 60 s. Needs: camera. Deadline: finished by t = 360 s.\n- T12: Photograph site B for the condition report. Location: site B. Duration: 90 s. Needs: camera. Deadline: finished by t = 240 s.\n- T13: Photograph loading dock for the condition report. Location: loading dock. Duration: 120 s. Needs: camera. Deadline: finished by t = 300 s.\n- T14: Inspect office roof with a camera. Location: office roof. Duration: 90 s. Needs: camera.\n- T15: Photograph water tank for the condition report. Location: water tank. Duration: 60 s. Needs: camera.\n- T16: Photograph east fence for the condition report. Location: east fence. Duration: 150 s. Needs: camera.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Keep at least 1 quadcopter on standby: it must not be given any task.\n6. Every task must be finished by t = 900 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Here's what we need from the robots today.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: office roof (-51, -79, a rooftop); warehouse roof (-117, -58, a rooftop); electrical room (18, 33, indoors); workshop (-135, 122, indoors); pump house (11, 77, indoors); loading dock (13, -98, outside); east fence (116, -111, outside); antenna mast (-119, 59, outside); water tank (-83, -128, outside); site B (-86, -28, outside).\n\nThe fleet: M1 is our mobile manipulator at base: gripper arm, camera, room for 10 kg, moves at 1.5 m/s and lasts 40 minutes including getting back. D1, a quadcopter waiting at base, carries a camera, cruises at 8.5 m/s, lifts up to 2 kg and has 15 minutes of flight time, return trip included. M2 is our mobile manipulator at base: gripper arm, camera, room for 8 kg, moves at 1.5 m/s and lasts 40 minutes including getting back. M3 is our mobile manipulator at base: gripper arm, camera, room for 9 kg, moves at 1.5 m/s and lasts 42 minutes including getting back. M4 is our mobile manipulator at base: gripper arm, camera, room for 9 kg, moves at 1.5 m/s and lasts 57 minutes including getting back. M5 is our mobile manipulator at base: gripper arm, camera, room for 8 kg, moves at 1 m/s and lasts 43 minutes including getting back. D2 is a quadcopter at base with a camera; it flies at 6 m/s, can lift 2 kg, and its battery lasts 21 minutes including the flight home. D3, a quadcopter waiting at base, carries a camera, cruises at 7.5 m/s, lifts up to 2 kg and has 24 minutes of flight time, return trip included.\n\nJobs:\n(T1) Get eyes on office roof and check the panels - that takes 1.5 minutes on site.\n(T2) Do a visual check of office roof - that takes 2.5 minutes on site and it has to be finished within the first 7 minutes.\n(T3) Get eyes on office roof and check the panels - that takes 2 minutes on site.\n(T4) Drop the toolkit off at workshop; it weighs 2 kg - that takes 1 minute on site.\n(T5) The valve at pump house needs tightening - that takes 2 minutes on site and it has to be finished within the first 6 minutes.\n(T6) Antenna mast needs the cable reel, which weighs 1 kg - that takes 0.5 minutes on site and it has to be finished within the first 2 minutes.\n(T7) Swap the filter cartridge at workshop - that takes 3.5 minutes on site.\n(T8) Get the pressure gauge (10 kg) over to pump house - that takes 0.5 minutes on site.\n(T9) Someone has to tighten the valve at workshop - that takes 3.5 minutes on site and it has to be finished within the first 11 minutes.\n(T10) Document loading dock with pictures - that takes 1.5 minutes on site.\n(T11) Document antenna mast with pictures - that takes 1 minute on site and it has to be finished within the first 6 minutes.\n(T12) We need pictures of site B for the report - that takes 1.5 minutes on site and it has to be finished within the first 4 minutes.\n(T13) Document loading dock with pictures - that takes 2 minutes on site and it has to be finished within the first 5 minutes.\n(T14) Get eyes on office roof and check the panels - that takes 1.5 minutes on site.\n(T15) We need pictures of water tank for the report - that takes 1 minute on site.\n(T16) Document east fence with pictures - that takes 2.5 minutes on site.\n\nKeep one quadcopter on standby; don't give it any jobs. Everything has to be wrapped up within 15 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

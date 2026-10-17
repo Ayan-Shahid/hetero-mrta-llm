@@ -1,0 +1,28 @@
+[project]
+name = "hetero-mrta-llm"
+version = "0.1.0"
+description = "LLM agents for task allocation in heterogeneous multi-robot systems (AI4015 semester project)"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.5",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pulp>=2.8,<4",
+    "highspy>=1.7",
+    "openai>=1.40",
+    "pyyaml>=6.0",
+    "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+include = ["mrta*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore:Constructing LpVariable:DeprecationWarning"]
+
+[tool.ruff]
+line-length = 120

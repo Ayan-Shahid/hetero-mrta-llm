@@ -1,0 +1,9 @@
+pydantic>=2.5
+numpy>=1.24
+scipy>=1.10
+pulp>=2.8,<4      # PuLP 4 changed its modelling API; the MILP uses the 2.x/3.x API
+highspy>=1.7      # HiGHS MILP solver (PuLP 3.x also bundles CBC as a fallback)
+openai>=1.40      # client for every OpenAI-compatible provider (OpenAI, Gemini, Groq, OpenRouter, Ollama...)
+pyyaml>=6.0
+matplotlib>=3.7
+pytest>=8

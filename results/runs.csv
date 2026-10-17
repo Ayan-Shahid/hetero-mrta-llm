@@ -1,0 +1,212 @@
+scenario,tier,n_robots,n_tasks,n_precedence,n_deadlines,standby,method,input,provider,model,status,feasible,n_violations,violations,makespan,total_travel,plan_time_s,solver_time_s,llm_calls,prompt_tokens,completion_tokens,llm_latency_s,iterations,mip_gap,spec_f1,spec_precision,spec_recall,recall_task_req,recall_task_deadline,recall_precedence,recall_standby,error
+L-000,L,8,16,1,4,False,milp,spec,,,optimal,True,0,{},748.67,829.43,6.1045,6.1038,0,0,0,0.0,0,0.0,,,,,,,,
+L-000,L,8,16,1,4,False,hungarian,spec,,,heuristic,True,0,{},960.67,1107.89,0.0005,0.0005,0,0,0,0.0,0,,,,,,,,,
+L-000,L,8,16,1,4,False,auction,spec,,,heuristic,True,0,{},839.33,974.02,0.0085,0.0085,0,0,0,0.0,0,,,,,,,,,
+L-001,L,8,16,2,5,True,milp,spec,,,optimal,True,0,{},1715.33,977.55,41.8301,41.8295,0,0,0,0.0,0,0.0,,,,,,,,
+L-001,L,8,16,2,5,True,hungarian,spec,,,infeasible,False,1,"{""deadline"": 1}",1960.0,1216.54,0.0006,0.0006,0,0,0,0.0,0,,,,,,,,,
+L-001,L,8,16,2,5,True,auction,spec,,,heuristic,True,0,{},1775.33,1076.15,0.0084,0.0084,0,0,0,0.0,0,,,,,,,,,
+L-002,L,8,16,1,3,True,milp,spec,,,feasible,True,0,{},550.0,1603.95,60.0477,60.0466,0,0,0,0.0,0,0.23213,,,,,,,,
+L-002,L,8,16,1,3,True,hungarian,spec,,,heuristic,True,0,{},681.33,1847.5,0.0006,0.0006,0,0,0,0.0,0,,,,,,,,,
+L-002,L,8,16,1,3,True,auction,spec,,,heuristic,True,0,{},729.33,1646.96,0.0117,0.0117,0,0,0,0.0,0,,,,,,,,,
+L-003,L,8,16,0,7,True,milp,spec,,,feasible,True,0,{},396.0,1753.02,60.0753,60.074,0,0,0,0.0,0,0.03399,,,,,,,,
+L-003,L,8,16,0,7,True,hungarian,spec,,,heuristic,True,0,{},609.0,1887.99,0.0008,0.0008,0,0,0,0.0,0,,,,,,,,,
+L-003,L,8,16,0,7,True,auction,spec,,,heuristic,True,0,{},508.67,1488.65,0.0214,0.0213,0,0,0,0.0,0,,,,,,,,,
+L-004,L,8,16,2,3,False,milp,spec,,,feasible,True,0,{},1614.0,947.99,60.0558,60.0544,0,0,0,0.0,0,0.13824,,,,,,,,
+L-004,L,8,16,2,3,False,hungarian,spec,,,heuristic,True,0,{},1788.67,1372.97,0.0009,0.0009,0,0,0,0.0,0,,,,,,,,,
+L-004,L,8,16,2,3,False,auction,spec,,,heuristic,True,0,{},1614.0,1243.88,0.0127,0.0127,0,0,0,0.0,0,,,,,,,,,
+L-005,L,8,16,2,6,True,milp,spec,,,optimal,True,0,{},654.0,1551.48,32.8455,32.8448,0,0,0,0.0,0,0.0,,,,,,,,
+L-005,L,8,16,2,6,True,hungarian,spec,,,heuristic,True,0,{},834.67,1564.6,0.0005,0.0005,0,0,0,0.0,0,,,,,,,,,
+L-005,L,8,16,2,6,True,auction,spec,,,heuristic,True,0,{},852.67,1610.79,0.012,0.012,0,0,0,0.0,0,,,,,,,,,
+M-000,M,5,10,1,2,True,milp,spec,,,optimal,True,0,{},573.0,1115.58,0.6281,0.6277,0,0,0,0.0,0,0.0,,,,,,,,
+M-000,M,5,10,1,2,True,hungarian,spec,,,heuristic,True,0,{},687.0,1097.43,0.0004,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-000,M,5,10,1,2,True,auction,spec,,,heuristic,True,0,{},739.0,1117.65,0.0029,0.0029,0,0,0,0.0,0,,,,,,,,,
+M-001,M,5,10,0,4,True,milp,spec,,,optimal,True,0,{},667.0,1253.01,0.1306,0.1302,0,0,0,0.0,0,0.0,,,,,,,,
+M-001,M,5,10,0,4,True,hungarian,spec,,,heuristic,True,0,{},850.0,1363.59,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-001,M,5,10,0,4,True,auction,spec,,,heuristic,True,0,{},850.0,1363.59,0.0031,0.0031,0,0,0,0.0,0,,,,,,,,,
+M-002,M,5,10,1,4,False,milp,spec,,,optimal,True,0,{},418.67,1108.71,1.8505,1.8497,0,0,0,0.0,0,0.0,,,,,,,,
+M-002,M,5,10,1,4,False,hungarian,spec,,,heuristic,True,0,{},636.0,1158.17,0.0006,0.0005,0,0,0,0.0,0,,,,,,,,,
+M-002,M,5,10,1,4,False,auction,spec,,,heuristic,True,0,{},666.0,1158.17,0.0046,0.0046,0,0,0,0.0,0,,,,,,,,,
+M-003,M,5,10,1,2,False,milp,spec,,,optimal,True,0,{},914.0,616.55,0.4297,0.4291,0,0,0,0.0,0,0.0,,,,,,,,
+M-003,M,5,10,1,2,False,hungarian,spec,,,heuristic,True,0,{},1090.67,670.59,0.0005,0.0005,0,0,0,0.0,0,,,,,,,,,
+M-003,M,5,10,1,2,False,auction,spec,,,heuristic,True,0,{},1064.0,641.68,0.0026,0.0025,0,0,0,0.0,0,,,,,,,,,
+M-004,M,5,10,2,1,False,milp,spec,,,optimal,True,0,{},643.33,1432.53,1.1097,1.1093,0,0,0,0.0,0,0.0,,,,,,,,
+M-004,M,5,10,2,1,False,hungarian,spec,,,heuristic,True,0,{},717.33,1438.83,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-004,M,5,10,2,1,False,auction,spec,,,heuristic,True,0,{},750.67,1247.49,0.0029,0.0029,0,0,0,0.0,0,,,,,,,,,
+M-005,M,5,10,1,5,False,milp,spec,,,optimal,True,0,{},1363.0,1216.98,0.3998,0.3995,0,0,0,0.0,0,0.0,,,,,,,,
+M-005,M,5,10,1,5,False,hungarian,spec,,,heuristic,True,0,{},1454.0,1109.41,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-005,M,5,10,1,5,False,auction,spec,,,heuristic,True,0,{},1431.0,1151.41,0.002,0.002,0,0,0,0.0,0,,,,,,,,,
+M-006,M,5,10,1,6,True,milp,spec,,,optimal,True,0,{},558.0,853.48,1.0575,1.0571,0,0,0,0.0,0,0.0,,,,,,,,
+M-006,M,5,10,1,6,True,hungarian,spec,,,heuristic,True,0,{},1020.0,1632.87,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-006,M,5,10,1,6,True,auction,spec,,,heuristic,True,0,{},980.0,1631.78,0.0036,0.0036,0,0,0,0.0,0,,,,,,,,,
+M-007,M,5,10,0,2,True,milp,spec,,,optimal,True,0,{},904.0,606.03,0.7534,0.7531,0,0,0,0.0,0,0.0,,,,,,,,
+M-007,M,5,10,0,2,True,hungarian,spec,,,infeasible,False,1,"{""deadline"": 1}",990.0,630.22,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-007,M,5,10,0,2,True,auction,spec,,,heuristic,True,0,{},994.0,608.96,0.0024,0.0024,0,0,0,0.0,0,,,,,,,,,
+M-008,M,5,10,2,4,False,milp,spec,,,optimal,True,0,{},609.88,566.06,0.1554,0.1551,0,0,0,0.0,0,0.0,,,,,,,,
+M-008,M,5,10,2,4,False,hungarian,spec,,,heuristic,True,0,{},669.0,732.06,0.0003,0.0002,0,0,0,0.0,0,,,,,,,,,
+M-008,M,5,10,2,4,False,auction,spec,,,heuristic,True,0,{},642.19,641.08,0.0022,0.0022,0,0,0,0.0,0,,,,,,,,,
+M-009,M,5,10,1,3,False,milp,spec,,,optimal,True,0,{},972.0,759.01,0.8824,0.8821,0,0,0,0.0,0,0.0,,,,,,,,
+M-009,M,5,10,1,3,False,hungarian,spec,,,heuristic,True,0,{},1218.0,932.52,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+M-009,M,5,10,1,3,False,auction,spec,,,heuristic,True,0,{},1218.0,932.52,0.002,0.002,0,0,0,0.0,0,,,,,,,,,
+S-000,S,3,5,0,1,False,milp,spec,,,optimal,True,0,{},232.0,399.58,0.0102,0.01,0,0,0,0.0,0,0.0,,,,,,,,
+S-000,S,3,5,0,1,False,hungarian,spec,,,heuristic,True,0,{},327.68,337.27,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-000,S,3,5,0,1,False,auction,spec,,,heuristic,True,0,{},417.68,123.27,0.0005,0.0005,0,0,0,0.0,0,,,,,,,,,
+S-001,S,3,5,1,1,False,milp,spec,,,optimal,True,0,{},332.0,683.06,0.0104,0.0102,0,0,0,0.0,0,0.0,,,,,,,,
+S-001,S,3,5,1,1,False,hungarian,spec,,,heuristic,True,0,{},362.0,683.06,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-001,S,3,5,1,1,False,auction,spec,,,heuristic,True,0,{},332.0,683.06,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+S-002,S,3,5,1,0,False,milp,spec,,,optimal,True,0,{},500.0,420.89,0.0138,0.0136,0,0,0,0.0,0,0.0,,,,,,,,
+S-002,S,3,5,1,0,False,hungarian,spec,,,heuristic,True,0,{},500.0,420.89,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-002,S,3,5,1,0,False,auction,spec,,,heuristic,True,0,{},500.0,420.89,0.0005,0.0005,0,0,0,0.0,0,,,,,,,,,
+S-003,S,3,5,0,0,False,milp,spec,,,optimal,True,0,{},322.73,192.12,0.096,0.0958,0,0,0,0.0,0,0.0,,,,,,,,
+S-003,S,3,5,0,0,False,hungarian,spec,,,heuristic,True,0,{},322.73,412.12,0.0002,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-003,S,3,5,0,0,False,auction,spec,,,heuristic,True,0,{},322.73,412.12,0.0004,0.0004,0,0,0,0.0,0,,,,,,,,,
+S-004,S,3,5,0,1,False,milp,spec,,,optimal,True,0,{},299.73,290.71,0.0072,0.007,0,0,0,0.0,0,0.0,,,,,,,,
+S-004,S,3,5,0,1,False,hungarian,spec,,,heuristic,True,0,{},299.73,290.71,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-004,S,3,5,0,1,False,auction,spec,,,heuristic,True,0,{},299.73,290.71,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+S-005,S,3,5,0,3,False,milp,spec,,,optimal,True,0,{},635.86,338.61,0.05,0.0497,0,0,0,0.0,0,0.0,,,,,,,,
+S-005,S,3,5,0,3,False,hungarian,spec,,,heuristic,True,0,{},635.86,338.61,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-005,S,3,5,0,3,False,auction,spec,,,heuristic,True,0,{},732.55,63.49,0.0006,0.0005,0,0,0,0.0,0,,,,,,,,,
+S-006,S,3,5,1,2,False,milp,spec,,,optimal,True,0,{},448.0,317.18,0.0113,0.0111,0,0,0,0.0,0,0.0,,,,,,,,
+S-006,S,3,5,1,2,False,hungarian,spec,,,heuristic,True,0,{},448.0,334.29,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-006,S,3,5,1,2,False,auction,spec,,,heuristic,True,0,{},448.0,334.29,0.0005,0.0005,0,0,0,0.0,0,,,,,,,,,
+S-007,S,3,5,0,0,False,milp,spec,,,optimal,True,0,{},369.0,202.86,0.0952,0.095,0,0,0,0.0,0,0.0,,,,,,,,
+S-007,S,3,5,0,0,False,hungarian,spec,,,heuristic,True,0,{},369.0,202.86,0.0002,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-007,S,3,5,0,0,False,auction,spec,,,heuristic,True,0,{},369.0,202.86,0.0004,0.0003,0,0,0,0.0,0,,,,,,,,,
+S-008,S,3,5,0,2,False,milp,spec,,,optimal,True,0,{},206.67,318.16,0.014,0.0138,0,0,0,0.0,0,0.0,,,,,,,,
+S-008,S,3,5,0,2,False,hungarian,spec,,,heuristic,True,0,{},415.33,494.54,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-008,S,3,5,0,2,False,auction,spec,,,heuristic,True,0,{},206.67,318.16,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+S-009,S,3,5,0,2,False,milp,spec,,,optimal,True,0,{},936.0,919.39,0.0155,0.0154,0,0,0,0.0,0,0.0,,,,,,,,
+S-009,S,3,5,0,2,False,hungarian,spec,,,heuristic,True,0,{},936.0,919.39,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-009,S,3,5,0,2,False,auction,spec,,,heuristic,True,0,{},936.0,919.39,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+L-000,L,8,16,1,4,False,milp,spec,,,optimal,True,0,{},748.67,820.77,2.8644,2.8641,0,0,0,0.0,0,0.0,,,,,,,,
+L-000,L,8,16,1,4,False,hungarian,spec,,,heuristic,True,0,{},960.67,1107.89,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+L-000,L,8,16,1,4,False,auction,spec,,,heuristic,True,0,{},839.33,974.02,0.0036,0.0036,0,0,0,0.0,0,,,,,,,,,
+L-001,L,8,16,2,5,True,milp,spec,,,optimal,True,0,{},1715.33,977.55,14.7543,14.7541,0,0,0,0.0,0,0.0,,,,,,,,
+L-001,L,8,16,2,5,True,hungarian,spec,,,infeasible,False,1,"{""deadline"": 1}",1960.0,1216.54,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+L-001,L,8,16,2,5,True,auction,spec,,,heuristic,True,0,{},1775.33,1076.15,0.0033,0.0033,0,0,0,0.0,0,,,,,,,,,
+L-002,L,8,16,1,3,True,milp,spec,,,feasible,True,0,{},550.0,1606.78,60.0176,60.0171,0,0,0,0.0,0,0.05229,,,,,,,,
+L-002,L,8,16,1,3,True,hungarian,spec,,,heuristic,True,0,{},681.33,1847.5,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+L-002,L,8,16,1,3,True,auction,spec,,,heuristic,True,0,{},729.33,1646.96,0.0042,0.0042,0,0,0,0.0,0,,,,,,,,,
+L-003,L,8,16,0,7,True,milp,spec,,,feasible,True,0,{},396.0,1652.93,60.0249,60.0244,0,0,0,0.0,0,0.03409,,,,,,,,
+L-003,L,8,16,0,7,True,hungarian,spec,,,heuristic,True,0,{},609.0,1887.99,0.0004,0.0004,0,0,0,0.0,0,,,,,,,,,
+L-003,L,8,16,0,7,True,auction,spec,,,heuristic,True,0,{},508.67,1488.65,0.0084,0.0084,0,0,0,0.0,0,,,,,,,,,
+L-004,L,8,16,2,3,False,milp,spec,,,feasible,True,0,{},1614.0,998.75,60.0166,60.0162,0,0,0,0.0,0,0.13813,,,,,,,,
+L-004,L,8,16,2,3,False,hungarian,spec,,,heuristic,True,0,{},1788.67,1372.97,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+L-004,L,8,16,2,3,False,auction,spec,,,heuristic,True,0,{},1614.0,1243.88,0.004,0.004,0,0,0,0.0,0,,,,,,,,,
+L-005,L,8,16,2,6,True,milp,spec,,,optimal,True,0,{},654.0,1551.48,8.3345,8.3342,0,0,0,0.0,0,0.0,,,,,,,,
+L-005,L,8,16,2,6,True,hungarian,spec,,,heuristic,True,0,{},834.67,1564.6,0.0003,0.0003,0,0,0,0.0,0,,,,,,,,,
+L-005,L,8,16,2,6,True,auction,spec,,,heuristic,True,0,{},852.67,1610.79,0.0045,0.0045,0,0,0,0.0,0,,,,,,,,,
+M-000,M,5,10,1,2,True,milp,spec,,,optimal,True,0,{},573.0,1117.82,0.1954,0.1953,0,0,0,0.0,0,0.0,,,,,,,,
+M-000,M,5,10,1,2,True,hungarian,spec,,,heuristic,True,0,{},687.0,1097.43,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+M-000,M,5,10,1,2,True,auction,spec,,,heuristic,True,0,{},739.0,1117.65,0.0012,0.0012,0,0,0,0.0,0,,,,,,,,,
+M-001,M,5,10,0,4,True,milp,spec,,,optimal,True,0,{},667.0,1253.01,0.0539,0.0538,0,0,0,0.0,0,0.0,,,,,,,,
+M-001,M,5,10,0,4,True,hungarian,spec,,,heuristic,True,0,{},850.0,1363.59,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+M-001,M,5,10,0,4,True,auction,spec,,,heuristic,True,0,{},850.0,1363.59,0.0012,0.0012,0,0,0,0.0,0,,,,,,,,,
+M-002,M,5,10,1,4,False,milp,spec,,,optimal,True,0,{},418.67,1083.8,0.6743,0.6742,0,0,0,0.0,0,0.0,,,,,,,,
+M-002,M,5,10,1,4,False,hungarian,spec,,,heuristic,True,0,{},636.0,1158.17,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+M-002,M,5,10,1,4,False,auction,spec,,,heuristic,True,0,{},666.0,1158.17,0.0012,0.0011,0,0,0,0.0,0,,,,,,,,,
+M-003,M,5,10,1,2,False,milp,spec,,,optimal,True,0,{},914.0,616.55,0.1351,0.1349,0,0,0,0.0,0,0.0,,,,,,,,
+M-003,M,5,10,1,2,False,hungarian,spec,,,heuristic,True,0,{},1090.67,670.59,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+M-003,M,5,10,1,2,False,auction,spec,,,heuristic,True,0,{},1064.0,641.68,0.0008,0.0008,0,0,0,0.0,0,,,,,,,,,
+M-004,M,5,10,2,1,False,milp,spec,,,optimal,True,0,{},643.33,1410.07,0.1023,0.1022,0,0,0,0.0,0,0.0,,,,,,,,
+M-004,M,5,10,2,1,False,hungarian,spec,,,heuristic,True,0,{},717.33,1438.83,0.0002,0.0001,0,0,0,0.0,0,,,,,,,,,
+M-004,M,5,10,2,1,False,auction,spec,,,heuristic,True,0,{},750.67,1247.49,0.001,0.001,0,0,0,0.0,0,,,,,,,,,
+M-005,M,5,10,1,5,False,milp,spec,,,optimal,True,0,{},1363.0,1216.98,0.1211,0.1209,0,0,0,0.0,0,0.0,,,,,,,,
+M-005,M,5,10,1,5,False,hungarian,spec,,,heuristic,True,0,{},1454.0,1109.41,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+M-005,M,5,10,1,5,False,auction,spec,,,heuristic,True,0,{},1431.0,1151.41,0.0009,0.0009,0,0,0,0.0,0,,,,,,,,,
+M-006,M,5,10,1,6,True,milp,spec,,,optimal,True,0,{},558.0,853.48,0.4266,0.4264,0,0,0,0.0,0,0.0,,,,,,,,
+M-006,M,5,10,1,6,True,hungarian,spec,,,heuristic,True,0,{},1020.0,1632.87,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+M-006,M,5,10,1,6,True,auction,spec,,,heuristic,True,0,{},980.0,1631.78,0.0012,0.0012,0,0,0,0.0,0,,,,,,,,,
+M-007,M,5,10,0,2,True,milp,spec,,,optimal,True,0,{},904.0,606.03,0.1978,0.1976,0,0,0,0.0,0,0.0,,,,,,,,
+M-007,M,5,10,0,2,True,hungarian,spec,,,infeasible,False,1,"{""deadline"": 1}",990.0,630.22,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+M-007,M,5,10,0,2,True,auction,spec,,,heuristic,True,0,{},994.0,608.96,0.0011,0.0011,0,0,0,0.0,0,,,,,,,,,
+M-008,M,5,10,2,4,False,milp,spec,,,optimal,True,0,{},609.88,566.06,0.0456,0.0455,0,0,0,0.0,0,0.0,,,,,,,,
+M-008,M,5,10,2,4,False,hungarian,spec,,,heuristic,True,0,{},669.0,732.06,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+M-008,M,5,10,2,4,False,auction,spec,,,heuristic,True,0,{},642.19,641.08,0.0009,0.0009,0,0,0,0.0,0,,,,,,,,,
+M-009,M,5,10,1,3,False,milp,spec,,,optimal,True,0,{},972.0,769.73,0.3129,0.3127,0,0,0,0.0,0,0.0,,,,,,,,
+M-009,M,5,10,1,3,False,hungarian,spec,,,heuristic,True,0,{},1218.0,932.52,0.0002,0.0001,0,0,0,0.0,0,,,,,,,,,
+M-009,M,5,10,1,3,False,auction,spec,,,heuristic,True,0,{},1218.0,932.52,0.0009,0.0009,0,0,0,0.0,0,,,,,,,,,
+S-000,S,3,5,0,1,False,milp,spec,,,optimal,True,0,{},232.0,399.58,0.0044,0.0043,0,0,0,0.0,0,0.0,,,,,,,,
+S-000,S,3,5,0,1,False,hungarian,spec,,,heuristic,True,0,{},327.68,337.27,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-000,S,3,5,0,1,False,auction,spec,,,heuristic,True,0,{},417.68,123.27,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-001,S,3,5,1,1,False,milp,spec,,,optimal,True,0,{},332.0,683.06,0.0039,0.0039,0,0,0,0.0,0,0.0,,,,,,,,
+S-001,S,3,5,1,1,False,hungarian,spec,,,heuristic,True,0,{},362.0,683.06,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-001,S,3,5,1,1,False,auction,spec,,,heuristic,True,0,{},332.0,683.06,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-002,S,3,5,1,0,False,milp,spec,,,optimal,True,0,{},500.0,420.89,0.0061,0.006,0,0,0,0.0,0,0.0,,,,,,,,
+S-002,S,3,5,1,0,False,hungarian,spec,,,heuristic,True,0,{},500.0,420.89,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-002,S,3,5,1,0,False,auction,spec,,,heuristic,True,0,{},500.0,420.89,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-003,S,3,5,0,0,False,milp,spec,,,optimal,True,0,{},322.73,192.12,0.0333,0.0332,0,0,0,0.0,0,0.0,,,,,,,,
+S-003,S,3,5,0,0,False,hungarian,spec,,,heuristic,True,0,{},322.73,412.12,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-003,S,3,5,0,0,False,auction,spec,,,heuristic,True,0,{},322.73,412.12,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-004,S,3,5,0,1,False,milp,spec,,,optimal,True,0,{},299.73,290.71,0.0029,0.0028,0,0,0,0.0,0,0.0,,,,,,,,
+S-004,S,3,5,0,1,False,hungarian,spec,,,heuristic,True,0,{},299.73,290.71,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-004,S,3,5,0,1,False,auction,spec,,,heuristic,True,0,{},299.73,290.71,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-005,S,3,5,0,3,False,milp,spec,,,optimal,True,0,{},635.86,338.61,0.0193,0.0193,0,0,0,0.0,0,0.0,,,,,,,,
+S-005,S,3,5,0,3,False,hungarian,spec,,,heuristic,True,0,{},635.86,338.61,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-005,S,3,5,0,3,False,auction,spec,,,heuristic,True,0,{},732.55,63.49,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-006,S,3,5,1,2,False,milp,spec,,,optimal,True,0,{},448.0,317.18,0.005,0.0049,0,0,0,0.0,0,0.0,,,,,,,,
+S-006,S,3,5,1,2,False,hungarian,spec,,,heuristic,True,0,{},448.0,334.29,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-006,S,3,5,1,2,False,auction,spec,,,heuristic,True,0,{},448.0,334.29,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-007,S,3,5,0,0,False,milp,spec,,,optimal,True,0,{},369.0,202.86,0.0315,0.0314,0,0,0,0.0,0,0.0,,,,,,,,
+S-007,S,3,5,0,0,False,hungarian,spec,,,heuristic,True,0,{},369.0,202.86,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-007,S,3,5,0,0,False,auction,spec,,,heuristic,True,0,{},369.0,202.86,0.0002,0.0002,0,0,0,0.0,0,,,,,,,,,
+S-008,S,3,5,0,2,False,milp,spec,,,optimal,True,0,{},206.67,318.16,0.0061,0.0061,0,0,0,0.0,0,0.0,,,,,,,,
+S-008,S,3,5,0,2,False,hungarian,spec,,,heuristic,True,0,{},415.33,494.54,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-008,S,3,5,0,2,False,auction,spec,,,heuristic,True,0,{},206.67,318.16,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-009,S,3,5,0,2,False,milp,spec,,,optimal,True,0,{},936.0,919.39,0.0062,0.0062,0,0,0,0.0,0,0.0,,,,,,,,
+S-009,S,3,5,0,2,False,hungarian,spec,,,heuristic,True,0,{},936.0,919.39,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-009,S,3,5,0,2,False,auction,spec,,,heuristic,True,0,{},936.0,919.39,0.0001,0.0001,0,0,0,0.0,0,,,,,,,,,
+S-000,S,3,5,0,1,False,llm-direct,explicit,gemini,gemini-3.6-flash,ok,True,0,{},232.0,399.58,143.2217,0.0,1,867,116,35.845,1,,,,,,,,,
+S-000,S,3,5,0,1,False,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,106.492,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 503 - [{'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}]"
+S-000,S,3,5,0,1,False,llm-pefa,explicit,gemini,gemini-3.6-flash,ok,True,0,{},232.0,399.58,0.0008,0.0,1,867,116,35.845,1,,,,,,,,,
+S-000,S,3,5,0,1,False,llm-pefa,informal,gemini,gemini-3.6-flash,ok,True,0,{},322.0,185.58,30.6731,0.0,1,652,116,19.526,1,,,,,,,,,
+S-000,S,3,5,0,1,False,llm-formulate,explicit,gemini,gemini-3.6-flash,ok,True,0,{},232.0,399.58,9.6299,0.0213,1,1140,984,9.607,1,,1.0,1.0,1.0,1.0,1.0,,,
+S-000,S,3,5,0,1,False,llm-formulate,informal,gemini,gemini-3.6-flash,ok,True,0,{},232.0,399.58,64.6014,0.0096,1,925,976,12.7,1,,1.0,1.0,1.0,1.0,1.0,,,
+S-000,S,3,5,0,1,False,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,87.7219,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 503 - [{'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}]"
+S-000,S,3,5,0,1,False,agent,informal,gemini,gemini-3.6-flash,error,False,,{},,,103.1237,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,llm-direct,explicit,gemini,gemini-3.6-flash,parse_error,False,,{},,,69.2343,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,64.8942,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,llm-pefa,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.7862,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,llm-pefa,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.6352,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,llm-formulate,explicit,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,65.7372,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,llm-formulate,informal,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,64.996,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.1463,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-001,S,3,5,1,1,False,agent,informal,gemini,gemini-3.6-flash,error,False,,{},,,66.1529,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,llm-direct,explicit,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.8442,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.5314,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,llm-pefa,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.4379,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,llm-pefa,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.2683,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,llm-formulate,explicit,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,65.429,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,llm-formulate,informal,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,66.0215,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.6186,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+S-002,S,3,5,1,0,False,agent,informal,gemini,gemini-3.6-flash,error,False,,{},,,66.5173,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,llm-direct,explicit,gemini,gemini-3.6-flash,parse_error,False,,{},,,66.9815,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.3831,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,llm-pefa,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.827,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,llm-pefa,informal,gemini,gemini-3.6-flash,error,False,,{},,,66.4657,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,llm-formulate,explicit,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,65.4879,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,llm-formulate,informal,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,66.1972,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.4344,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-000,L,8,16,1,4,False,agent,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.4431,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,llm-direct,explicit,gemini,gemini-3.6-flash,parse_error,False,,{},,,66.0355,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.0245,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,llm-pefa,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.7699,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,llm-pefa,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.7115,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,llm-formulate,explicit,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,66.2412,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,llm-formulate,informal,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,65.1209,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.4535,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-001,L,8,16,2,5,True,agent,informal,gemini,gemini-3.6-flash,error,False,,{},,,66.7666,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,llm-direct,explicit,gemini,gemini-3.6-flash,parse_error,False,,{},,,66.9866,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.5174,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,llm-pefa,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.2274,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,llm-pefa,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.4835,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,llm-formulate,explicit,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,65.2819,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,llm-formulate,informal,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,65.2549,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,64.8948,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-002,L,8,16,1,3,True,agent,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.4649,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,llm-direct,explicit,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.9745,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,llm-direct,informal,gemini,gemini-3.6-flash,parse_error,False,,{},,,65.1702,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,llm-pefa,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.3097,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,llm-pefa,informal,gemini,gemini-3.6-flash,error,False,,{},,,65.7321,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,llm-formulate,explicit,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,64.6562,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,llm-formulate,informal,gemini,gemini-3.6-flash,spec_invalid,False,,{},,,66.0075,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"
+L-003,L,8,16,0,7,True,agent,explicit,gemini,gemini-3.6-flash,error,False,,{},,,65.8477,0.0,0,0,0,0.0,1,,,,,,,,,"Error code: 429 - [{'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Q"

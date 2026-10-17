@@ -1,0 +1,157 @@
+{
+ "tier": "S",
+ "seed": 1,
+ "scenario": {
+  "id": "S-001",
+  "horizon": 900.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "north roof",
+    "x": 27.0,
+    "y": 67.0,
+    "zone": "roof"
+   },
+   {
+    "name": "electrical room",
+    "x": -90.0,
+    "y": 92.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "gate 2",
+    "x": -95.0,
+    "y": -115.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "east fence",
+    "x": 102.0,
+    "y": 109.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 8.0,
+    "payload": 2.0,
+    "endurance": 1140.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.0,
+    "payload": 8.0,
+    "endurance": 3360.0,
+    "start": "base"
+   },
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 2.0,
+    "payload": 21.0,
+    "endurance": 4440.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "deliver",
+    "description": "Deliver the pressure gauge (9 kg) to electrical room",
+    "location": "electrical room",
+    "required": [
+     "carry"
+    ],
+    "payload": 9.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "inspect_roof",
+    "description": "Inspect north roof with a camera",
+    "location": "north roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": null
+   },
+   {
+    "id": "T3",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at electrical room",
+    "location": "electrical room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "deliver",
+    "description": "Deliver the pressure gauge (14 kg) to east fence",
+    "location": "east fence",
+    "required": [
+     "carry"
+    ],
+    "payload": 14.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (6 kg) to electrical room",
+    "location": "electrical room",
+    "required": [
+     "carry"
+    ],
+    "payload": 6.0,
+    "duration": 30.0,
+    "deadline": 300.0
+   }
+  ],
+  "precedence": [
+   {
+    "before": "T1",
+    "after": "T3"
+   }
+  ],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF S-001\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- north roof: (27, 67), roof\n- electrical room: (-90, 92), indoor\n- gate 2: (-95, -115), outdoor\n- east fence: (102, 109), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 8 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1140 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 8 kg), robotic arm, camera. Endurance: 3360 s, including the return to its start.\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 2 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 21 kg), camera. Endurance: 4440 s, including the return to its start.\n\nTasks:\n- T1: Deliver the pressure gauge (9 kg) to electrical room. Location: electrical room. Duration: 30 s. Needs: cargo carrier (payload 9 kg).\n- T2: Inspect north roof with a camera. Location: north roof. Duration: 120 s. Needs: camera.\n- T3: Replace the filter cartridge at electrical room. Location: electrical room. Duration: 150 s. Needs: robotic arm. Can start only after T1 is finished.\n- T4: Deliver the pressure gauge (14 kg) to east fence. Location: east fence. Duration: 60 s. Needs: cargo carrier (payload 14 kg).\n- T5: Deliver the cable reel (6 kg) to electrical room. Location: electrical room. Duration: 30 s. Needs: cargo carrier (payload 6 kg). Deadline: finished by t = 300 s.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 900 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Here's what we need from the robots today.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: north roof (27, 67, a rooftop); electrical room (-90, 92, indoors); gate 2 (-95, -115, outside); east fence (102, 109, outside).\n\nThe fleet: D1 is a quadcopter at base with a camera; it flies at 8 m/s, can lift 2 kg, and its battery lasts 19 minutes including the flight home. M1 is our mobile manipulator at base: gripper arm, camera, room for 8 kg, moves at 1 m/s and lasts 56 minutes including getting back. G1 is a rover parked at base that hauls up to 21 kg at 2 m/s and runs for 74 minutes including the drive back. It has a camera.\n\nJobs:\n(T1) Drop the pressure gauge off at electrical room; it weighs 9 kg - that takes 0.5 minutes on site.\n(T2) Get eyes on north roof and check the panels - that takes 2 minutes on site.\n(T3) Swap the filter cartridge at electrical room - that takes 2.5 minutes on site but only once the pressure gauge (T1) has arrived.\n(T4) East fence needs the pressure gauge, which weighs 14 kg - that takes 1 minute on site.\n(T5) Electrical room needs the cable reel, which weighs 6 kg - that takes 0.5 minutes on site and it has to be finished within the first 5 minutes.\n\nEverything has to be wrapped up within 15 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}
