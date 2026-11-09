@@ -5,5 +5,11 @@ venv/
 .pytest_cache/
 .cache/
 results/traces/
-configs/llm.yaml
+configs/local/
 .DS_Store
+.env
+results/scratch/
+# Large run artefacts: keep results/, but commit only a sample of trajectories
+logs/*
+!logs/sample/
+results/runs/pilot/

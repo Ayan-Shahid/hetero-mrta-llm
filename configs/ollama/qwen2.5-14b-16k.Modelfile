@@ -1,0 +1,4 @@
+# Larger alternative if your machine has 24 GB+ memory (slower, usually more accurate).
+#   ollama pull qwen2.5:14b-instruct && ollama create qwen2.5-14b-16k -f configs/ollama/qwen2.5-14b-16k.Modelfile
+FROM qwen2.5:14b-instruct
+PARAMETER num_ctx 16384

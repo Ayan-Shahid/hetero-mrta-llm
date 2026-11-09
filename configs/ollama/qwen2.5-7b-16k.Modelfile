@@ -1,0 +1,4 @@
+# Ollama's default context window (2k-4k tokens) silently truncates the agent's prompts.
+# This Modelfile raises it to 16k:  ollama create qwen2.5-7b-16k -f configs/ollama/qwen2.5-7b-16k.Modelfile
+FROM qwen2.5:7b-instruct
+PARAMETER num_ctx 16384

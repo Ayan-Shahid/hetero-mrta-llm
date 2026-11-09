@@ -1,0 +1,6 @@
+# Deterministic stand-in for tests and offline pipeline runs. NOT a language model.
+provider: mock
+model: mock
+label: mock
+mock_error_rate: 0.15
+cache_dir: null

@@ -1,0 +1,15 @@
+# Claude through Anthropic's OpenAI-compatible endpoint. Key: ANTHROPIC_API_KEY (in .env).
+# The endpoint rejects response_format=json_object, so json_mode is off; the prompts already
+# ask for JSON and the parser tolerates extra text.
+provider: anthropic
+model: claude-haiku-4-5-20251001
+label: claude-haiku-4.5
+temperature: 0.2
+max_tokens: 4096
+json_mode: false
+timeout_s: 180
+max_retries: 5
+cache_dir: .cache/llm
+rpm: 40
+price_in: 1.0                # USD per million input tokens (check current pricing before a sweep)
+price_out: 5.0               # USD per million output tokens

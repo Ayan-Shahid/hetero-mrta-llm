@@ -1,0 +1,14 @@
+# Local open-weight model through Ollama (free, no rate limit). See docs/setup_models.md.
+#   ollama pull qwen2.5:7b-instruct
+#   ollama create qwen2.5-7b-16k -f configs/ollama/qwen2.5-7b-16k.Modelfile   # 16k context window
+provider: ollama
+model: qwen2.5-7b-16k        # the 16k-context model created from the Modelfile above
+label: qwen2.5-7b
+temperature: 0.2             # > 0 so the three repeats (seeds 0, 1, 2) are different samples
+max_tokens: 4096
+json_mode: true
+timeout_s: 600               # local generation of a full model can take a few minutes
+max_retries: 2
+cache_dir: .cache/llm
+price_in: 0.0
+price_out: 0.0

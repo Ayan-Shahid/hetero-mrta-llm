@@ -1,0 +1,17 @@
+# Google Gemini through its OpenAI-compatible endpoint. Key: GEMINI_API_KEY (in .env).
+# Free-tier limits change; check yours in Google AI Studio and set rpm / rpd to match.
+provider: gemini
+model: gemini-2.5-flash      # python -m mrta.llm --config configs/models/gemini-flash.yaml --list-models
+label: gemini-2.5-flash
+temperature: 0.2
+max_tokens: 8192
+json_mode: true
+timeout_s: 180
+max_retries: 6
+cache_dir: .cache/llm
+rpm: 8                       # stay a little under the free-tier per-minute limit
+rpd: 240                     # requests per day; the runner stops cleanly at this number
+extra:
+  reasoning_effort: none     # turn off "thinking" tokens on Flash; dropped automatically if rejected
+price_in: 0.0                # free tier
+price_out: 0.0
