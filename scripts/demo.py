@@ -106,7 +106,7 @@ def main() -> None:
     else:
         client = make_client(args.llm)
         res = LLM_METHODS[args.method](client, scn, brief, args.style)
-        plan, label = res.plan, f"{args.method} [{client.config.label}]"
+        plan, label = res.plan, f"{args.method} [{client.config.name}]"
         extra = (f"status={res.status}, {res.llm_calls} LLM calls, {res.prompt_tokens}+{res.completion_tokens} "
                  f"tokens, {res.time_s:.2f}s")
         if args.method == "agent" and res.trace:
