@@ -1,8 +1,8 @@
 # Google Gemini through its OpenAI-compatible endpoint. Key: GEMINI_API_KEY (in .env).
 # Free-tier limits change; check yours in Google AI Studio and set rpm / rpd to match.
 provider: gemini
-model: gemini-2.5-flash      # python -m mrta.llm --config configs/models/gemini-flash.yaml --list-models
-label: gemini-2.5-flash
+model: gemini-3.8-flash      # python -m mrta.llm --config configs/models/gemini-flash.yaml --list-models
+label: gemini-3.8-flash
 temperature: 0.2
 max_tokens: 8192
 json_mode: true
