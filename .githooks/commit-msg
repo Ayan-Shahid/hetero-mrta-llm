@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Enforce Conventional Commits:  <type>(<scope>)?: <subject>
+#   types: feat fix docs test refactor perf build ci chore exp data
+#   subject: 72 characters or fewer, no trailing period
+# Merge, revert and fixup commits are allowed as git writes them.
+msg_file="$1"
+subject="$(head -n1 "$msg_file")"
+
+case "$subject" in
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;;
+esac
+
+pattern='^(feat|fix|docs|test|refactor|perf|build|ci|chore|exp|data)(\([a-z0-9._/-]+\))?!?: [A-Za-z0-9].*[^.]$'
+if ! printf '%s' "$subject" | grep -Eq "$pattern"; then
+  cat >&2 <<MSG
+commit-msg: subject does not follow Conventional Commits.
+  got:      $subject
+  expected: <type>(<scope>): <subject>     e.g.  feat(agent): add cross-check tool
+  types:    feat fix docs test refactor perf build ci chore exp data
+  rules:    72 characters or fewer, no trailing period
+MSG
+  exit 1
+fi
+if [ "${#subject}" -gt 72 ]; then
+  echo "commit-msg: subject is ${#subject} characters; keep it to 72 or fewer." >&2
+  exit 1
+fi
+second="$(sed -n 2p "$msg_file")"
+if [ -n "$second" ] && ! printf '%s' "$second" | grep -q '^#'; then
+  echo "commit-msg: leave a blank line between the subject and the body." >&2
+  exit 1
+fi
+exit 0

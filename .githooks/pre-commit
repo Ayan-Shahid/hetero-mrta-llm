@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 1. Never commit secrets or the local .env file.
+# 2. Run the test suite when Python files are staged (skip with SKIP_TESTS=1 for docs-only work).
+set -e
+staged="$(git diff --cached --name-only --diff-filter=ACM)"
+
+if printf '%s\n' "$staged" | grep -Eq '(^|/)\.env$'; then
+  echo "pre-commit: .env is staged. It holds API keys and must not be committed (git rm --cached .env)." >&2
+  exit 1
+fi
+if git diff --cached -U0 | grep -E '^\+' | grep -Eq 'AIza[0-9A-Za-z_-]{35}|sk-ant-[0-9A-Za-z_-]{20,}|sk-[A-Za-z0-9]{32,}|gsk_[A-Za-z0-9]{20,}'; then
+  echo "pre-commit: the staged changes contain what looks like an API key. Remove it before committing." >&2
+  exit 1
+fi
+big="$(printf '%s\n' "$staged" | while read -r f; do [ -f "$f" ] && [ "$(wc -c < "$f")" -gt 5000000 ] && echo "$f"; done || true)"
+if [ -n "$big" ]; then
+  echo "pre-commit: files over 5 MB are staged:" >&2
+  echo "$big" >&2
+  exit 1
+fi
+if [ "${SKIP_TESTS:-0}" != "1" ] && printf '%s\n' "$staged" | grep -Eq '\.py$'; then
+  if command -v python >/dev/null 2>&1; then PY=python; else PY=python3; fi
+  echo "pre-commit: running tests (set SKIP_TESTS=1 to skip)..."
+  $PY -m pytest -q -x >/tmp/pre-commit-pytest.log 2>&1 || { tail -30 /tmp/pre-commit-pytest.log >&2; echo "pre-commit: tests failed." >&2; exit 1; }
+fi
+exit 0
