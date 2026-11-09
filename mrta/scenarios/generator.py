@@ -26,13 +26,30 @@ class Tier:
     p_deadline: float = 0.3
     p_precedence: float = 0.35
     p_standby: float = 0.5
+    witness: str = "auction"  # "auction" (benchmark v1) or "best" (v2: better of auction and MILP)
+    witness_rounds: int = 60  # max improving moves of the witness local search
+    horizon_factor: float = 1.6
+    lb_slack: tuple[float, float] = (1.6, 2.6)  # deadline >= lower bound x U(a, b)
+    witness_slack: tuple[float, float] = (1.0, 1.3)  # deadline >= witness finish x U(a, b)
 
 
-TIERS: dict[str, Tier] = {
+# v1: the Phase 1 benchmark (26 scenarios). Kept so Phase 1 numbers stay reproducible.
+TIERS_V1: dict[str, Tier] = {
     "S": Tier("S", robots=3, tasks=5),
     "M": Tier("M", robots=5, tasks=10),
     "L": Tier("L", robots=8, tasks=16),
 }
+
+# v2: the Phase 2 benchmark. More deadlines, tighter slack, and a locally optimised witness, so
+# heuristic allocators are not guaranteed to succeed (see docs/benchmark.md).
+_V2 = dict(p_deadline=0.4, witness="best", horizon_factor=1.4, lb_slack=(1.3, 2.2), witness_slack=(1.0, 1.2))
+TIERS_V2: dict[str, Tier] = {
+    "S": Tier("S", robots=3, tasks=5, **_V2),
+    "M": Tier("M", robots=5, tasks=10, **_V2),
+    "L": Tier("L", robots=8, tasks=16, **_V2),
+}
+
+TIERS = TIERS_V1  # default for generate(); scripts/make_benchmark.py --version picks one
 
 TYPE_WEIGHTS = {"quadcopter": 0.35, "rover": 0.30, "mobile_manipulator": 0.20, "fixed_arm": 0.15}
 
@@ -87,8 +104,10 @@ def _robots(rng: random.Random, types: list[str]) -> tuple[list[Robot], list[str
     return robots, workcells
 
 
-def generate(tier: str | Tier, seed: int, scenario_id: str | None = None, max_tries: int = 40) -> Scenario:
-    tier = TIERS[tier] if isinstance(tier, str) else tier
+def generate(tier: str | Tier, seed: int, scenario_id: str | None = None, max_tries: int = 40,
+             version: int = 1) -> Scenario:
+    table = TIERS_V2 if version == 2 else TIERS_V1
+    tier = table[tier] if isinstance(tier, str) else tier
     for attempt in range(max_tries):
         rng = random.Random(f"{tier.name}-{seed}-{attempt}")
         scn = _draw(rng, tier, scenario_id or f"{tier.name}-{seed:03d}")
@@ -177,26 +196,38 @@ def _draw(rng: random.Random, tier: Tier, sid: str) -> Scenario | None:
     scn = Scenario(id=sid, horizon=86400.0, locations=locations, robots=robots, tasks=task_objs,
                    precedence=precedence, standby=standby)
 
-    # Horizon and deadlines from what a heuristic can achieve, then verify feasibility.
-    base = solve_auction(scn)
-    if base.plan is None or not check(scn, base.plan).feasible:
+    # Deadlines and horizon come from a *witness* plan, which stays feasible by construction.
+    # v1 always used the auction plan as witness, so the auction heuristic could never miss a
+    # deadline. v2 (tier.witness == "best") improves the best heuristic plan with a deterministic
+    # local search, so deadlines are tighter than either heuristic is guaranteed to meet. (A
+    # time-limited MILP would be stronger but is not reproducible across machines.)
+    witness = solve_auction(scn)
+    if witness.plan is None or not check(scn, witness.plan).feasible:
         return None
-    sched = check(scn, base.plan).schedule
+    plan = witness.plan
+    if tier.witness == "best":
+        hung = solve_hungarian(scn)
+        if hung.plan is not None and _makespan(scn, hung.plan) < _makespan(scn, plan):
+            plan = hung.plan
+        plan = improve_plan(scn, plan, rounds=tier.witness_rounds)
+    witness = witness.__class__(plan=plan, status="witness", time_s=0.0)
+    sched = check(scn, plan).schedule
     finish = {v.task: v.finish for v in sched.visits}
-    horizon = _ceil(max(sched.makespan * 1.6, sched.makespan + 300), 300)
+    horizon = _ceil(max(sched.makespan * tier.horizon_factor, sched.makespan + 300), 300)
     table = TravelTable(scn)
     for t in task_objs:
         if rng.random() < tier.p_deadline:
             lb = min(table.from_start(r, t) + t.duration for r in robots
                      if set(t.required) <= set(r.capabilities) and t.payload <= r.payload
                      and can_reach(r, scn.loc(t.location)))
-            t.deadline = float(_ceil(max(lb * rng.uniform(1.6, 2.6), finish[t.id] * rng.uniform(1.0, 1.3)), 60))
+            t.deadline = float(_ceil(max(lb * rng.uniform(*tier.lb_slack),
+                                         finish[t.id] * rng.uniform(*tier.witness_slack)), 60))
             t.deadline = min(t.deadline, horizon)
     scn = scn.model_copy(update={"horizon": float(horizon), "tasks": task_objs})
     scn = Scenario.model_validate(scn.model_dump())
-    # Deadlines were set no earlier than the auction plan's finish times, so that plan
-    # remains a feasibility witness; fall back to re-solving just in case.
-    if check(scn, base.plan).feasible:
+    # Deadlines were set no earlier than the witness's finish times, so the witness remains
+    # feasible; fall back to re-solving just in case of rounding.
+    if check(scn, witness.plan).feasible:
         return scn
     for solver in (solve_auction, solve_hungarian):
         res = solver(scn)
@@ -205,10 +236,56 @@ def _draw(rng: random.Random, tier: Tier, sid: str) -> Scenario | None:
     return None
 
 
-def make_benchmark(tiers: dict[str, int], start_seed: int = 0) -> list[Scenario]:
+def _makespan(scn: Scenario, plan) -> float:
+    res = check(scn, plan)
+    return res.schedule.makespan if res.feasible and res.schedule else float("inf")
+
+
+def improve_plan(scn: Scenario, plan, rounds: int = 60):
+    """Deterministic first-improvement local search: move one task to any eligible robot and position.
+
+    Only feasible plans with a strictly smaller makespan are accepted, so the result is a feasible
+    plan at least as good as the input.
+    """
+    from ..geometry import eligibility_matrix
+    from ..schema import Plan
+
+    elig = eligibility_matrix(scn)
+    best_routes = {r: list(t) for r, t in plan.routes.items()}
+    best = _makespan(scn, plan)
+    standby = list(plan.standby)
+    for _ in range(rounds):
+        improved = False
+        for rid in sorted(best_routes):
+            for tid in list(best_routes[rid]):
+                for other in sorted(elig):
+                    if other in standby or tid not in elig[other]:
+                        continue
+                    base = {r: [t for t in ts if t != tid] for r, ts in best_routes.items()}
+                    slots = len(base.get(other, [])) + 1
+                    for pos in range(slots):
+                        trial = {r: list(ts) for r, ts in base.items()}
+                        trial.setdefault(other, []).insert(pos, tid)
+                        cand = Plan(routes={r: ts for r, ts in trial.items() if ts}, standby=standby)
+                        ms = _makespan(scn, cand)
+                        if ms < best - 1e-6:
+                            best, best_routes, improved = ms, {r: list(ts) for r, ts in cand.routes.items()}, True
+                            break
+                    if improved:
+                        break
+                if improved:
+                    break
+            if improved:
+                break
+        if not improved:
+            break
+    return Plan(routes=best_routes, standby=standby)
+
+
+def make_benchmark(tiers: dict[str, int], start_seed: int = 0, version: int = 1) -> list[Scenario]:
     """tiers: {"S": 10, "M": 10, ...} -> scenarios with ids like S-000."""
     out = []
     for name, count in tiers.items():
         for seed in range(start_seed, start_seed + count):
-            out.append(generate(name, seed))
+            out.append(generate(name, seed, version=version))
     return out

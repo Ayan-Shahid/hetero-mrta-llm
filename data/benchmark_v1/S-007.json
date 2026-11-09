@@ -1,0 +1,155 @@
+{
+ "tier": "S",
+ "seed": 7,
+ "scenario": {
+  "id": "S-007",
+  "horizon": 900.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "office roof",
+    "x": -30.0,
+    "y": 72.0,
+    "zone": "roof"
+   },
+   {
+    "name": "workshop",
+    "x": 106.0,
+    "y": 146.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "loading dock",
+    "x": 38.0,
+    "y": -10.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "south yard",
+    "x": 80.0,
+    "y": -1.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.0,
+    "payload": 9.0,
+    "endurance": 3240.0,
+    "start": "base"
+   },
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 7.0,
+    "payload": 2.0,
+    "endurance": 900.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 6.0,
+    "payload": 2.0,
+    "endurance": 1440.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (3 kg) at south yard and keep it on board",
+    "location": "south yard",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of south yard",
+    "location": "south yard",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": null
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (9 kg) to loading dock",
+    "location": "loading dock",
+    "required": [
+     "carry"
+    ],
+    "payload": 9.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (1 kg) at south yard and keep it on board",
+    "location": "south yard",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 1.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "deliver",
+    "description": "Deliver the spare pump (4 kg) to south yard",
+    "location": "south yard",
+    "required": [
+     "carry"
+    ],
+    "payload": 4.0,
+    "duration": 60.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF S-007\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- office roof: (-30, 72), roof\n- workshop: (106, 146), indoor\n- loading dock: (38, -10), outdoor\n- south yard: (80, -1), outdoor\n\nRobots:\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 9 kg), robotic arm, camera. Endurance: 3240 s, including the return to its start.\n- D1 (quadcopter): starts at base. Flies in straight lines at 7 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 900 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 6 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1440 s, including the return to its start.\n\nTasks:\n- T1: Collect a soil sample (3 kg) at south yard and keep it on board. Location: south yard. Duration: 60 s. Needs: robotic arm, cargo carrier (payload 3 kg).\n- T2: Run a thermal scan of south yard. Location: south yard. Duration: 210 s. Needs: thermal camera.\n- T3: Deliver the cable reel (9 kg) to loading dock. Location: loading dock. Duration: 60 s. Needs: cargo carrier (payload 9 kg).\n- T4: Collect a soil sample (1 kg) at south yard and keep it on board. Location: south yard. Duration: 90 s. Needs: robotic arm, cargo carrier (payload 1 kg).\n- T5: Deliver the spare pump (4 kg) to south yard. Location: south yard. Duration: 60 s. Needs: cargo carrier (payload 4 kg).\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 900 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Morning! Plan for today's site work:\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: office roof (-30, 72, a rooftop); workshop (106, 146, indoors); loading dock (38, -10, outside); south yard (80, -1, outside).\n\nThe fleet: M1 is our mobile manipulator at base: gripper arm, camera, room for 9 kg, moves at 1 m/s and lasts 54 minutes including getting back. D1, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 7 m/s, lifts up to 2 kg and has 15 minutes of flight time, return trip included. D2 is a quadcopter at base with a camera; it flies at 6 m/s, can lift 2 kg, and its battery lasts 24 minutes including the flight home.\n\nJobs:\n(T1) Pick up a soil sample at south yard and keep it on board; it weighs 3 kg - that takes 1 minute on site.\n(T2) Check south yard for hot spots - that takes 3.5 minutes on site.\n(T3) Loading dock needs the cable reel, which weighs 9 kg - that takes 1 minute on site.\n(T4) Pick up a soil sample at south yard and keep it on board; it weighs 1 kg - that takes 1.5 minutes on site.\n(T5) South yard needs the spare pump, which weighs 4 kg - that takes 1 minute on site.\n\nEverything has to be wrapped up within 15 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

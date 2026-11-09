@@ -1,6 +1,8 @@
 {
  "tier": "S",
  "seed": 2,
+ "version": 2,
+ "split": "dev",
  "scenario": {
   "id": "S-002",
   "horizon": 900.0,

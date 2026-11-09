@@ -17,7 +17,7 @@ from pathlib import Path
 import _path  # noqa: F401
 from mrta.evaluate import CLASSICAL, FIELDS, LLM, run_classical, run_llm
 from mrta.llm.client import make_client
-from mrta.schema import Scenario
+from mrta.benchmark import load
 
 
 def parse_methods(text: str) -> list[str]:
@@ -39,6 +39,7 @@ def main() -> None:
     ap.add_argument("--styles", default="explicit,informal")
     ap.add_argument("--llm", default="mock", help="mock, mock-oracle, or a YAML config such as configs/llm.yaml")
     ap.add_argument("--tiers", default="", help="e.g. S,M (default: all)")
+    ap.add_argument("--split", default="all", choices=("all", "dev", "test"))
     ap.add_argument("--limit", type=int, default=0, help="max scenarios per tier (0 = all)")
     ap.add_argument("--time-limit", type=float, default=60.0, help="MILP time limit in seconds")
     ap.add_argument("--out", default="results/runs.csv")
@@ -51,17 +52,7 @@ def main() -> None:
     tiers = {t.strip() for t in args.tiers.split(",") if t.strip()}
     client = make_client(args.llm) if any(m in LLM for m in methods) else None
 
-    files = sorted(Path(args.bench).glob("*.json"))
-    per_tier: dict[str, int] = {}
-    records = []
-    for f in files:
-        rec = json.loads(f.read_text())
-        if tiers and rec["tier"] not in tiers:
-            continue
-        per_tier[rec["tier"]] = per_tier.get(rec["tier"], 0) + 1
-        if args.limit and per_tier[rec["tier"]] > args.limit:
-            continue
-        records.append(rec)
+    records = load(args.bench, split=args.split, tiers=tiers, limit=args.limit)
     if not records:
         raise SystemExit(f"no scenarios found in {args.bench}; run scripts/make_benchmark.py first")
 
@@ -83,7 +74,7 @@ def main() -> None:
             writer.writeheader()
         t_start = time.time()
         for rec in records:
-            scn = Scenario.model_validate(rec["scenario"])
+            scn = rec.scenario
             for method in methods:
                 inputs = ["spec"] if method in CLASSICAL else styles
                 for inp in inputs:
@@ -92,9 +83,9 @@ def main() -> None:
                     if (scn.id, method, inp, prov, model) in done:
                         continue
                     if method in CLASSICAL:
-                        row = run_classical(method, scn, rec["tier"], args.time_limit)
+                        row = run_classical(method, scn, rec.tier, args.time_limit)
                     else:
-                        row, trace = run_llm(method, client, scn, rec["tier"], inp, rec["briefs"][inp],
+                        row, trace = run_llm(method, client, scn, rec.tier, inp, rec.briefs[inp],
                                              args.time_limit)
                         if trace_dir:
                             name = f"{scn.id}__{method}__{inp}__{prov}-{model}".replace("/", "_").replace(":", "_")

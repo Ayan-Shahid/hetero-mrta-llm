@@ -1,0 +1,259 @@
+{
+ "tier": "M",
+ "seed": 14,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "M-014",
+  "horizon": 2100.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "water tower top",
+    "x": -139.0,
+    "y": -60.0,
+    "zone": "roof"
+   },
+   {
+    "name": "office roof",
+    "x": 5.0,
+    "y": 148.0,
+    "zone": "roof"
+   },
+   {
+    "name": "electrical room",
+    "x": -125.0,
+    "y": 23.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "control room",
+    "x": -89.0,
+    "y": -124.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "fuel depot",
+    "x": 61.0,
+    "y": 89.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "antenna mast",
+    "x": -74.0,
+    "y": 66.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "loading dock",
+    "x": 116.0,
+    "y": 101.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 10.0,
+    "payload": 2.0,
+    "endurance": 1200.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 9.0,
+    "endurance": 3420.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 7.0,
+    "payload": 2.0,
+    "endurance": 1500.0,
+    "start": "base"
+   },
+   {
+    "id": "D3",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 8.5,
+    "payload": 2.0,
+    "endurance": 1320.0,
+    "start": "base"
+   },
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 2.0,
+    "payload": 18.0,
+    "endurance": 5340.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "deliver",
+    "description": "Deliver the pressure gauge (6 kg) to antenna mast",
+    "location": "antenna mast",
+    "required": [
+     "carry"
+    ],
+    "payload": 6.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at control room",
+    "location": "control room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 240.0,
+    "deadline": null
+   },
+   {
+    "id": "T3",
+    "kind": "photo_survey",
+    "description": "Photograph antenna mast for the condition report",
+    "location": "antenna mast",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "valve_service",
+    "description": "Tighten the valve at antenna mast",
+    "location": "antenna mast",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "inspect_roof",
+    "description": "Inspect office roof with a camera",
+    "location": "office roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T6",
+    "kind": "deliver",
+    "description": "Deliver the first-aid kit (4 kg) to fuel depot",
+    "location": "fuel depot",
+    "required": [
+     "carry"
+    ],
+    "payload": 4.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T7",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (3 kg) at loading dock and keep it on board",
+    "location": "loading dock",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T8",
+    "kind": "deliver",
+    "description": "Deliver the sensor box (7 kg) to control room",
+    "location": "control room",
+    "required": [
+     "carry"
+    ],
+    "payload": 7.0,
+    "duration": 30.0,
+    "deadline": 540.0
+   },
+   {
+    "id": "T9",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at electrical room",
+    "location": "electrical room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 300.0,
+    "deadline": null
+   },
+   {
+    "id": "T10",
+    "kind": "deliver",
+    "description": "Deliver the spare pump (3 kg) to fuel depot",
+    "location": "fuel depot",
+    "required": [
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 60.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF M-014\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- water tower top: (-139, -60), roof\n- office roof: (5, 148), roof\n- electrical room: (-125, 23), indoor\n- control room: (-89, -124), indoor\n- fuel depot: (61, 89), outdoor\n- antenna mast: (-74, 66), outdoor\n- loading dock: (116, 101), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 10 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1200 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 9 kg), robotic arm, camera. Endurance: 3420 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 7 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1500 s, including the return to its start.\n- D3 (quadcopter): starts at base. Flies in straight lines at 8.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1320 s, including the return to its start.\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 2 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 18 kg), camera. Endurance: 5340 s, including the return to its start.\n\nTasks:\n- T1: Deliver the pressure gauge (6 kg) to antenna mast. Location: antenna mast. Duration: 60 s. Needs: cargo carrier (payload 6 kg).\n- T2: Replace the filter cartridge at control room. Location: control room. Duration: 240 s. Needs: robotic arm.\n- T3: Photograph antenna mast for the condition report. Location: antenna mast. Duration: 120 s. Needs: camera.\n- T4: Tighten the valve at antenna mast. Location: antenna mast. Duration: 210 s. Needs: robotic arm.\n- T5: Inspect office roof with a camera. Location: office roof. Duration: 150 s. Needs: camera. Deadline: finished by t = 360 s.\n- T6: Deliver the first-aid kit (4 kg) to fuel depot. Location: fuel depot. Duration: 60 s. Needs: cargo carrier (payload 4 kg).\n- T7: Collect a soil sample (3 kg) at loading dock and keep it on board. Location: loading dock. Duration: 180 s. Needs: robotic arm, cargo carrier (payload 3 kg).\n- T8: Deliver the sensor box (7 kg) to control room. Location: control room. Duration: 30 s. Needs: cargo carrier (payload 7 kg). Deadline: finished by t = 540 s.\n- T9: Replace the filter cartridge at electrical room. Location: electrical room. Duration: 300 s. Needs: robotic arm.\n- T10: Deliver the spare pump (3 kg) to fuel depot. Location: fuel depot. Duration: 60 s. Needs: cargo carrier (payload 3 kg).\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 2100 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Morning! Plan for today's site work:\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: water tower top (-139, -60, a rooftop); office roof (5, 148, a rooftop); electrical room (-125, 23, indoors); control room (-89, -124, indoors); fuel depot (61, 89, outside); antenna mast (-74, 66, outside); loading dock (116, 101, outside).\n\nThe fleet: D1, a quadcopter waiting at base, carries a camera, cruises at 10 m/s, lifts up to 2 kg and has 20 minutes of flight time, return trip included. M1 is our mobile manipulator at base: gripper arm, camera, room for 9 kg, moves at 1.5 m/s and lasts 57 minutes including getting back. D2, a quadcopter waiting at base, carries a camera, cruises at 7 m/s, lifts up to 2 kg and has 25 minutes of flight time, return trip included. D3, a quadcopter waiting at base, carries a camera, cruises at 8.5 m/s, lifts up to 2 kg and has 22 minutes of flight time, return trip included. G1 is a rover parked at base that hauls up to 18 kg at 2 m/s and runs for 89 minutes including the drive back. It has a camera.\n\nJobs:\n(T1) Antenna mast needs the pressure gauge, which weighs 6 kg - that takes 1 minute on site.\n(T2) Swap the filter cartridge at control room - that takes 4 minutes on site.\n(T3) Document antenna mast with pictures - that takes 2 minutes on site.\n(T4) Someone has to tighten the valve at antenna mast - that takes 3.5 minutes on site.\n(T5) Do a visual check of office roof - that takes 2.5 minutes on site and it has to be finished within the first 6 minutes.\n(T6) Drop the first-aid kit off at fuel depot; it weighs 4 kg - that takes 1 minute on site.\n(T7) Pick up a soil sample at loading dock and keep it on board; it weighs 3 kg - that takes 3 minutes on site.\n(T8) Get the sensor box (7 kg) over to control room - that takes 0.5 minutes on site and it has to be finished within the first 9 minutes.\n(T9) Change the filter at electrical room - that takes 5 minutes on site.\n(T10) Drop the spare pump off at fuel depot; it weighs 3 kg - that takes 1 minute on site.\n\nEverything has to be wrapped up within 35 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

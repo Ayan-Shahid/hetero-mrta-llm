@@ -1,0 +1,162 @@
+{
+ "tier": "S",
+ "seed": 19,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "S-019",
+  "horizon": 1200.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "solar canopy",
+    "x": 94.0,
+    "y": 43.0,
+    "zone": "roof"
+   },
+   {
+    "name": "pump house",
+    "x": 132.0,
+    "y": 95.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workcell West",
+    "x": 98.0,
+    "y": -102.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "site B",
+    "x": 6.0,
+    "y": 111.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "water tank",
+    "x": 69.0,
+    "y": 61.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 7.5,
+    "payload": 2.0,
+    "endurance": 1020.0,
+    "start": "base"
+   },
+   {
+    "id": "A1",
+    "type": "fixed_arm",
+    "mobility": "fixed",
+    "capabilities": [
+     "manipulate"
+    ],
+    "speed": 0.0,
+    "payload": 0.0,
+    "endurance": 86400.0,
+    "start": "workcell West"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 7.0,
+    "endurance": 3060.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (3 kg) at site B and keep it on board",
+    "location": "site B",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 150.0,
+    "deadline": 540.0
+   },
+   {
+    "id": "T2",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (2 kg) at site B and keep it on board",
+    "location": "site B",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T3",
+    "kind": "valve_service",
+    "description": "Tighten the valve at water tank",
+    "location": "water tank",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": 1020.0
+   },
+   {
+    "id": "T4",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 240.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "valve_service",
+    "description": "Tighten the valve at site B",
+    "location": "site B",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 270.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF S-019\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- solar canopy: (94, 43), roof\n- pump house: (132, 95), indoor\n- workcell West: (98, -102), indoor\n- site B: (6, 111), outdoor\n- water tank: (69, 61), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 7.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1020 s, including the return to its start.\n- A1 (fixed_arm): installed at workcell West and cannot move; it can only work on tasks located at workcell West. Equipment: robotic arm. Mains-powered (no endurance limit).\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 7 kg), robotic arm, camera. Endurance: 3060 s, including the return to its start.\n\nTasks:\n- T1: Collect a soil sample (3 kg) at site B and keep it on board. Location: site B. Duration: 150 s. Needs: robotic arm, cargo carrier (payload 3 kg). Deadline: finished by t = 540 s.\n- T2: Collect a soil sample (2 kg) at site B and keep it on board. Location: site B. Duration: 90 s. Needs: robotic arm, cargo carrier (payload 2 kg).\n- T3: Tighten the valve at water tank. Location: water tank. Duration: 180 s. Needs: robotic arm. Deadline: finished by t = 1020 s.\n- T4: Replace the filter cartridge at workcell West. Location: workcell West. Duration: 240 s. Needs: robotic arm.\n- T5: Tighten the valve at site B. Location: site B. Duration: 270 s. Needs: robotic arm.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 1200 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Here's what we need from the robots today.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: solar canopy (94, 43, a rooftop); pump house (132, 95, indoors); workcell West (98, -102, indoors); site B (6, 111, outside); water tank (69, 61, outside).\n\nThe fleet: D1, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 7.5 m/s, lifts up to 2 kg and has 17 minutes of flight time, return trip included. A1 is a robot arm bolted down in workcell West; it can't move but can work on jobs inside workcell West, and it runs on mains power. M1 is our mobile manipulator at base: gripper arm, camera, room for 7 kg, moves at 1.5 m/s and lasts 51 minutes including getting back.\n\nJobs:\n(T1) Pick up a soil sample at site B and keep it on board; it weighs 3 kg - that takes 2.5 minutes on site and it has to be finished within the first 9 minutes.\n(T2) Pick up a soil sample at site B and keep it on board; it weighs 2 kg - that takes 1.5 minutes on site.\n(T3) The valve at water tank needs tightening - that takes 3 minutes on site and it has to be finished within the first 17 minutes.\n(T4) Change the filter at workcell West - that takes 4 minutes on site.\n(T5) The valve at site B needs tightening - that takes 4.5 minutes on site.\n\nEverything has to be wrapped up within 20 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

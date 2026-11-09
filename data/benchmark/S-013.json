@@ -1,0 +1,161 @@
+{
+ "tier": "S",
+ "seed": 13,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "S-013",
+  "horizon": 900.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "solar canopy",
+    "x": -111.0,
+    "y": 13.0,
+    "zone": "roof"
+   },
+   {
+    "name": "pump house",
+    "x": 73.0,
+    "y": -19.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "gate 2",
+    "x": -46.0,
+    "y": -7.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "site B",
+    "x": -84.0,
+    "y": -59.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera",
+     "thermal"
+    ],
+    "speed": 3.0,
+    "payload": 19.0,
+    "endurance": 4200.0,
+    "start": "base"
+   },
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 8.5,
+    "payload": 2.0,
+    "endurance": 1020.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 5.0,
+    "endurance": 3300.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (10 kg) to pump house",
+    "location": "pump house",
+    "required": [
+     "carry"
+    ],
+    "payload": 10.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "deliver",
+    "description": "Deliver the spare pump (7 kg) to site B",
+    "location": "site B",
+    "required": [
+     "carry"
+    ],
+    "payload": 7.0,
+    "duration": 30.0,
+    "deadline": 240.0
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (9 kg) to site B",
+    "location": "site B",
+    "required": [
+     "carry"
+    ],
+    "payload": 9.0,
+    "duration": 60.0,
+    "deadline": 240.0
+   },
+   {
+    "id": "T4",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of site B",
+    "location": "site B",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at pump house",
+    "location": "pump house",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 270.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [
+   {
+    "before": "T1",
+    "after": "T5"
+   }
+  ],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF S-013\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- solar canopy: (-111, 13), roof\n- pump house: (73, -19), indoor\n- gate 2: (-46, -7), outdoor\n- site B: (-84, -59), outdoor\n\nRobots:\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 3 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 19 kg), camera, thermal camera. Endurance: 4200 s, including the return to its start.\n- D1 (quadcopter): starts at base. Flies in straight lines at 8.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1020 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 5 kg), robotic arm, camera. Endurance: 3300 s, including the return to its start.\n\nTasks:\n- T1: Deliver the cable reel (10 kg) to pump house. Location: pump house. Duration: 30 s. Needs: cargo carrier (payload 10 kg).\n- T2: Deliver the spare pump (7 kg) to site B. Location: site B. Duration: 30 s. Needs: cargo carrier (payload 7 kg). Deadline: finished by t = 240 s.\n- T3: Deliver the cable reel (9 kg) to site B. Location: site B. Duration: 60 s. Needs: cargo carrier (payload 9 kg). Deadline: finished by t = 240 s.\n- T4: Run a thermal scan of site B. Location: site B. Duration: 210 s. Needs: thermal camera.\n- T5: Replace the filter cartridge at pump house. Location: pump house. Duration: 270 s. Needs: robotic arm. Can start only after T1 is finished.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 900 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Here's what we need from the robots today.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: solar canopy (-111, 13, a rooftop); pump house (73, -19, indoors); gate 2 (-46, -7, outside); site B (-84, -59, outside).\n\nThe fleet: G1 is a rover parked at base that hauls up to 19 kg at 3 m/s and runs for 70 minutes including the drive back. It has a camera and a thermal camera. D1, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 8.5 m/s, lifts up to 2 kg and has 17 minutes of flight time, return trip included. M1 is our mobile manipulator at base: gripper arm, camera, room for 5 kg, moves at 1.5 m/s and lasts 55 minutes including getting back.\n\nJobs:\n(T1) Drop the cable reel off at pump house; it weighs 10 kg - that takes 0.5 minutes on site.\n(T2) Drop the spare pump off at site B; it weighs 7 kg - that takes 0.5 minutes on site and it has to be finished within the first 4 minutes.\n(T3) Site B needs the cable reel, which weighs 9 kg - that takes 1 minute on site and it has to be finished within the first 4 minutes.\n(T4) Check site B for hot spots - that takes 3.5 minutes on site.\n(T5) Change the filter at pump house - that takes 4.5 minutes on site but only once the cable reel (T1) has arrived.\n\nEverything has to be wrapped up within 15 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

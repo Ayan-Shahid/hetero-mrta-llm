@@ -1,0 +1,157 @@
+{
+ "tier": "S",
+ "seed": 16,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "S-016",
+  "horizon": 1200.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "solar canopy",
+    "x": -49.0,
+    "y": 66.0,
+    "zone": "roof"
+   },
+   {
+    "name": "electrical room",
+    "x": 126.0,
+    "y": -48.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "parking lot",
+    "x": -40.0,
+    "y": -116.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "transformer pad",
+    "x": -22.0,
+    "y": -73.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 7.0,
+    "payload": 2.0,
+    "endurance": 960.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 10.0,
+    "payload": 2.0,
+    "endurance": 1140.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 5.0,
+    "endurance": 2520.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (2 kg) at transformer pad and keep it on board",
+    "location": "transformer pad",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "deliver",
+    "description": "Deliver the sensor box (5 kg) to electrical room",
+    "location": "electrical room",
+    "required": [
+     "carry"
+    ],
+    "payload": 5.0,
+    "duration": 60.0,
+    "deadline": 780.0
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (5 kg) to transformer pad",
+    "location": "transformer pad",
+    "required": [
+     "carry"
+    ],
+    "payload": 5.0,
+    "duration": 30.0,
+    "deadline": 240.0
+   },
+   {
+    "id": "T4",
+    "kind": "inspect_roof",
+    "description": "Inspect solar canopy with a camera",
+    "location": "solar canopy",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at electrical room",
+    "location": "electrical room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 270.0,
+    "deadline": 660.0
+   }
+  ],
+  "precedence": [],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF S-016\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- solar canopy: (-49, 66), roof\n- electrical room: (126, -48), indoor\n- parking lot: (-40, -116), outdoor\n- transformer pad: (-22, -73), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 7 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 960 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 10 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1140 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 5 kg), robotic arm, camera. Endurance: 2520 s, including the return to its start.\n\nTasks:\n- T1: Collect a soil sample (2 kg) at transformer pad and keep it on board. Location: transformer pad. Duration: 90 s. Needs: robotic arm, cargo carrier (payload 2 kg).\n- T2: Deliver the sensor box (5 kg) to electrical room. Location: electrical room. Duration: 60 s. Needs: cargo carrier (payload 5 kg). Deadline: finished by t = 780 s.\n- T3: Deliver the cable reel (5 kg) to transformer pad. Location: transformer pad. Duration: 30 s. Needs: cargo carrier (payload 5 kg). Deadline: finished by t = 240 s.\n- T4: Inspect solar canopy with a camera. Location: solar canopy. Duration: 60 s. Needs: camera.\n- T5: Replace the filter cartridge at electrical room. Location: electrical room. Duration: 270 s. Needs: robotic arm. Deadline: finished by t = 660 s.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 1200 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Hi team, here is today's job at the site.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: solar canopy (-49, 66, a rooftop); electrical room (126, -48, indoors); parking lot (-40, -116, outside); transformer pad (-22, -73, outside).\n\nThe fleet: D1 is a quadcopter at base with a camera and a thermal camera; it flies at 7 m/s, can lift 2 kg, and its battery lasts 16 minutes including the flight home. D2, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 10 m/s, lifts up to 2 kg and has 19 minutes of flight time, return trip included. M1 is our mobile manipulator at base: gripper arm, camera, room for 5 kg, moves at 1.5 m/s and lasts 42 minutes including getting back.\n\nJobs:\n(T1) Pick up a soil sample at transformer pad and keep it on board; it weighs 2 kg - that takes 1.5 minutes on site.\n(T2) Get the sensor box (5 kg) over to electrical room - that takes 1 minute on site and it has to be finished within the first 13 minutes.\n(T3) Drop the cable reel off at transformer pad; it weighs 5 kg - that takes 0.5 minutes on site and it has to be finished within the first 4 minutes.\n(T4) Do a visual check of solar canopy - that takes 1 minute on site.\n(T5) Swap the filter cartridge at electrical room - that takes 4.5 minutes on site and it has to be finished within the first 11 minutes.\n\nEverything has to be wrapped up within 20 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

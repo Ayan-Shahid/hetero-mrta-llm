@@ -1,0 +1,407 @@
+{
+ "tier": "L",
+ "seed": 7,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "L-007",
+  "horizon": 1200.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "solar canopy",
+    "x": -114.0,
+    "y": -72.0,
+    "zone": "roof"
+   },
+   {
+    "name": "warehouse roof",
+    "x": 3.0,
+    "y": -110.0,
+    "zone": "roof"
+   },
+   {
+    "name": "electrical room",
+    "x": 44.0,
+    "y": -49.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "storage hall",
+    "x": -65.0,
+    "y": 4.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "control room",
+    "x": 120.0,
+    "y": -141.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workcell West",
+    "x": 34.0,
+    "y": 139.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "transformer pad",
+    "x": 36.0,
+    "y": -149.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "gate 2",
+    "x": 11.0,
+    "y": 109.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "loading dock",
+    "x": -136.0,
+    "y": -17.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "antenna mast",
+    "x": -76.0,
+    "y": 89.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "water tank",
+    "x": -53.0,
+    "y": -80.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 10.0,
+    "payload": 2.0,
+    "endurance": 1440.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.0,
+    "payload": 8.0,
+    "endurance": 2880.0,
+    "start": "base"
+   },
+   {
+    "id": "M2",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 5.0,
+    "endurance": 2700.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 9.0,
+    "payload": 2.0,
+    "endurance": 1140.0,
+    "start": "base"
+   },
+   {
+    "id": "A1",
+    "type": "fixed_arm",
+    "mobility": "fixed",
+    "capabilities": [
+     "manipulate"
+    ],
+    "speed": 0.0,
+    "payload": 0.0,
+    "endurance": 86400.0,
+    "start": "workcell West"
+   },
+   {
+    "id": "M3",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 6.0,
+    "endurance": 2520.0,
+    "start": "base"
+   },
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 3.0,
+    "payload": 29.0,
+    "endurance": 4680.0,
+    "start": "base"
+   },
+   {
+    "id": "D3",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 6.0,
+    "payload": 2.0,
+    "endurance": 1260.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "photo_survey",
+    "description": "Photograph loading dock for the condition report",
+    "location": "loading dock",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "photo_survey",
+    "description": "Photograph control room for the condition report",
+    "location": "control room",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the spare pump (6 kg) to storage hall",
+    "location": "storage hall",
+    "required": [
+     "carry"
+    ],
+    "payload": 6.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (2 kg) at transformer pad and keep it on board",
+    "location": "transformer pad",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 60.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T5",
+    "kind": "photo_survey",
+    "description": "Photograph storage hall for the condition report",
+    "location": "storage hall",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": 600.0
+   },
+   {
+    "id": "T6",
+    "kind": "valve_service",
+    "description": "Tighten the valve at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T7",
+    "kind": "deliver",
+    "description": "Deliver the replacement filter (11 kg) to transformer pad",
+    "location": "transformer pad",
+    "required": [
+     "carry"
+    ],
+    "payload": 11.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T8",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (2 kg) at water tank and keep it on board",
+    "location": "water tank",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T9",
+    "kind": "inspect_roof",
+    "description": "Inspect solar canopy with a camera",
+    "location": "solar canopy",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": 240.0
+   },
+   {
+    "id": "T10",
+    "kind": "valve_service",
+    "description": "Tighten the valve at transformer pad",
+    "location": "transformer pad",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 270.0,
+    "deadline": null
+   },
+   {
+    "id": "T11",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (3 kg) at antenna mast and keep it on board",
+    "location": "antenna mast",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 150.0,
+    "deadline": 540.0
+   },
+   {
+    "id": "T12",
+    "kind": "photo_survey",
+    "description": "Photograph water tank for the condition report",
+    "location": "water tank",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 60.0,
+    "deadline": 120.0
+   },
+   {
+    "id": "T13",
+    "kind": "deliver",
+    "description": "Deliver the toolkit (12 kg) to loading dock",
+    "location": "loading dock",
+    "required": [
+     "carry"
+    ],
+    "payload": 12.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T14",
+    "kind": "valve_service",
+    "description": "Tighten the valve at storage hall",
+    "location": "storage hall",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T15",
+    "kind": "valve_service",
+    "description": "Tighten the valve at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": null
+   },
+   {
+    "id": "T16",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of solar canopy",
+    "location": "solar canopy",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [
+   {
+    "before": "T7",
+    "after": "T10"
+   },
+   {
+    "before": "T3",
+    "after": "T14"
+   }
+  ],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF L-007\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- solar canopy: (-114, -72), roof\n- warehouse roof: (3, -110), roof\n- electrical room: (44, -49), indoor\n- storage hall: (-65, 4), indoor\n- control room: (120, -141), indoor\n- workcell West: (34, 139), indoor\n- transformer pad: (36, -149), outdoor\n- gate 2: (11, 109), outdoor\n- loading dock: (-136, -17), outdoor\n- antenna mast: (-76, 89), outdoor\n- water tank: (-53, -80), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 10 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1440 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 8 kg), robotic arm, camera. Endurance: 2880 s, including the return to its start.\n- M2 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 5 kg), robotic arm, camera. Endurance: 2700 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 9 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1140 s, including the return to its start.\n- A1 (fixed_arm): installed at workcell West and cannot move; it can only work on tasks located at workcell West. Equipment: robotic arm. Mains-powered (no endurance limit).\n- M3 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 6 kg), robotic arm, camera. Endurance: 2520 s, including the return to its start.\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 3 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 29 kg), camera. Endurance: 4680 s, including the return to its start.\n- D3 (quadcopter): starts at base. Flies in straight lines at 6 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1260 s, including the return to its start.\n\nTasks:\n- T1: Photograph loading dock for the condition report. Location: loading dock. Duration: 120 s. Needs: camera.\n- T2: Photograph control room for the condition report. Location: control room. Duration: 120 s. Needs: camera. Deadline: finished by t = 360 s.\n- T3: Deliver the spare pump (6 kg) to storage hall. Location: storage hall. Duration: 30 s. Needs: cargo carrier (payload 6 kg).\n- T4: Collect a soil sample (2 kg) at transformer pad and keep it on board. Location: transformer pad. Duration: 60 s. Needs: robotic arm, cargo carrier (payload 2 kg). Deadline: finished by t = 360 s.\n- T5: Photograph storage hall for the condition report. Location: storage hall. Duration: 120 s. Needs: camera. Deadline: finished by t = 600 s.\n- T6: Tighten the valve at workcell West. Location: workcell West. Duration: 180 s. Needs: robotic arm.\n- T7: Deliver the replacement filter (11 kg) to transformer pad. Location: transformer pad. Duration: 30 s. Needs: cargo carrier (payload 11 kg).\n- T8: Collect a soil sample (2 kg) at water tank and keep it on board. Location: water tank. Duration: 150 s. Needs: robotic arm, cargo carrier (payload 2 kg).\n- T9: Inspect solar canopy with a camera. Location: solar canopy. Duration: 90 s. Needs: camera. Deadline: finished by t = 240 s.\n- T10: Tighten the valve at transformer pad. Location: transformer pad. Duration: 270 s. Needs: robotic arm. Can start only after T7 is finished.\n- T11: Collect a soil sample (3 kg) at antenna mast and keep it on board. Location: antenna mast. Duration: 150 s. Needs: robotic arm, cargo carrier (payload 3 kg). Deadline: finished by t = 540 s.\n- T12: Photograph water tank for the condition report. Location: water tank. Duration: 60 s. Needs: camera. Deadline: finished by t = 120 s.\n- T13: Deliver the toolkit (12 kg) to loading dock. Location: loading dock. Duration: 60 s. Needs: cargo carrier (payload 12 kg).\n- T14: Tighten the valve at storage hall. Location: storage hall. Duration: 180 s. Needs: robotic arm. Can start only after T3 is finished.\n- T15: Tighten the valve at workcell West. Location: workcell West. Duration: 210 s. Needs: robotic arm.\n- T16: Run a thermal scan of solar canopy. Location: solar canopy. Duration: 150 s. Needs: thermal camera.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 1200 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Morning! Plan for today's site work:\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: solar canopy (-114, -72, a rooftop); warehouse roof (3, -110, a rooftop); electrical room (44, -49, indoors); storage hall (-65, 4, indoors); control room (120, -141, indoors); workcell West (34, 139, indoors); transformer pad (36, -149, outside); gate 2 (11, 109, outside); loading dock (-136, -17, outside); antenna mast (-76, 89, outside); water tank (-53, -80, outside).\n\nThe fleet: D1, a quadcopter waiting at base, carries a camera, cruises at 10 m/s, lifts up to 2 kg and has 24 minutes of flight time, return trip included. M1 is our mobile manipulator at base: gripper arm, camera, room for 8 kg, moves at 1 m/s and lasts 48 minutes including getting back. M2 is our mobile manipulator at base: gripper arm, camera, room for 5 kg, moves at 1.5 m/s and lasts 45 minutes including getting back. D2, a quadcopter waiting at base, carries a camera, cruises at 9 m/s, lifts up to 2 kg and has 19 minutes of flight time, return trip included. A1 is a robot arm bolted down in workcell West; it can't move but can work on jobs inside workcell West, and it runs on mains power. M3 is our mobile manipulator at base: gripper arm, camera, room for 6 kg, moves at 1.5 m/s and lasts 42 minutes including getting back. G1 is a rover parked at base that hauls up to 29 kg at 3 m/s and runs for 78 minutes including the drive back. It has a camera. D3 is a quadcopter at base with a camera and a thermal camera; it flies at 6 m/s, can lift 2 kg, and its battery lasts 21 minutes including the flight home.\n\nJobs:\n(T1) Document loading dock with pictures - that takes 2 minutes on site.\n(T2) We need pictures of control room for the report - that takes 2 minutes on site and it has to be finished within the first 6 minutes.\n(T3) Storage hall needs the spare pump, which weighs 6 kg - that takes 0.5 minutes on site.\n(T4) Pick up a soil sample at transformer pad and keep it on board; it weighs 2 kg - that takes 1 minute on site and it has to be finished within the first 6 minutes.\n(T5) Grab photos of storage hall for the condition report - that takes 2 minutes on site and it has to be finished within the first 10 minutes.\n(T6) Someone has to tighten the valve at workcell West - that takes 3 minutes on site.\n(T7) Get the replacement filter (11 kg) over to transformer pad - that takes 0.5 minutes on site.\n(T8) Pick up a soil sample at water tank and keep it on board; it weighs 2 kg - that takes 2.5 minutes on site.\n(T9) Have a look at solar canopy - that takes 1.5 minutes on site and it has to be finished within the first 4 minutes.\n(T10) The valve at transformer pad needs tightening - that takes 4.5 minutes on site but only once the replacement filter (T7) has arrived.\n(T11) Pick up a soil sample at antenna mast and keep it on board; it weighs 3 kg - that takes 2.5 minutes on site and it has to be finished within the first 9 minutes.\n(T12) Document water tank with pictures - that takes 1 minute on site and it has to be finished within the first 2 minutes.\n(T13) Drop the toolkit off at loading dock; it weighs 12 kg - that takes 1 minute on site.\n(T14) The valve at storage hall needs tightening - that takes 3 minutes on site but only once the spare pump (T3) has arrived.\n(T15) The valve at workcell West needs tightening - that takes 3.5 minutes on site.\n(T16) Do a heat check over solar canopy - that takes 2.5 minutes on site.\n\nEverything has to be wrapped up within 20 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

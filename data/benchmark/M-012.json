@@ -1,0 +1,259 @@
+{
+ "tier": "M",
+ "seed": 12,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "M-012",
+  "horizon": 1500.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "north roof",
+    "x": 71.0,
+    "y": 113.0,
+    "zone": "roof"
+   },
+   {
+    "name": "solar canopy",
+    "x": -85.0,
+    "y": -89.0,
+    "zone": "roof"
+   },
+   {
+    "name": "workshop",
+    "x": 66.0,
+    "y": 52.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "control room",
+    "x": -135.0,
+    "y": -10.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "south yard",
+    "x": -4.0,
+    "y": 60.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "parking lot",
+    "x": -105.0,
+    "y": -59.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "loading dock",
+    "x": 52.0,
+    "y": 138.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 19.0,
+    "endurance": 3840.0,
+    "start": "base"
+   },
+   {
+    "id": "G2",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 2.5,
+    "payload": 18.0,
+    "endurance": 4620.0,
+    "start": "base"
+   },
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 6.5,
+    "payload": 2.0,
+    "endurance": 1260.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.0,
+    "payload": 8.0,
+    "endurance": 3360.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 7.0,
+    "payload": 2.0,
+    "endurance": 1200.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "photo_survey",
+    "description": "Photograph workshop for the condition report",
+    "location": "workshop",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": 480.0
+   },
+   {
+    "id": "T2",
+    "kind": "deliver",
+    "description": "Deliver the battery pack (4 kg) to parking lot",
+    "location": "parking lot",
+    "required": [
+     "carry"
+    ],
+    "payload": 4.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T3",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at workshop",
+    "location": "workshop",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "photo_survey",
+    "description": "Photograph workshop for the condition report",
+    "location": "workshop",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "inspect_roof",
+    "description": "Inspect north roof with a camera",
+    "location": "north roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T6",
+    "kind": "inspect_roof",
+    "description": "Inspect north roof with a camera",
+    "location": "north roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": 300.0
+   },
+   {
+    "id": "T7",
+    "kind": "valve_service",
+    "description": "Tighten the valve at control room",
+    "location": "control room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T8",
+    "kind": "deliver",
+    "description": "Deliver the toolkit (3 kg) to control room",
+    "location": "control room",
+    "required": [
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T9",
+    "kind": "deliver",
+    "description": "Deliver the toolkit (10 kg) to parking lot",
+    "location": "parking lot",
+    "required": [
+     "carry"
+    ],
+    "payload": 10.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T10",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (3 kg) at parking lot and keep it on board",
+    "location": "parking lot",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 90.0,
+    "deadline": 960.0
+   }
+  ],
+  "precedence": [],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF M-012\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- north roof: (71, 113), roof\n- solar canopy: (-85, -89), roof\n- workshop: (66, 52), indoor\n- control room: (-135, -10), indoor\n- south yard: (-4, 60), outdoor\n- parking lot: (-105, -59), outdoor\n- loading dock: (52, 138), outdoor\n\nRobots:\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 19 kg), camera. Endurance: 3840 s, including the return to its start.\n- G2 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 2.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 18 kg), camera. Endurance: 4620 s, including the return to its start.\n- D1 (quadcopter): starts at base. Flies in straight lines at 6.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1260 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 8 kg), robotic arm, camera. Endurance: 3360 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 7 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1200 s, including the return to its start.\n\nTasks:\n- T1: Photograph workshop for the condition report. Location: workshop. Duration: 120 s. Needs: camera. Deadline: finished by t = 480 s.\n- T2: Deliver the battery pack (4 kg) to parking lot. Location: parking lot. Duration: 60 s. Needs: cargo carrier (payload 4 kg).\n- T3: Replace the filter cartridge at workshop. Location: workshop. Duration: 180 s. Needs: robotic arm.\n- T4: Photograph workshop for the condition report. Location: workshop. Duration: 60 s. Needs: camera.\n- T5: Inspect north roof with a camera. Location: north roof. Duration: 60 s. Needs: camera.\n- T6: Inspect north roof with a camera. Location: north roof. Duration: 120 s. Needs: camera. Deadline: finished by t = 300 s.\n- T7: Tighten the valve at control room. Location: control room. Duration: 180 s. Needs: robotic arm.\n- T8: Deliver the toolkit (3 kg) to control room. Location: control room. Duration: 60 s. Needs: cargo carrier (payload 3 kg).\n- T9: Deliver the toolkit (10 kg) to parking lot. Location: parking lot. Duration: 30 s. Needs: cargo carrier (payload 10 kg).\n- T10: Collect a soil sample (3 kg) at parking lot and keep it on board. Location: parking lot. Duration: 90 s. Needs: robotic arm, cargo carrier (payload 3 kg). Deadline: finished by t = 960 s.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 1500 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Morning! Plan for today's site work:\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: north roof (71, 113, a rooftop); solar canopy (-85, -89, a rooftop); workshop (66, 52, indoors); control room (-135, -10, indoors); south yard (-4, 60, outside); parking lot (-105, -59, outside); loading dock (52, 138, outside).\n\nThe fleet: G1 is a rover parked at base that hauls up to 19 kg at 1.5 m/s and runs for 64 minutes including the drive back. It has a camera. G2 is a rover parked at base that hauls up to 18 kg at 2.5 m/s and runs for 77 minutes including the drive back. It has a camera. D1 is a quadcopter at base with a camera; it flies at 6.5 m/s, can lift 2 kg, and its battery lasts 21 minutes including the flight home. M1 is our mobile manipulator at base: gripper arm, camera, room for 8 kg, moves at 1 m/s and lasts 56 minutes including getting back. D2 is a quadcopter at base with a camera; it flies at 7 m/s, can lift 2 kg, and its battery lasts 20 minutes including the flight home.\n\nJobs:\n(T1) Grab photos of workshop for the condition report - that takes 2 minutes on site and it has to be finished within the first 8 minutes.\n(T2) Drop the battery pack off at parking lot; it weighs 4 kg - that takes 1 minute on site.\n(T3) Swap the filter cartridge at workshop - that takes 3 minutes on site.\n(T4) We need pictures of workshop for the report - that takes 1 minute on site.\n(T5) Have a look at north roof - that takes 1 minute on site.\n(T6) Do a visual check of north roof - that takes 2 minutes on site and it has to be finished within the first 5 minutes.\n(T7) The valve at control room needs tightening - that takes 3 minutes on site.\n(T8) Drop the toolkit off at control room; it weighs 3 kg - that takes 1 minute on site.\n(T9) Get the toolkit (10 kg) over to parking lot - that takes 0.5 minutes on site.\n(T10) Pick up a soil sample at parking lot and keep it on board; it weighs 3 kg - that takes 1.5 minutes on site and it has to be finished within the first 16 minutes.\n\nEverything has to be wrapped up within 25 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

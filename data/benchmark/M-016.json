@@ -1,0 +1,280 @@
+{
+ "tier": "M",
+ "seed": 16,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "M-016",
+  "horizon": 1500.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "warehouse roof",
+    "x": 29.0,
+    "y": 121.0,
+    "zone": "roof"
+   },
+   {
+    "name": "office roof",
+    "x": -91.0,
+    "y": 88.0,
+    "zone": "roof"
+   },
+   {
+    "name": "electrical room",
+    "x": 88.0,
+    "y": -14.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workshop",
+    "x": -109.0,
+    "y": -96.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workcell West",
+    "x": -106.0,
+    "y": 47.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "fuel depot",
+    "x": 146.0,
+    "y": -68.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "parking lot",
+    "x": -110.0,
+    "y": 148.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "east fence",
+    "x": 108.0,
+    "y": -38.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 6.5,
+    "payload": 2.0,
+    "endurance": 1260.0,
+    "start": "base"
+   },
+   {
+    "id": "A1",
+    "type": "fixed_arm",
+    "mobility": "fixed",
+    "capabilities": [
+     "manipulate"
+    ],
+    "speed": 0.0,
+    "payload": 0.0,
+    "endurance": 86400.0,
+    "start": "workcell West"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 9.0,
+    "payload": 2.0,
+    "endurance": 1080.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 6.0,
+    "endurance": 2700.0,
+    "start": "base"
+   },
+   {
+    "id": "D3",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 7.5,
+    "payload": 2.0,
+    "endurance": 1380.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of east fence",
+    "location": "east fence",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": 480.0
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the first-aid kit (6 kg) to parking lot",
+    "location": "parking lot",
+    "required": [
+     "carry"
+    ],
+    "payload": 6.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at electrical room",
+    "location": "electrical room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "photo_survey",
+    "description": "Photograph workcell West for the condition report",
+    "location": "workcell West",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T6",
+    "kind": "inspect_roof",
+    "description": "Inspect warehouse roof with a camera",
+    "location": "warehouse roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": 420.0
+   },
+   {
+    "id": "T7",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of fuel depot",
+    "location": "fuel depot",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": null
+   },
+   {
+    "id": "T8",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (2 kg) at fuel depot and keep it on board",
+    "location": "fuel depot",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T9",
+    "kind": "deliver",
+    "description": "Deliver the first-aid kit (6 kg) to workcell West",
+    "location": "workcell West",
+    "required": [
+     "carry"
+    ],
+    "payload": 6.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T10",
+    "kind": "deliver",
+    "description": "Deliver the battery pack (2 kg) to electrical room",
+    "location": "electrical room",
+    "required": [
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 30.0,
+    "deadline": 780.0
+   }
+  ],
+  "precedence": [
+   {
+    "before": "T10",
+    "after": "T4"
+   },
+   {
+    "before": "T9",
+    "after": "T1"
+   }
+  ],
+  "standby": [
+   {
+    "robot_type": "quadcopter",
+    "count": 1
+   }
+  ],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF M-016\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- warehouse roof: (29, 121), roof\n- office roof: (-91, 88), roof\n- electrical room: (88, -14), indoor\n- workshop: (-109, -96), indoor\n- workcell West: (-106, 47), indoor\n- fuel depot: (146, -68), outdoor\n- parking lot: (-110, 148), outdoor\n- east fence: (108, -38), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 6.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1260 s, including the return to its start.\n- A1 (fixed_arm): installed at workcell West and cannot move; it can only work on tasks located at workcell West. Equipment: robotic arm. Mains-powered (no endurance limit).\n- D2 (quadcopter): starts at base. Flies in straight lines at 9 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1080 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 6 kg), robotic arm, camera. Endurance: 2700 s, including the return to its start.\n- D3 (quadcopter): starts at base. Flies in straight lines at 7.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1380 s, including the return to its start.\n\nTasks:\n- T1: Replace the filter cartridge at workcell West. Location: workcell West. Duration: 150 s. Needs: robotic arm. Can start only after T9 is finished.\n- T2: Run a thermal scan of east fence. Location: east fence. Duration: 210 s. Needs: thermal camera. Deadline: finished by t = 480 s.\n- T3: Deliver the first-aid kit (6 kg) to parking lot. Location: parking lot. Duration: 60 s. Needs: cargo carrier (payload 6 kg).\n- T4: Replace the filter cartridge at electrical room. Location: electrical room. Duration: 180 s. Needs: robotic arm. Can start only after T10 is finished.\n- T5: Photograph workcell West for the condition report. Location: workcell West. Duration: 150 s. Needs: camera.\n- T6: Inspect warehouse roof with a camera. Location: warehouse roof. Duration: 90 s. Needs: camera. Deadline: finished by t = 420 s.\n- T7: Run a thermal scan of fuel depot. Location: fuel depot. Duration: 120 s. Needs: thermal camera.\n- T8: Collect a soil sample (2 kg) at fuel depot and keep it on board. Location: fuel depot. Duration: 60 s. Needs: robotic arm, cargo carrier (payload 2 kg).\n- T9: Deliver the first-aid kit (6 kg) to workcell West. Location: workcell West. Duration: 30 s. Needs: cargo carrier (payload 6 kg).\n- T10: Deliver the battery pack (2 kg) to electrical room. Location: electrical room. Duration: 30 s. Needs: cargo carrier (payload 2 kg). Deadline: finished by t = 780 s.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Keep at least 1 quadcopter on standby: it must not be given any task.\n6. Every task must be finished by t = 1500 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Hi team, here is today's job at the site.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: warehouse roof (29, 121, a rooftop); office roof (-91, 88, a rooftop); electrical room (88, -14, indoors); workshop (-109, -96, indoors); workcell West (-106, 47, indoors); fuel depot (146, -68, outside); parking lot (-110, 148, outside); east fence (108, -38, outside).\n\nThe fleet: D1, a quadcopter waiting at base, carries a camera, cruises at 6.5 m/s, lifts up to 2 kg and has 21 minutes of flight time, return trip included. A1 is a robot arm bolted down in workcell West; it can't move but can work on jobs inside workcell West, and it runs on mains power. D2, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 9 m/s, lifts up to 2 kg and has 18 minutes of flight time, return trip included. M1 is our mobile manipulator at base: gripper arm, camera, room for 6 kg, moves at 1.5 m/s and lasts 45 minutes including getting back. D3 is a quadcopter at base with a camera and a thermal camera; it flies at 7.5 m/s, can lift 2 kg, and its battery lasts 23 minutes including the flight home.\n\nJobs:\n(T1) Change the filter at workcell West - that takes 2.5 minutes on site but only once the first-aid kit (T9) has arrived.\n(T2) Look for overheating equipment around east fence - that takes 3.5 minutes on site and it has to be finished within the first 8 minutes.\n(T3) Get the first-aid kit (6 kg) over to parking lot - that takes 1 minute on site.\n(T4) Change the filter at electrical room - that takes 3 minutes on site but only once the battery pack (T10) has arrived.\n(T5) Document workcell West with pictures - that takes 2.5 minutes on site.\n(T6) Have a look at warehouse roof - that takes 1.5 minutes on site and it has to be finished within the first 7 minutes.\n(T7) Do a heat check over fuel depot - that takes 2 minutes on site.\n(T8) Pick up a soil sample at fuel depot and keep it on board; it weighs 2 kg - that takes 1 minute on site.\n(T9) Drop the first-aid kit off at workcell West; it weighs 6 kg - that takes 0.5 minutes on site.\n(T10) Drop the battery pack off at electrical room; it weighs 2 kg - that takes 0.5 minutes on site and it has to be finished within the first 13 minutes.\n\nKeep one quadcopter on standby; don't give it any jobs. Everything has to be wrapped up within 25 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

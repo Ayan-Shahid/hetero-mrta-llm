@@ -1,0 +1,412 @@
+{
+ "tier": "L",
+ "seed": 6,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "L-006",
+  "horizon": 1200.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "warehouse roof",
+    "x": -5.0,
+    "y": 112.0,
+    "zone": "roof"
+   },
+   {
+    "name": "solar canopy",
+    "x": -120.0,
+    "y": 18.0,
+    "zone": "roof"
+   },
+   {
+    "name": "pump house",
+    "x": 73.0,
+    "y": -18.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workshop",
+    "x": -51.0,
+    "y": 108.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "electrical room",
+    "x": 38.0,
+    "y": 56.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "workcell West",
+    "x": -74.0,
+    "y": 128.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "antenna mast",
+    "x": 77.0,
+    "y": 86.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "water tank",
+    "x": 123.0,
+    "y": -116.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "site B",
+    "x": 95.0,
+    "y": 63.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "gate 2",
+    "x": 119.0,
+    "y": -28.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "parking lot",
+    "x": 14.0,
+    "y": 76.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "A1",
+    "type": "fixed_arm",
+    "mobility": "fixed",
+    "capabilities": [
+     "manipulate"
+    ],
+    "speed": 0.0,
+    "payload": 0.0,
+    "endurance": 86400.0,
+    "start": "workcell West"
+   },
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 8.0,
+    "payload": 2.0,
+    "endurance": 900.0,
+    "start": "base"
+   },
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 2.5,
+    "payload": 28.0,
+    "endurance": 5220.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 7.0,
+    "endurance": 3180.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 6.0,
+    "payload": 2.0,
+    "endurance": 1500.0,
+    "start": "base"
+   },
+   {
+    "id": "D3",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 9.5,
+    "payload": 2.0,
+    "endurance": 1500.0,
+    "start": "base"
+   },
+   {
+    "id": "D4",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 9.0,
+    "payload": 2.0,
+    "endurance": 1320.0,
+    "start": "base"
+   },
+   {
+    "id": "M2",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 6.0,
+    "endurance": 3360.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "valve_service",
+    "description": "Tighten the valve at parking lot",
+    "location": "parking lot",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T2",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of water tank",
+    "location": "water tank",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the battery pack (5 kg) to pump house",
+    "location": "pump house",
+    "required": [
+     "carry"
+    ],
+    "payload": 5.0,
+    "duration": 30.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T4",
+    "kind": "valve_service",
+    "description": "Tighten the valve at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 240.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "deliver",
+    "description": "Deliver the battery pack (11 kg) to parking lot",
+    "location": "parking lot",
+    "required": [
+     "carry"
+    ],
+    "payload": 11.0,
+    "duration": 30.0,
+    "deadline": 600.0
+   },
+   {
+    "id": "T6",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (1 kg) at gate 2 and keep it on board",
+    "location": "gate 2",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 1.0,
+    "duration": 120.0,
+    "deadline": null
+   },
+   {
+    "id": "T7",
+    "kind": "deliver",
+    "description": "Deliver the spare pump (6 kg) to pump house",
+    "location": "pump house",
+    "required": [
+     "carry"
+    ],
+    "payload": 6.0,
+    "duration": 30.0,
+    "deadline": 180.0
+   },
+   {
+    "id": "T8",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (2 kg) at antenna mast and keep it on board",
+    "location": "antenna mast",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 2.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T9",
+    "kind": "deliver",
+    "description": "Deliver the sensor box (10 kg) to pump house",
+    "location": "pump house",
+    "required": [
+     "carry"
+    ],
+    "payload": 10.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T10",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 300.0,
+    "deadline": null
+   },
+   {
+    "id": "T11",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at electrical room",
+    "location": "electrical room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 240.0,
+    "deadline": 660.0
+   },
+   {
+    "id": "T12",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at workshop",
+    "location": "workshop",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": 660.0
+   },
+   {
+    "id": "T13",
+    "kind": "deliver",
+    "description": "Deliver the cable reel (10 kg) to workcell West",
+    "location": "workcell West",
+    "required": [
+     "carry"
+    ],
+    "payload": 10.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T14",
+    "kind": "photo_survey",
+    "description": "Photograph gate 2 for the condition report",
+    "location": "gate 2",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": 360.0
+   },
+   {
+    "id": "T15",
+    "kind": "deliver",
+    "description": "Deliver the pressure gauge (12 kg) to workcell West",
+    "location": "workcell West",
+    "required": [
+     "carry"
+    ],
+    "payload": 12.0,
+    "duration": 60.0,
+    "deadline": 540.0
+   },
+   {
+    "id": "T16",
+    "kind": "valve_service",
+    "description": "Tighten the valve at workcell West",
+    "location": "workcell West",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [
+   {
+    "before": "T13",
+    "after": "T10"
+   },
+   {
+    "before": "T15",
+    "after": "T4"
+   }
+  ],
+  "standby": [
+   {
+    "robot_type": "quadcopter",
+    "count": 1
+   }
+  ],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF L-006\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- warehouse roof: (-5, 112), roof\n- solar canopy: (-120, 18), roof\n- pump house: (73, -18), indoor\n- workshop: (-51, 108), indoor\n- electrical room: (38, 56), indoor\n- workcell West: (-74, 128), indoor\n- antenna mast: (77, 86), outdoor\n- water tank: (123, -116), outdoor\n- site B: (95, 63), outdoor\n- gate 2: (119, -28), outdoor\n- parking lot: (14, 76), outdoor\n\nRobots:\n- A1 (fixed_arm): installed at workcell West and cannot move; it can only work on tasks located at workcell West. Equipment: robotic arm. Mains-powered (no endurance limit).\n- D1 (quadcopter): starts at base. Flies in straight lines at 8 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 900 s, including the return to its start.\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 2.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 28 kg), camera. Endurance: 5220 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 7 kg), robotic arm, camera. Endurance: 3180 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 6 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1500 s, including the return to its start.\n- D3 (quadcopter): starts at base. Flies in straight lines at 9.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1500 s, including the return to its start.\n- D4 (quadcopter): starts at base. Flies in straight lines at 9 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1320 s, including the return to its start.\n- M2 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 6 kg), robotic arm, camera. Endurance: 3360 s, including the return to its start.\n\nTasks:\n- T1: Tighten the valve at parking lot. Location: parking lot. Duration: 150 s. Needs: robotic arm. Deadline: finished by t = 360 s.\n- T2: Run a thermal scan of water tank. Location: water tank. Duration: 180 s. Needs: thermal camera.\n- T3: Deliver the battery pack (5 kg) to pump house. Location: pump house. Duration: 30 s. Needs: cargo carrier (payload 5 kg). Deadline: finished by t = 360 s.\n- T4: Tighten the valve at workcell West. Location: workcell West. Duration: 240 s. Needs: robotic arm. Can start only after T15 is finished.\n- T5: Deliver the battery pack (11 kg) to parking lot. Location: parking lot. Duration: 30 s. Needs: cargo carrier (payload 11 kg). Deadline: finished by t = 600 s.\n- T6: Collect a soil sample (1 kg) at gate 2 and keep it on board. Location: gate 2. Duration: 120 s. Needs: robotic arm, cargo carrier (payload 1 kg).\n- T7: Deliver the spare pump (6 kg) to pump house. Location: pump house. Duration: 30 s. Needs: cargo carrier (payload 6 kg). Deadline: finished by t = 180 s.\n- T8: Collect a soil sample (2 kg) at antenna mast and keep it on board. Location: antenna mast. Duration: 150 s. Needs: robotic arm, cargo carrier (payload 2 kg).\n- T9: Deliver the sensor box (10 kg) to pump house. Location: pump house. Duration: 60 s. Needs: cargo carrier (payload 10 kg).\n- T10: Replace the filter cartridge at workcell West. Location: workcell West. Duration: 300 s. Needs: robotic arm. Can start only after T13 is finished.\n- T11: Replace the filter cartridge at electrical room. Location: electrical room. Duration: 240 s. Needs: robotic arm. Deadline: finished by t = 660 s.\n- T12: Replace the filter cartridge at workshop. Location: workshop. Duration: 150 s. Needs: robotic arm. Deadline: finished by t = 660 s.\n- T13: Deliver the cable reel (10 kg) to workcell West. Location: workcell West. Duration: 60 s. Needs: cargo carrier (payload 10 kg).\n- T14: Photograph gate 2 for the condition report. Location: gate 2. Duration: 150 s. Needs: camera. Deadline: finished by t = 360 s.\n- T15: Deliver the pressure gauge (12 kg) to workcell West. Location: workcell West. Duration: 60 s. Needs: cargo carrier (payload 12 kg). Deadline: finished by t = 540 s.\n- T16: Tighten the valve at workcell West. Location: workcell West. Duration: 150 s. Needs: robotic arm.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Keep at least 1 quadcopter on standby: it must not be given any task.\n6. Every task must be finished by t = 1200 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Hi team, here is today's job at the site.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: warehouse roof (-5, 112, a rooftop); solar canopy (-120, 18, a rooftop); pump house (73, -18, indoors); workshop (-51, 108, indoors); electrical room (38, 56, indoors); workcell West (-74, 128, indoors); antenna mast (77, 86, outside); water tank (123, -116, outside); site B (95, 63, outside); gate 2 (119, -28, outside); parking lot (14, 76, outside).\n\nThe fleet: A1 is a robot arm bolted down in workcell West; it can't move but can work on jobs inside workcell West, and it runs on mains power. D1, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 8 m/s, lifts up to 2 kg and has 15 minutes of flight time, return trip included. G1 is a rover parked at base that hauls up to 28 kg at 2.5 m/s and runs for 87 minutes including the drive back. It has a camera. M1 is our mobile manipulator at base: gripper arm, camera, room for 7 kg, moves at 1.5 m/s and lasts 53 minutes including getting back. D2, a quadcopter waiting at base, carries a camera, cruises at 6 m/s, lifts up to 2 kg and has 25 minutes of flight time, return trip included. D3, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 9.5 m/s, lifts up to 2 kg and has 25 minutes of flight time, return trip included. D4, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 9 m/s, lifts up to 2 kg and has 22 minutes of flight time, return trip included. M2 is our mobile manipulator at base: gripper arm, camera, room for 6 kg, moves at 1.5 m/s and lasts 56 minutes including getting back.\n\nJobs:\n(T1) The valve at parking lot needs tightening - that takes 2.5 minutes on site and it has to be finished within the first 6 minutes.\n(T2) Do a heat check over water tank - that takes 3 minutes on site.\n(T3) Get the battery pack (5 kg) over to pump house - that takes 0.5 minutes on site and it has to be finished within the first 6 minutes.\n(T4) The valve at workcell West needs tightening - that takes 4 minutes on site but only once the pressure gauge (T15) has arrived.\n(T5) Parking lot needs the battery pack, which weighs 11 kg - that takes 0.5 minutes on site and it has to be finished within the first 10 minutes.\n(T6) Pick up a soil sample at gate 2 and keep it on board; it weighs 1 kg - that takes 2 minutes on site.\n(T7) Get the spare pump (6 kg) over to pump house - that takes 0.5 minutes on site and it has to be finished within the first 3 minutes.\n(T8) Pick up a soil sample at antenna mast and keep it on board; it weighs 2 kg - that takes 2.5 minutes on site.\n(T9) Get the sensor box (10 kg) over to pump house - that takes 1 minute on site.\n(T10) Swap the filter cartridge at workcell West - that takes 5 minutes on site but only once the cable reel (T13) has arrived.\n(T11) Swap the filter cartridge at electrical room - that takes 4 minutes on site and it has to be finished within the first 11 minutes.\n(T12) Change the filter at workshop - that takes 2.5 minutes on site and it has to be finished within the first 11 minutes.\n(T13) Get the cable reel (10 kg) over to workcell West - that takes 1 minute on site.\n(T14) Grab photos of gate 2 for the condition report - that takes 2.5 minutes on site and it has to be finished within the first 6 minutes.\n(T15) Workcell West needs the pressure gauge, which weighs 12 kg - that takes 1 minute on site and it has to be finished within the first 9 minutes.\n(T16) Someone has to tighten the valve at workcell West - that takes 2.5 minutes on site.\n\nKeep one quadcopter on standby; don't give it any jobs. Everything has to be wrapped up within 20 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

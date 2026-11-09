@@ -1,0 +1,263 @@
+{
+ "tier": "M",
+ "seed": 3,
+ "scenario": {
+  "id": "M-003",
+  "horizon": 1800.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "water tower top",
+    "x": 17.0,
+    "y": 96.0,
+    "zone": "roof"
+   },
+   {
+    "name": "solar canopy",
+    "x": -88.0,
+    "y": 8.0,
+    "zone": "roof"
+   },
+   {
+    "name": "pump house",
+    "x": 68.0,
+    "y": 36.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "storage hall",
+    "x": 94.0,
+    "y": 22.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "water tank",
+    "x": -92.0,
+    "y": -91.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "site B",
+    "x": -40.0,
+    "y": -112.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "gate 2",
+    "x": 130.0,
+    "y": -136.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 8.0,
+    "payload": 2.0,
+    "endurance": 1140.0,
+    "start": "base"
+   },
+   {
+    "id": "D2",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 8.0,
+    "payload": 2.0,
+    "endurance": 1380.0,
+    "start": "base"
+   },
+   {
+    "id": "D3",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry",
+     "thermal"
+    ],
+    "speed": 6.5,
+    "payload": 2.0,
+    "endurance": 1080.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 8.0,
+    "endurance": 2400.0,
+    "start": "base"
+   },
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 30.0,
+    "endurance": 3960.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "inspect_roof",
+    "description": "Inspect solar canopy with a camera",
+    "location": "solar canopy",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at pump house",
+    "location": "pump house",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": 1200.0
+   },
+   {
+    "id": "T3",
+    "kind": "deliver",
+    "description": "Deliver the replacement filter (14 kg) to pump house",
+    "location": "pump house",
+    "required": [
+     "carry"
+    ],
+    "payload": 14.0,
+    "duration": 30.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "photo_survey",
+    "description": "Photograph storage hall for the condition report",
+    "location": "storage hall",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at storage hall",
+    "location": "storage hall",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 210.0,
+    "deadline": null
+   },
+   {
+    "id": "T6",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at storage hall",
+    "location": "storage hall",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": 780.0
+   },
+   {
+    "id": "T7",
+    "kind": "thermal_scan",
+    "description": "Run a thermal scan of gate 2",
+    "location": "gate 2",
+    "required": [
+     "thermal"
+    ],
+    "payload": 0.0,
+    "duration": 180.0,
+    "deadline": null
+   },
+   {
+    "id": "T8",
+    "kind": "deliver",
+    "description": "Deliver the spare pump (10 kg) to site B",
+    "location": "site B",
+    "required": [
+     "carry"
+    ],
+    "payload": 10.0,
+    "duration": 60.0,
+    "deadline": null
+   },
+   {
+    "id": "T9",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at storage hall",
+    "location": "storage hall",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 240.0,
+    "deadline": null
+   },
+   {
+    "id": "T10",
+    "kind": "photo_survey",
+    "description": "Photograph gate 2 for the condition report",
+    "location": "gate 2",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 120.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [
+   {
+    "before": "T3",
+    "after": "T2"
+   }
+  ],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF M-003\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- water tower top: (17, 96), roof\n- solar canopy: (-88, 8), roof\n- pump house: (68, 36), indoor\n- storage hall: (94, 22), indoor\n- water tank: (-92, -91), outdoor\n- site B: (-40, -112), outdoor\n- gate 2: (130, -136), outdoor\n\nRobots:\n- D1 (quadcopter): starts at base. Flies in straight lines at 8 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1140 s, including the return to its start.\n- D2 (quadcopter): starts at base. Flies in straight lines at 8 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1380 s, including the return to its start.\n- D3 (quadcopter): starts at base. Flies in straight lines at 6.5 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg), thermal camera. Endurance: 1080 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 8 kg), robotic arm, camera. Endurance: 2400 s, including the return to its start.\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 30 kg), camera. Endurance: 3960 s, including the return to its start.\n\nTasks:\n- T1: Inspect solar canopy with a camera. Location: solar canopy. Duration: 180 s. Needs: camera.\n- T2: Replace the filter cartridge at pump house. Location: pump house. Duration: 210 s. Needs: robotic arm. Deadline: finished by t = 1200 s. Can start only after T3 is finished.\n- T3: Deliver the replacement filter (14 kg) to pump house. Location: pump house. Duration: 30 s. Needs: cargo carrier (payload 14 kg).\n- T4: Photograph storage hall for the condition report. Location: storage hall. Duration: 150 s. Needs: camera.\n- T5: Replace the filter cartridge at storage hall. Location: storage hall. Duration: 210 s. Needs: robotic arm.\n- T6: Replace the filter cartridge at storage hall. Location: storage hall. Duration: 150 s. Needs: robotic arm. Deadline: finished by t = 780 s.\n- T7: Run a thermal scan of gate 2. Location: gate 2. Duration: 180 s. Needs: thermal camera.\n- T8: Deliver the spare pump (10 kg) to site B. Location: site B. Duration: 60 s. Needs: cargo carrier (payload 10 kg).\n- T9: Replace the filter cartridge at storage hall. Location: storage hall. Duration: 240 s. Needs: robotic arm.\n- T10: Photograph gate 2 for the condition report. Location: gate 2. Duration: 120 s. Needs: camera.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 1800 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Here's what we need from the robots today.\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: water tower top (17, 96, a rooftop); solar canopy (-88, 8, a rooftop); pump house (68, 36, indoors); storage hall (94, 22, indoors); water tank (-92, -91, outside); site B (-40, -112, outside); gate 2 (130, -136, outside).\n\nThe fleet: D1 is a quadcopter at base with a camera; it flies at 8 m/s, can lift 2 kg, and its battery lasts 19 minutes including the flight home. D2, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 8 m/s, lifts up to 2 kg and has 23 minutes of flight time, return trip included. D3, a quadcopter waiting at base, carries a camera and a thermal camera, cruises at 6.5 m/s, lifts up to 2 kg and has 18 minutes of flight time, return trip included. M1 is our mobile manipulator at base: gripper arm, camera, room for 8 kg, moves at 1.5 m/s and lasts 40 minutes including getting back. G1 is a rover parked at base that hauls up to 30 kg at 1.5 m/s and runs for 66 minutes including the drive back. It has a camera.\n\nJobs:\n(T1) Get eyes on solar canopy and check the panels - that takes 3 minutes on site.\n(T2) Swap the filter cartridge at pump house - that takes 3.5 minutes on site but only once the replacement filter (T3) has arrived and it has to be finished within the first 20 minutes.\n(T3) Pump house needs the replacement filter, which weighs 14 kg - that takes 0.5 minutes on site.\n(T4) Document storage hall with pictures - that takes 2.5 minutes on site.\n(T5) Change the filter at storage hall - that takes 3.5 minutes on site.\n(T6) Swap the filter cartridge at storage hall - that takes 2.5 minutes on site and it has to be finished within the first 13 minutes.\n(T7) Do a heat check over gate 2 - that takes 3 minutes on site.\n(T8) Get the spare pump (10 kg) over to site B - that takes 1 minute on site.\n(T9) Swap the filter cartridge at storage hall - that takes 4 minutes on site.\n(T10) Grab photos of gate 2 for the condition report - that takes 2 minutes on site.\n\nEverything has to be wrapped up within 30 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}

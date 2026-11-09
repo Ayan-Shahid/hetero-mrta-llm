@@ -1,0 +1,155 @@
+{
+ "tier": "S",
+ "seed": 10,
+ "version": 2,
+ "split": "test",
+ "scenario": {
+  "id": "S-010",
+  "horizon": 1200.0,
+  "locations": [
+   {
+    "name": "base",
+    "x": 0.0,
+    "y": 0.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "north roof",
+    "x": -139.0,
+    "y": 133.0,
+    "zone": "roof"
+   },
+   {
+    "name": "control room",
+    "x": -14.0,
+    "y": -68.0,
+    "zone": "indoor"
+   },
+   {
+    "name": "transformer pad",
+    "x": -115.0,
+    "y": -111.0,
+    "zone": "outdoor"
+   },
+   {
+    "name": "loading dock",
+    "x": 42.0,
+    "y": -30.0,
+    "zone": "outdoor"
+   }
+  ],
+  "robots": [
+   {
+    "id": "G1",
+    "type": "rover",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "camera"
+    ],
+    "speed": 2.0,
+    "payload": 19.0,
+    "endurance": 4200.0,
+    "start": "base"
+   },
+   {
+    "id": "M1",
+    "type": "mobile_manipulator",
+    "mobility": "ground",
+    "capabilities": [
+     "carry",
+     "manipulate",
+     "camera"
+    ],
+    "speed": 1.5,
+    "payload": 10.0,
+    "endurance": 3120.0,
+    "start": "base"
+   },
+   {
+    "id": "D1",
+    "type": "quadcopter",
+    "mobility": "air",
+    "capabilities": [
+     "camera",
+     "carry"
+    ],
+    "speed": 9.0,
+    "payload": 2.0,
+    "endurance": 1500.0,
+    "start": "base"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "T1",
+    "kind": "sample_pickup",
+    "description": "Collect a soil sample (3 kg) at transformer pad and keep it on board",
+    "location": "transformer pad",
+    "required": [
+     "manipulate",
+     "carry"
+    ],
+    "payload": 3.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T2",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at control room",
+    "location": "control room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 240.0,
+    "deadline": 600.0
+   },
+   {
+    "id": "T3",
+    "kind": "inspect_roof",
+    "description": "Inspect north roof with a camera",
+    "location": "north roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 90.0,
+    "deadline": null
+   },
+   {
+    "id": "T4",
+    "kind": "part_swap",
+    "description": "Replace the filter cartridge at control room",
+    "location": "control room",
+    "required": [
+     "manipulate"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   },
+   {
+    "id": "T5",
+    "kind": "inspect_roof",
+    "description": "Inspect north roof with a camera",
+    "location": "north roof",
+    "required": [
+     "camera"
+    ],
+    "payload": 0.0,
+    "duration": 150.0,
+    "deadline": null
+   }
+  ],
+  "precedence": [],
+  "standby": [],
+  "events": [],
+  "objective": "makespan"
+ },
+ "briefs": {
+  "explicit": "MISSION BRIEF S-010\nUnits: metres, seconds, kilograms. Time starts at t = 0 when every robot leaves its start location.\n\nLocations (x, y, zone):\n- base: (0, 0), outdoor\n- north roof: (-139, 133), roof\n- control room: (-14, -68), indoor\n- transformer pad: (-115, -111), outdoor\n- loading dock: (42, -30), outdoor\n\nRobots:\n- G1 (rover): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 2 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 19 kg), camera. Endurance: 4200 s, including the return to its start.\n- M1 (mobile_manipulator): starts at base. Drives on the road grid (travel distance = |dx| + |dy|) at 1.5 m/s; can reach outdoor and indoor locations, not roofs. Equipment: cargo carrier (max 10 kg), robotic arm, camera. Endurance: 3120 s, including the return to its start.\n- D1 (quadcopter): starts at base. Flies in straight lines at 9 m/s; can reach outdoor and roof locations, not indoor ones. Equipment: camera, cargo carrier (max 2 kg). Endurance: 1500 s, including the return to its start.\n\nTasks:\n- T1: Collect a soil sample (3 kg) at transformer pad and keep it on board. Location: transformer pad. Duration: 150 s. Needs: robotic arm, cargo carrier (payload 3 kg).\n- T2: Replace the filter cartridge at control room. Location: control room. Duration: 240 s. Needs: robotic arm. Deadline: finished by t = 600 s.\n- T3: Inspect north roof with a camera. Location: north roof. Duration: 90 s. Needs: camera.\n- T4: Replace the filter cartridge at control room. Location: control room. Duration: 150 s. Needs: robotic arm.\n- T5: Inspect north roof with a camera. Location: north roof. Duration: 150 s. Needs: camera.\n\nRules:\n1. Every task is done by exactly one robot. A robot does its tasks one at a time, in the order you list them, travelling between task locations.\n2. A robot can only do a task if it has the needed equipment, enough payload capacity, and can reach the task location.\n3. A task that must start after another task waits until that task is finished, even if a different robot does it.\n4. Each robot must be back at its start location before its endurance runs out.\n5. Every task must be finished by t = 1200 s.\n\nObjective: minimise the finish time of the last task (the makespan).",
+  "informal": "Morning! Plan for today's site work:\n\nPositions are in metres from the base at (0, 0). Drones fly straight and can't go indoors; ground robots follow the road grid (so they travel |dx| + |dy|) and can't get onto roofs. Everyone leaves their start spot at time zero.\n\nPlaces: north roof (-139, 133, a rooftop); control room (-14, -68, indoors); transformer pad (-115, -111, outside); loading dock (42, -30, outside).\n\nThe fleet: G1 is a rover parked at base that hauls up to 19 kg at 2 m/s and runs for 70 minutes including the drive back. It has a camera. M1 is our mobile manipulator at base: gripper arm, camera, room for 10 kg, moves at 1.5 m/s and lasts 52 minutes including getting back. D1 is a quadcopter at base with a camera; it flies at 9 m/s, can lift 2 kg, and its battery lasts 25 minutes including the flight home.\n\nJobs:\n(T1) Pick up a soil sample at transformer pad and keep it on board; it weighs 3 kg - that takes 2.5 minutes on site.\n(T2) Swap the filter cartridge at control room - that takes 4 minutes on site and it has to be finished within the first 10 minutes.\n(T3) Get eyes on north roof and check the panels - that takes 1.5 minutes on site.\n(T4) Swap the filter cartridge at control room - that takes 2.5 minutes on site.\n(T5) Get eyes on north roof and check the panels - that takes 2.5 minutes on site.\n\nEverything has to be wrapped up within 20 minutes of the start, and the sooner the last job finishes, the better. Every robot has to make it back to where it started before its battery runs out."
+ }
+}
