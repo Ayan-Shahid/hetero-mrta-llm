@@ -87,3 +87,102 @@ Plan format (for check/finish with an explicit plan):
 
 def brief_message(brief: str) -> str:
     return f"MISSION BRIEF\n-------------\n{brief}"
+
+
+# ============================================================================ Phase 2: gap components
+CAPABILITY_GUIDE = """How to read requirements (apply to every task):
+- "camera": any visual job - look at, inspect, check panels, get eyes on, photograph, document with pictures.
+- "thermal": heat or hot-spot checks, thermal scans.
+- "carry": moving or delivering an item, or keeping something (such as a sample) on board; set the task payload
+  to the item's mass in kg.
+- "manipulate": arm work - tighten a valve, swap or change a filter, pick up a sample. Picking up a sample needs
+  both "manipulate" and "carry".
+Times: convert minutes to seconds (x 60). "Within the first N minutes" is a deadline of N x 60 s from the start.
+A robot that "runs on mains power" has endurance 86400 s. Drones are mobility "air"; rovers and mobile
+manipulators are "ground"; a robot arm bolted in place is "fixed" with speed 0 and payload 0."""
+
+# --- G3: staged extraction ---------------------------------------------------------------
+STAGE_FLEET = f"""You read a mission brief for a team of robots and extract ONLY the map, the fleet and the time horizon.
+Answer with one JSON object and nothing else:
+{{"horizon": <latest finish time for every task, in seconds>,
+  "locations": [{{"name": "<as written>", "x": <number>, "y": <number>, "zone": "outdoor" | "roof" | "indoor"}}],
+  "robots": [{{"id": "<robot id>", "type": "quadcopter" | "rover" | "mobile_manipulator" | "fixed_arm",
+              "mobility": "air" | "ground" | "fixed", "capabilities": [subset of "camera", "thermal", "carry",
+              "manipulate"], "speed": <m/s>, "payload": <kg>, "endurance": <s>, "start": "<location name>"}}]}}
+Include the base at (0, 0) as an outdoor location if robots start there. A location written "indoors" has zone
+"indoor"; "a rooftop" is "roof"; "outside" is "outdoor". Every robot that can lift or haul something has "carry".
+
+{CAPABILITY_GUIDE}"""
+
+STAGE_TASKS = f"""You read a mission brief and extract ONLY the tasks (jobs). The locations and robots were already extracted:
+{{context}}
+Answer with one JSON object and nothing else:
+{{"tasks": [{{"id": "<task id as written, e.g. T1>", "kind": "<short label>", "description": "<short text>",
+            "location": "<one of the location names above>", "required": [capabilities], "payload": <kg or 0>,
+            "duration": <seconds on site>}}]}}
+List every job in the brief exactly once, in order. Do not add deadlines or ordering here.
+
+{CAPABILITY_GUIDE}"""
+
+STAGE_CONSTRAINTS = """You read a mission brief and extract ONLY the timing and ordering rules for these tasks: {task_ids}.
+Answer with one JSON object and nothing else:
+{"deadlines": {"<task id>": <latest finish time in seconds, or null if the task has none>},
+ "precedence": [{"before": "<task id>", "after": "<task id>"}],
+ "standby": [{"robot_type": "<quadcopter | rover | mobile_manipulator | fixed_arm>", "count": <int>}],
+ "horizon": <latest finish time for every task in seconds>}
+Rules of thumb: "has to be finished within the first N minutes" -> deadline N x 60. "Only once the <item> (Tk) has
+arrived" or "only once job Tk is done" -> precedence before Tk, after the task being described. "Keep one
+quadcopter on standby" -> standby. Give every listed task a "deadlines" entry (null when there is none)."""
+
+# --- G2: independent second reading used for the cross-check -------------------------------
+AUDIT_SYSTEM = f"""You are an auditor. Independently of anyone else, translate this mission brief into a formal model.
+Work through the brief line by line; copy every number exactly; convert minutes to seconds.
+
+{SPEC_FORMAT}
+
+{CAPABILITY_GUIDE}"""
+
+# --- Agent, Phase 2: the prompt is assembled from the enabled tools ---------------------------
+AGENT_HEAD = """You are a planning agent for a heterogeneous robot team. You turn a mission brief into a verified task
+allocation by calling tools, one per turn. On every turn reply with one JSON object and nothing else:
+{"thought": "<one or two sentences>", "action": "<tool name>", "args": {...}}
+
+Tools:"""
+
+AGENT_TOOLS = {
+    "draft_model": """- draft_model      args: {}. Reads the brief in three focused passes (fleet and map; tasks; deadlines,
+                   ordering and standby) and returns a draft formal model with any problems found. Call it first.""",
+    "submit_spec": """- submit_spec      args: {"spec": <formal model>}  or  {"base": "draft" | "current", "edits": [<edit>, ...]}.
+                   Stores your formal model and validates it. Edits change single facts without retyping the model:
+                   {"op": "set", "target": "task:T3", "field": "deadline", "value": 1800}
+                   {"op": "set", "target": "robot:D1", "field": "capabilities", "value": ["camera", "carry"]}
+                   {"op": "set", "target": "model", "field": "horizon", "value": 7200}
+                   {"op": "add_precedence", "before": "T1", "after": "T4"}   {"op": "remove_precedence", ...}
+                   {"op": "set_standby", "robot_type": "quadcopter", "count": 1}   {"op": "clear_standby"}""",
+    "solve": """- solve            args: {"method": "auto"} runs the verified solver portfolio (auction, Hungarian, then an exact
+                   MILP within a time budget) on the stored model and returns the best feasible plan.""",
+    "solve_single": """- solve            args: {"method": "milp" | "auction" | "hungarian", "time_limit_s": <number>}. Solves the stored
+                   model with one solver. "milp" is exact but slow on large missions; the others are fast heuristics.""",
+    "check": """- check            args: {} or {"plan": <plan>}. Verifies the latest solution (or the given plan) against the
+                   stored model and lists every violated constraint.""",
+    "ask_human": """- ask_human        args: {"question": "<one precise question naming the task or robot ids>"}. Ask the mission
+                   owner when the brief is ambiguous. At most {max_questions} questions.""",
+    "finish": """- finish           args: {} to submit the latest solution, or {"plan": <plan>}.""",
+}
+
+AGENT_PROCEDURE = {
+    "solver": "Procedure: {first}, fix every problem it reports, solve with \"auto\", {verify}then finish.",
+    "nosolver": ("Procedure: {first}, then write the plan yourself: give every task to a robot that has the "
+                 "equipment, payload and access it needs, order each route, respect deadlines, precedence, standby and "
+                 "endurance, and keep the last finish time low. {verify}Then finish with {{\"plan\": <plan>}}."),
+}
+
+AGENT_TAIL = """Never drop a constraint the brief states. If a step reports a problem, fix it before moving on.
+You have at most {max_steps} tool calls.
+
+Formal model format (for "spec"):
+{spec_fields}
+
+Plan format: {{"standby": ["<robot id>"], "routes": {{"<robot id>": ["<task id>", ...]}}}}
+
+{guide}"""
