@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""End-to-end demo on one scenario: brief -> method -> plan -> checker -> schedule (+ Gantt chart).
+"""Command-line interface: brief -> method -> plan -> checker -> schedule (+ Gantt chart, + trace).
 
-    python scripts/demo.py                                    # agent + MockLLM on M-000, informal brief
-    python scripts/demo.py --method llm-direct --style explicit --llm configs/llm.yaml
-    python scripts/demo.py --scenario data/benchmark/L-001.json --gantt results/gantt_L-001.png
+    python scripts/demo.py                                                 # agent + MockLLM on a benchmark scenario
+    python scripts/demo.py --scenario data/benchmark/M-004.json --llm configs/models/qwen-local.yaml
+    python scripts/demo.py --method agent:no-g2 --style explicit --llm configs/models/gemini-flash.yaml
+    python scripts/demo.py --scenario data/benchmark/L-003.json --gantt results/figures/gantt_L-003.png
+    python scripts/demo.py --scenario data/benchmark/S-007.json --interactive    # you answer ask_human
+
+With --interactive the agent's clarification questions are shown to you and your typed answer is
+passed back (instead of the simulated mission owner used in the experiments).
 """
 
 import argparse
@@ -12,8 +17,11 @@ from pathlib import Path
 
 import _path  # noqa: F401
 from mrta.checker import check
-from mrta.evaluate import CLASSICAL
+from mrta.evaluate import CLASSICAL, LLM, split_method
+from mrta.gaps import MissionOwner
 from mrta.llm import LLM_METHODS, make_client
+from mrta.llm.agent import run_agent
+from mrta.llm.client import load_dotenv
 from mrta.scenarios import generate, render
 from mrta.schema import Scenario
 from mrta.solvers import SOLVERS
@@ -83,18 +91,22 @@ def gantt(scn: Scenario, schedule, title: str, path: Path, standby: list[str] | 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--scenario", default="", help="benchmark JSON (default: generate M-000)")
-    ap.add_argument("--method", default="agent", choices=list(CLASSICAL) + list(LLM_METHODS))
+    ap.add_argument("--scenario", default="data/benchmark/M-004.json", help="benchmark JSON ('' = generate one)")
+    ap.add_argument("--method", default="agent:full", choices=list(CLASSICAL) + list(LLM) + ["agent"])
     ap.add_argument("--style", default="informal", choices=["explicit", "informal"])
-    ap.add_argument("--llm", default="mock", help="mock, mock-oracle, or configs/llm.yaml")
+    ap.add_argument("--llm", default="mock", help="mock, mock-oracle, or a model config such as "
+                                                  "configs/models/qwen-local.yaml")
     ap.add_argument("--gantt", default="", help="save a Gantt chart PNG here")
+    ap.add_argument("--trace", default="", help="save the agent trajectory (JSONL) here")
+    ap.add_argument("--interactive", action="store_true", help="answer the agent's questions yourself")
     args = ap.parse_args()
+    load_dotenv()
 
-    if args.scenario:
+    if args.scenario and Path(args.scenario).exists():
         rec = json.loads(Path(args.scenario).read_text())
         scn, brief = Scenario.model_validate(rec["scenario"]), rec["briefs"][args.style]
     else:
-        scn = generate("M", 0)
+        scn = generate("M", 4, version=2)
         brief = render(scn, args.style)
 
     print(f"=== {scn.id}: {len(scn.robots)} robots, {len(scn.tasks)} tasks ({args.style} brief) ===")
@@ -105,14 +117,29 @@ def main() -> None:
         plan, label, extra = res.plan, args.method, f"status={res.status}, {res.time_s:.2f}s"
     else:
         client = make_client(args.llm)
-        res = LLM_METHODS[args.method](client, scn, brief, args.style)
+        base, preset = split_method(args.method)
+        if base == "agent":
+            if args.interactive:
+                def human(q: str) -> str:
+                    return input(f"\nAgent asks: {q}\nYour answer> ")
+            else:
+                human = MissionOwner(scn)
+            res = run_agent(client, scn, brief, args.style, config=preset, human=human)
+        else:
+            res = LLM_METHODS[base](client, scn, brief, args.style)
         plan, label = res.plan, f"{args.method} [{client.config.name}]"
         extra = (f"status={res.status}, {res.llm_calls} LLM calls, {res.prompt_tokens}+{res.completion_tokens} "
                  f"tokens, {res.time_s:.2f}s")
-        if args.method == "agent" and res.trace:
+        steps = [ev for ev in res.trace if ev.get("type") == "step"]
+        if steps:
             print("\nAgent steps:")
-            for step in res.trace[-1].get("agent_log", []):
-                print(f"  {step['step']}: {step['action']:<12} -> {json.dumps(step['observation'])[:150]}")
+            for ev in steps:
+                print(f"  {ev['step']:>2}: {ev['action']:<12} {ev['thought'][:70]!r}")
+                print(f"      -> {json.dumps(ev['observation'], default=str)[:160]}")
+        if args.trace:
+            Path(args.trace).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.trace).write_text("".join(json.dumps(ev, default=str) + "\n" for ev in res.trace))
+            print(f"\ntrajectory saved to {args.trace}")
         if args.llm.startswith("mock"):
             print("\n(MockLLM is a stand-in for testing the pipeline, not a language model.)")
 

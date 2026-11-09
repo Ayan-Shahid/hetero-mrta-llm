@@ -31,13 +31,16 @@ class MockLLM:
             return LLMResponse(text='{"ok": true}', prompt_tokens=1, completion_tokens=1, latency_s=0.0)
         scn: Scenario = context["scenario"]
         self._calls += 1
-        rng = random.Random(f"{scn.id}|{purpose}|{context.get('style', '')}|{context.get('round', 0)}|{self.rate}")
+        rng = random.Random(f"{scn.id}|{purpose}|{context.get('style', '')}|{context.get('round', 0)}|{self.rate}"
+                            f"|{self.config.seed}")
         if purpose in ("direct", "pefa"):
             body = self._plan(scn, rng, context)
-        elif purpose == "formulate":
+        elif purpose in ("formulate", "crosscheck"):
             body = self._spec(scn, rng)
         elif purpose == "agent":
             body = self._agent_step(scn, rng, context)
+        elif purpose.startswith("stage_"):
+            body = self._stage(scn, rng, purpose)
         else:
             body = {"ok": True}
         text = json.dumps(body)
@@ -90,18 +93,54 @@ class MockLLM:
             spec["standby"] = []
         return spec
 
+    def _stage(self, scn: Scenario, rng: random.Random, purpose: str) -> dict:
+        spec = self._spec(scn, rng)
+        if purpose == "stage_fleet":
+            return {"horizon": spec["horizon"], "locations": spec["locations"], "robots": spec["robots"]}
+        if purpose == "stage_tasks":
+            return {"tasks": [{k: v for k, v in t.items() if k != "deadline"} for t in spec["tasks"]]}
+        return {"deadlines": {t["id"]: t["deadline"] for t in spec["tasks"]}, "precedence": spec["precedence"],
+                "standby": spec["standby"], "horizon": spec["horizon"]}
+
     # ---------------------------------------------------------------- agent
     def _agent_step(self, scn: Scenario, rng: random.Random, context: dict[str, Any]) -> dict:
         state = context["state"]
-        if state.spec is None:
+        cfg = context.get("config")
+        g1 = getattr(cfg, "g1_solvers", True)
+        g2 = getattr(cfg, "g2_check", True)
+        staged = getattr(cfg, "g3_staged", False)
+
+        def step(thought, action, args):
+            return {"thought": thought, "action": action, "args": args}
+
+        if staged and state.draft is None:
+            return step("Draft the model in focused passes.", "draft_model", {})
+        if not state.spec_accepted:
+            if state.crosscheck_status == "review":
+                if rng.random() < 0.7:  # the "model" fixes what the cross-check found
+                    return step("Fix the disagreements.", "submit_spec", {"spec": json.loads(scn.model_dump_json())})
+                return step("Keep my values.", "submit_spec", {"base": "current", "edits": []})
+            if staged and state.spec_rejections == 0:
+                return step("Accept the draft.", "submit_spec", {"base": "draft", "edits": []})
             if state.spec_rejections == 0:
-                spec = self._spec(scn, rng)
-            else:
-                spec = json.loads(scn.model_dump_json())
-            return {"thought": "Write the formal model.", "action": "submit_spec", "args": {"spec": spec}}
-        if state.last_solution is None:
-            method = "milp" if len(state.spec.tasks) <= 12 else "auction"
-            return {"thought": "Solve it.", "action": "solve", "args": {"method": method, "time_limit_s": 30}}
-        if state.last_check is None:
-            return {"thought": "Verify.", "action": "check", "args": {}}
-        return {"thought": "Done.", "action": "finish", "args": {}}
+                return step("Write the formal model.", "submit_spec", {"spec": self._spec(scn, rng)})
+            return step("Rewrite the model.", "submit_spec", {"spec": json.loads(scn.model_dump_json())})
+        if state.last_solution is None or (state.gate_blocks and state.final_plan is None and not g1
+                                           and state.last_check_feasible is False):
+            if g1:
+                method = "auto" if getattr(cfg, "g1_portfolio", True) else (
+                    "milp" if len(state.spec.tasks) <= 12 else "auction")
+                return step("Solve it.", "solve", {"method": method, "time_limit_s": 30})
+            from ..solvers.auction import solve_auction
+
+            res = solve_auction(state.spec)
+            routes = {k: list(v) for k, v in (res.plan.routes if res.plan else {}).items()}
+            if state.last_solution is None and routes and rng.random() < self.rate * 2:
+                rid = rng.choice(sorted(routes))
+                if routes[rid]:
+                    routes[rid] = list(reversed(routes[rid]))  # a careless ordering
+            plan = {"routes": routes, "standby": list(res.plan.standby) if res.plan else []}
+            return step("Write the plan.", "check" if g2 else "finish", {"plan": plan})
+        if g2 and state.last_check_feasible is None:
+            return step("Verify.", "check", {})
+        return step("Done.", "finish", {})

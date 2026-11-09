@@ -18,7 +18,7 @@ from typing import Any
 
 from ..checker import check
 from ..schema import Plan, Scenario
-from .client import ChatClient, LLMResponse, parse_json
+from .client import ChatClient, LLMResponse, QuotaExhausted, parse_json
 from .prompts import DIRECT_SYSTEM, FORMULATE_SYSTEM, PEFA_FEEDBACK, brief_message
 
 EXECUTABILITY = {"unknown_robot", "unknown_task", "duplicate", "missing", "capability", "payload", "unreachable"}
@@ -38,6 +38,7 @@ class MethodResult:
     spec: Scenario | None = None
     error: str | None = None
     trace: list[dict[str, Any]] = field(default_factory=list)
+    extra: dict[str, Any] = field(default_factory=dict)  # method-specific counters (tool calls, cross-check, ...)
 
 
 class Meter:
@@ -53,7 +54,9 @@ class Meter:
         r.prompt_tokens += resp.prompt_tokens
         r.completion_tokens += resp.completion_tokens
         r.llm_latency_s += resp.latency_s
-        r.trace.append({"purpose": purpose, "reply": resp.text[:4000], "cached": resp.cached})
+        r.trace.append({"type": "llm", "purpose": purpose, "reply": resp.text[:4000], "cached": resp.cached,
+                        "prompt_tokens": resp.prompt_tokens, "completion_tokens": resp.completion_tokens,
+                        "latency_s": round(resp.latency_s, 3)})
         return resp
 
 
@@ -129,6 +132,8 @@ def run_direct(client: ChatClient, scn: Scenario, brief: str, style: str, **_: A
     try:
         resp = meter.chat(messages, purpose="direct", context={"scenario": scn, "style": style})
         out.plan, out.status = parse_plan(resp.text, scn), "ok"
+    except QuotaExhausted:
+        raise
     except Exception as err:  # noqa: BLE001 - every failure is a result, not a crash
         out.status, out.error = "parse_error", str(err)[:300]
     out.iterations = 1
@@ -152,6 +157,8 @@ def run_pefa(client: ChatClient, scn: Scenario, brief: str, style: str, max_roun
                "failures": [(f[0], f[1]) for f in failures]}
         try:
             resp = meter.chat(messages, purpose="pefa", context=ctx)
+        except QuotaExhausted:
+            raise
         except Exception as err:  # noqa: BLE001
             out.status, out.error = "error", str(err)[:300]
             break
@@ -187,6 +194,8 @@ def run_formulate(client: ChatClient, scn: Scenario, brief: str, style: str, sol
     try:
         resp = meter.chat(messages, purpose="formulate", context={"scenario": scn, "style": style})
         spec = Scenario.model_validate(clean_spec(parse_json(resp.text)))
+    except QuotaExhausted:
+        raise
     except Exception as err:  # noqa: BLE001
         out.status, out.error = "spec_invalid", str(err)[:300]
         out.time_s = time.perf_counter() - t0
