@@ -9,6 +9,7 @@
     {"op": "set_standby", "robot_type": "quadcopter", "count": 1}
     {"op": "clear_standby"}
     {"op": "remove", "target": "task:T9"}
+    {"op": "add", "target": "robot", "value": {"id": "D3", ...}}      (also add_robot / add_task / add_location)
 
 Edits work on the plain-dict form of a model and return (new_dict, problems).
 """
@@ -44,8 +45,23 @@ def apply_edits(model: dict[str, Any], edits: list[dict[str, Any]]) -> tuple[dic
             problems.append(f"edit {n}: not an object")
             continue
         op = str(ed.get("op", "set")).lower()
+        if op.startswith("add_") and op[4:] in _SECTIONS:  # add_robot, add_task, add_location
+            ed = {**ed, "target": op[4:]}
+            op = "add"
         try:
-            if op == "set":
+            if op == "add":
+                kind = str(ed.get("target", "")).partition(":")[0].strip().lower()
+                value = ed.get("value") if isinstance(ed.get("value"), dict) else \
+                    {k: v for k, v in ed.items() if k not in ("op", "target")}
+                if kind not in _SECTIONS:
+                    problems.append(f"edit {n}: add needs target robot, task or location")
+                    continue
+                sec, key = _SECTIONS[kind]
+                if _find(out, f"{kind}:{value.get(key, '')}") is not None:
+                    problems.append(f"edit {n}: {kind} {value.get(key)} already exists; use set")
+                    continue
+                out.setdefault(sec, []).append(dict(value))
+            elif op == "set":
                 target, fld = str(ed.get("target", "")), str(ed.get("field", ""))
                 if target.strip().lower() == "model":
                     out[fld] = ed.get("value")

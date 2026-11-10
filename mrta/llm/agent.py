@@ -31,7 +31,7 @@ from ..gaps.g3_language import staged_extraction
 from ..schema import Plan, Scenario
 from .client import ChatClient, QuotaExhausted, parse_json
 from .edits import apply_edits
-from .methods import Meter, MethodResult, clean_spec
+from .methods import Meter, MethodResult, clean_spec, explain_validation
 from .prompts import (AGENT_HEAD, AGENT_PROCEDURE, AGENT_TAIL, AGENT_TOOLS, AUDIT_SYSTEM, CAPABILITY_GUIDE,
                       SPEC_FIELDS, brief_message)
 
@@ -168,11 +168,23 @@ class Agent:
             return {"ok": False, "problems": edit_problems}
         try:
             cleaned = clean_spec(raw)
+        except Exception as err:  # noqa: BLE001
+            st.spec_rejections += 1
+            return {"ok": False, "problems": edit_problems + [str(err)[:600]]}
+        try:
             spec = Scenario.model_validate(cleaned)
         except Exception as err:  # noqa: BLE001
             st.spec_rejections += 1
-            return {"ok": False, "problems": edit_problems + [str(err)[:1500]]}
+            # Keep the invalid model so the agent can repair it with edits on base "current"
+            # (the pilot showed agents looping on "there is no current model yet").
+            st.spec_dict = cleaned
+            return {"ok": False, "problems": edit_problems + explain_validation(err, cleaned),
+                    "hint": "fix only these items with edits on base \"current\"; capabilities must be "
+                            "camera, thermal, carry or manipulate"}
         problems = sanity_problems(spec)
+        if problems and st.spec_rejections >= 2:
+            problems.append("hint: if no robot can do a task, re-read that robot's line in the brief for its "
+                            "equipment and how much it can carry, and fix it with a set edit on robot:<id>")
         if problems:
             st.spec_rejections += 1
             st.spec_dict = cleaned  # keep it so edits on base "current" can fix the problems

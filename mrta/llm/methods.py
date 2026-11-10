@@ -86,8 +86,60 @@ def parse_plan(text: str, scn: Scenario) -> Plan:
     return Plan(routes=routes, standby=standby, meta={"notes": str(data.get("notes", ""))[:500]})
 
 
+# Words small models use instead of the four capability names (seen in the Phase 2 pilot:
+# "thermal camera", "robotic arm", "cargo carrier"). Mapped before validation, for every method.
+_CAP_WORDS = [("thermal", "thermal"), ("heat", "thermal"), ("infrared", "thermal"),
+              ("manipul", "manipulate"), ("arm", "manipulate"), ("gripper", "manipulate"),
+              ("carr", "carry"), ("cargo", "carry"), ("payload", "carry"), ("haul", "carry"), ("lift", "carry"),
+              ("deliver", "carry"), ("camera", "camera"), ("photo", "camera"), ("visual", "camera"),
+              ("inspect", "camera"), ("vision", "camera")]
+_MOBILITY = {"aerial": "air", "flying": "air", "fly": "air", "drone": "air", "wheeled": "ground",
+             "legged": "ground", "road": "ground", "static": "fixed", "stationary": "fixed", "none": "fixed"}
+_ZONE = {"rooftop": "roof", "outside": "outdoor", "outdoors": "outdoor", "indoors": "indoor", "inside": "indoor"}
+_TYPE = {"drone": "quadcopter", "uav": "quadcopter", "ground_robot": "rover", "ugv": "rover",
+         "mobile manipulator": "mobile_manipulator", "manipulator": "mobile_manipulator",
+         "arm": "fixed_arm", "robot_arm": "fixed_arm", "robot arm": "fixed_arm", "fixed arm": "fixed_arm"}
+
+
+def canonical_capability(word: Any) -> str | None:
+    w = str(word).strip().lower()
+    if w in ("camera", "thermal", "carry", "manipulate"):
+        return w
+    for key, cap in _CAP_WORDS:
+        if key in w:
+            return cap
+    return None
+
+
+def _caps(values: Any) -> list[str]:
+    if isinstance(values, str):
+        values = [values]
+    out: list[str] = []
+    for v in values or []:
+        c = canonical_capability(v)
+        if c and c not in out:
+            out.append(c)
+    return out
+
+
+def _num(v: Any) -> Any:
+    if isinstance(v, str):
+        try:
+            return float(v.strip().split()[0])
+        except (ValueError, IndexError):
+            return v
+    return v
+
+
 def clean_spec(data: dict[str, Any]) -> dict[str, Any]:
-    """Keep only fields the formal model knows; drop extras an LLM may add."""
+    """Normalise an LLM-written model before validation.
+
+    Keeps only fields the formal model knows, maps synonyms to the canonical names
+    (capabilities, mobility, robot types, zones), turns numeric strings into numbers, adds the
+    base at (0, 0) when robots start there but the model forgot to list it (every brief states
+    that position), and drops deadlines after the horizon (they constrain nothing).
+    Facts are never invented: only names are normalised.
+    """
     keep = {
         "top": {"id", "horizon", "locations", "robots", "tasks", "precedence", "standby"},
         "locations": {"name", "x", "y", "zone"},
@@ -100,22 +152,69 @@ def clean_spec(data: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("model must be a JSON object")
     out = {k: v for k, v in data.items() if k in keep["top"]}
     out.setdefault("id", "llm-spec")
+    out["horizon"] = _num(out.get("horizon"))
     for key in ("locations", "robots", "tasks", "precedence", "standby"):
         items = out.get(key) or []
         out[key] = [{k: v for k, v in it.items() if k in keep[key]} for it in items if isinstance(it, dict)]
     for t in out["tasks"]:
         t.setdefault("kind", "task")
+        t["required"] = _caps(t.get("required"))
+        for f in ("payload", "duration", "deadline"):
+            t[f] = _num(t.get(f))
         if t.get("payload") is None:
             t["payload"] = 0
+        if isinstance(t.get("deadline"), (int, float)) and isinstance(out.get("horizon"), (int, float)) \
+                and t["deadline"] > out["horizon"]:
+            t["deadline"] = None
     for r in out["robots"]:
-        caps = r.get("capabilities") or []
-        r["capabilities"] = [str(c).lower() for c in caps]
+        r["capabilities"] = _caps(r.get("capabilities"))
         if isinstance(r.get("mobility"), str):
-            r["mobility"] = r["mobility"].lower()
+            m = r["mobility"].strip().lower()
+            r["mobility"] = _MOBILITY.get(m, m)
+        if isinstance(r.get("type"), str):
+            ty = r["type"].strip().lower()
+            r["type"] = _TYPE.get(ty, ty.replace(" ", "_"))
+        for f in ("speed", "payload", "endurance"):
+            r[f] = _num(r.get(f))
     for loc in out["locations"]:
         if isinstance(loc.get("zone"), str):
-            loc["zone"] = loc["zone"].lower()
+            z = loc["zone"].strip().lower()
+            loc["zone"] = _ZONE.get(z, z)
+        for f in ("x", "y"):
+            loc[f] = _num(loc.get(f))
+    for s in out["standby"]:
+        if isinstance(s.get("robot_type"), str):
+            ty = s["robot_type"].strip().lower()
+            s["robot_type"] = _TYPE.get(ty, ty.replace(" ", "_"))
+    names = {str(loc.get("name", "")).strip().lower() for loc in out["locations"]}
+    if "base" not in names and any(str(r.get("start", "")).strip().lower() == "base" for r in out["robots"]):
+        out["locations"].insert(0, {"name": "base", "x": 0.0, "y": 0.0, "zone": "outdoor"})
     return out
+
+
+def explain_validation(err: Exception, model: dict[str, Any] | None = None, limit: int = 8) -> list[str]:
+    """Short, actionable lines instead of a raw pydantic dump (the pilot showed the model
+    repeating the same mistake when it got the full error text)."""
+    errors = getattr(err, "errors", None)
+    if not callable(errors):
+        return [str(err)[:600]]
+    lines = []
+    for e in errors()[:limit]:
+        loc = list(e.get("loc", ()))
+        where = ".".join(str(x) for x in loc)
+        if model and len(loc) >= 2 and loc[0] in ("tasks", "robots", "locations") and isinstance(loc[1], int):
+            items = model.get(loc[0]) or []
+            if loc[1] < len(items):
+                ident = items[loc[1]].get("id") or items[loc[1]].get("name")
+                where = f"{loc[0][:-1]} {ident}" + ("." + ".".join(str(x) for x in loc[2:]) if loc[2:] else "")
+        msg = e.get("msg", "")
+        if e.get("type") == "literal_error":
+            msg = f"{e.get('input')!r} is not allowed; {msg[0].lower() + msg[1:]}"
+        lines.append(f"{where}: {msg}")
+    extra = len(errors()) - limit
+    if extra > 0:
+        lines.append(f"... and {extra} more of the same kind")
+    return lines
 
 
 def executability_failures(scn: Scenario, plan: Plan) -> list[tuple[str | None, str | None, str]]:

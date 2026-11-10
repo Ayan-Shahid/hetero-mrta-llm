@@ -109,8 +109,10 @@ Answer with one JSON object and nothing else:
   "robots": [{{"id": "<robot id>", "type": "quadcopter" | "rover" | "mobile_manipulator" | "fixed_arm",
               "mobility": "air" | "ground" | "fixed", "capabilities": [subset of "camera", "thermal", "carry",
               "manipulate"], "speed": <m/s>, "payload": <kg>, "endurance": <s>, "start": "<location name>"}}]}}
-Include the base at (0, 0) as an outdoor location if robots start there. A location written "indoors" has zone
-"indoor"; "a rooftop" is "roof"; "outside" is "outdoor". Every robot that can lift or haul something has "carry".
+Always include {{"name": "base", "x": 0, "y": 0, "zone": "outdoor"}} when robots start at the base. A location written "indoors" has zone
+"indoor"; "a rooftop" is "roof"; "outside" is "outdoor". Every robot that can carry, lift or haul something has
+"carry" and its payload in kg ("can carry 2 kg" -> "carry", payload 2); a robot that carries nothing has payload 0.
+Capability names are exactly "camera", "thermal", "carry", "manipulate" (not "thermal camera" or "robotic arm").
 
 {CAPABILITY_GUIDE}"""
 
@@ -130,6 +132,9 @@ Answer with one JSON object and nothing else:
  "precedence": [{"before": "<task id>", "after": "<task id>"}],
  "standby": [{"robot_type": "<quadcopter | rover | mobile_manipulator | fixed_arm>", "count": <int>}],
  "horizon": <latest finish time for every task in seconds>}
+Most tasks have NO deadline: give a number only when the brief states one for that task ("Deadline: finished by
+t = 300 s", "has to be finished within the first 5 minutes"); every other task gets null. The overall finish
+time of the mission is the horizon, not a task deadline.
 Rules of thumb: "has to be finished within the first N minutes" -> deadline N x 60. "Only once the <item> (Tk) has
 arrived" or "only once job Tk is done" -> precedence before Tk, after the task being described. "Keep one
 quadcopter on standby" -> standby. Give every listed task a "deadlines" entry (null when there is none)."""
