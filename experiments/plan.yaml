@@ -1,0 +1,33 @@
+# Experiments E1-E6 (Phase 2 brief, section 4.2). experiments/run.py executes E1, E2, E3 and E5;
+# E4 and E6 are computed by experiments/analyze.py from the saved runs.
+# Every LLM run is judged by the same checker against the ground truth of the TEST split.
+# The dev split (10 scenarios) is used only for smoke tests and prompt debugging.
+
+defaults:
+  split: test
+  styles: [explicit, informal]
+  tiers: [S, M, L]
+  milp_time_limit: 60
+
+experiments:
+  E1:
+    title: Baselines (non-agentic)
+    classical: [milp, hungarian, auction]   # ground-truth model; deterministic, run once
+    methods: [llm-direct, llm-formulate]    # one LLM call to a plan / to a model solved by MILP
+    repeats: 3
+  E2:
+    title: Base paper approach (COHERENT PEFA loop, reproduced on our benchmark)
+    methods: [llm-pefa]
+    repeats: 3
+  E3:
+    title: Proposed agent (all gap components on)
+    methods: ["agent:full"]
+    repeats: 3
+  E5:
+    title: Ablations, one gap component removed at a time
+    methods: ["agent:no-g1", "agent:no-g2", "agent:no-g3"]
+    repeats: 1
+  E5b:
+    title: Finer ablations (optional, if time allows) - one half of a component removed
+    methods: ["agent:no-g2-crosscheck", "agent:no-g3-clarify"]
+    repeats: 1

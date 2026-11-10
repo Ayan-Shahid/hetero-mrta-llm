@@ -7,3 +7,5 @@ openai>=1.40      # client for every OpenAI-compatible provider (OpenAI, Gemini,
 pyyaml>=6.0
 matplotlib>=3.7
 pytest>=8
+pandas>=2.0       # experiment analysis and tables
+tabulate>=0.9     # Markdown tables (pandas.DataFrame.to_markdown)
