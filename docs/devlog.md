@@ -90,17 +90,110 @@ the pipeline's code paths; they say nothing about LLM quality.
 
 ---
 
-## To be added from the real-model runs
+## Real-model iterations (Qwen2.5-7B, local, via Ollama)
 
-The brief asks for iterations driven by **observed failures of the system**. Add an entry for each change
-you make after looking at the pilot or the dev-split runs, in the format above. Typical candidates to
-look for in `logs/<model>/`:
+The pilot entries compare three saved pilots on the **dev split**: 6 scenarios × 2 brief styles = 12 runs
+per method, repeat 0. The files are `results/runs/pilot_before_fix/`, `pilot_after_fix1/` and
+`pilot_after_fix2/`. Every number below is the share of those 12 runs. "No plan" means the run ended
+without a plan (status other than `ok`). Model F1 is the extraction F1 against the ground-truth model.
+With 12 runs per method these pilot numbers are indicative only. The test-split sweep is the real measurement.
 
-- the model replies with prose or several JSON objects (count: `parse_failures`);
-- it never calls `draft_model` first, or retypes the whole model instead of using edits;
-- the cross-check produces many false disagreements (`disagreements_first` high, but `spec_f1_first`
-  already 1.0);
-- a stage of the staged extraction systematically misses one fact type (`recall_*` columns).
+### 2026-11-10 · Pilot 1: extracted models rejected, agent runs out of steps
+- **Observed.** In the first real-model pilot (`results/runs/pilot_before_fix/`), the full agent made a
+  feasible plan on 2/12 runs (16.7%) and ended without a plan on 9/12 (75%). Mean model F1 was 0.873.
+  The trajectories in `logs/pilot/qwen2.5-7b/` show `submit_spec` being rejected again and again:
+  - capability names written as synonyms ("thermal camera", "robotic arm", "cargo carrier");
+  - a missing `base` location even though the robots start there;
+  - numbers given as strings, and zone or type synonyms.
 
-For each one, record the measured value before the change (on the **dev** split), the change, and the
-value after. Never tune on the test split.
+  The validation errors were long, so the model could not see which fact to fix. It retyped the whole
+  model and used up the 12-step budget.
+- **Change** (commit `5ddc308`, `mrta/llm/methods.py::clean_spec`, `mrta/llm/edits.py`,
+  `mrta/llm/prompts.py`):
+  - normalise capability, zone and type synonyms, and add the missing base;
+  - keep an invalid model editable, so the agent can fix one fact with an edit instead of resubmitting;
+  - shorten validation errors;
+  - make the deadline and payload instructions in the prompt clearer.
+
+  Regression tests: `tests/test_pilot_fixes.py`.
+- **Effect** (`results/runs/pilot_after_fix1/`):
+
+  | Full agent, dev pilot | Before | After |
+  |---|---|---|
+  | Feasible | 2/12 | 3/12 |
+  | No plan | 75% | 67% |
+  | Model F1 | 0.873 | 0.906 |
+
+  The ablations improved in the same direction. Without G1, no-plan runs fell from 58% to 17%. Without
+  G3, feasible runs rose from 2/12 to 4/12. The baselines that do not use the agent's tools did not
+  change (LLM-direct 0/12, PEFA 1/12).
+
+### 2026-11-11 · Pilot 2: invented timing rules make models unsatisfiable
+- **Observed.** After fix 1, most of the remaining no-plan runs had a model that was valid but
+  unsatisfiable. The model had added deadlines, precedence links or standby robots that the brief does
+  not state. A typical case: a standby rule that keeps every robot able to do a task in reserve. The
+  solver portfolio then reported "infeasible" and the agent kept editing other facts.
+- **Change** (commit `367e790`):
+  - `mrta/gaps/g3_language.py`: drop deadlines, precedence and standby facts the brief does not state.
+  - `mrta/gaps/g2_verify.py`: flag a standby rule that blocks every capable robot.
+  - Agent: when no robot can do a task, the error quotes the robot lines from the brief.
+
+  Regression tests: added to `tests/test_pilot_fixes.py`.
+- **Effect** (`results/runs/pilot_after_fix2/`):
+
+  | Full agent, dev pilot | After fix 1 | After fix 2 |
+  |---|---|---|
+  | Feasible | 3/12 | 8/12 (66.7%) |
+  | No plan | 67% | 42% |
+  | Model F1 | 0.906 | 0.936 |
+
+  Without G2, feasible runs rose from 1/12 to 5/12. Fix 2 was the last change before the test-split
+  sweep, and the code has not changed since.
+
+### 2026-11-11 · Test-split sweep, stages 1 and 2: what the frozen system gets wrong
+These are **observations on the test split**. We report them but made no change from them, because
+changing the system based on test results would be tuning on the test set (brief, section 4.1). The
+proposed fixes are future work and need to be developed on the dev split.
+
+Source: `results/runs/qwen2.5-7b/`, repeat 0, 80 runs per configuration. Tables come from
+`python experiments/analyze.py --primary qwen2.5-7b --repeats 1`, and failure categories from
+`python experiments/failures.py --model qwen2.5-7b --repeats 1`.
+
+- **Step-budget exhaustion is the main failure.** The full agent made a feasible plan on 26/80 runs
+  (32.5%). It ended without a plan on 38/80 (47.5%), all of them category F1 in
+  `results/failures/qwen2.5-7b/categories.md`. Every one of the 38 used all 12 steps.
+  - These runs averaged 5.9 rejected `submit_spec` calls, against 2.7 in runs that produced a plan.
+  - 25 of the 38 had cross-check disagreements, with a mean of 14.0 at first.
+  - 27 of the 38 runs were on informal briefs.
+
+  Budget fallback does not help in these runs, because the agent never held a model that was both valid
+  and satisfiable. A likely fix (not applied): a larger step budget for L scenarios, and capping how many
+  disagreements the agent must review.
+- **The G2 cross-check costs more than it gains with a 7B model.**
+  - Removing G2 raised feasible plans from 32.5% to 47.5% (McNemar p = 0.023, `E5_ablation.md`) and
+    cut tokens per run from 60.8k to 35.8k.
+  - The cross-check found disagreements on 64/80 runs, 11.4 per run on average. After the review, the
+    model F1 went from 0.915 to 0.900: it improved on 17 runs and worsened on 33 (`E4_gap2_crosscheck.md`).
+  - The second reading is made by the same small model, so many of its "disagreements" are its own
+    misreadings. The agent then "corrects" facts that were right.
+  - We report G2 as **not addressed** in the gap-resolution table.
+- **G1 is what makes the agent work.** Without the solver portfolio, the agent writes the plan itself.
+  Feasible plans fall to 2.5% (−30.0 pp, p = 8.1e-7), close to LLM-direct (1.2%) and PEFA (3.8%).
+- **Informal briefs remain hard (G3).** The full agent made feasible plans on 52.5% of explicit briefs
+  and 12.5% of informal ones (−40 pp, p = 0.0004). Model F1 fell from 0.953 to 0.838.
+  - Without G3 (single-pass extraction, no questions), informal F1 is 0.775, so the staged extraction
+    improves extraction.
+  - The difference in feasible plans (−7.5 pp overall) is not significant (p = 0.29).
+- **Formatting is not the problem.** There were 0 unparsable replies across all agent runs (E6), so the
+  format reminders and action-name mapping added before the pilots were not needed for this model.
+
+### 2026-11-11 · Analysis snapshot while the sweep is still running
+- **Observed.** At the Phase 2 submission, the sweep (`experiments/sweep.sh`) had finished stage 1
+  (E1–E3, repeat 1) and stage 2 (E5). Stage 3 (repeats 2 and 3) was still running. The analysis takes
+  mean ± std over the repeats it finds, so a partly finished repeat 2 would mix a full repeat with a
+  small subset of scenarios.
+- **Change.** `experiments/analyze.py` and `experiments/failures.py` take `--repeats N` and use only
+  repeats 0 to N−1. The submitted tables use `--repeats 1`.
+- **Effect.** Every reported number is from one complete repeat on the 40 test scenarios. For that
+  reason, the tables show no std. When the sweep finishes, re-run both scripts without `--repeats` to get
+  mean ± std over 3 repeats.
