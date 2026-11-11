@@ -1,0 +1,17 @@
+**Failure categories on the test split (qwen2.5-7b)**
+
+| Method        |   Runs |   Failures |   Failure % |   F1 |   F2 |   F3 |   F4 |   F5 |   F6 |   F7 |   F8 |
+|:--------------|-------:|-----------:|------------:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|
+| agent:full    |     80 |         54 |        67.5 |   38 |    3 |    4 |    9 |    0 |    0 |    0 |    0 |
+| llm-pefa      |     80 |         77 |        96.2 |    0 |   25 |    8 |   43 |    0 |    0 |    1 |    0 |
+| llm-formulate |     80 |         78 |        97.5 |   74 |    0 |    2 |    2 |    0 |    0 |    0 |    0 |
+| llm-direct    |     80 |         79 |        98.8 |    0 |   24 |    4 |   51 |    0 |    0 |    0 |    0 |
+
+- **F1** protocol / format (no usable plan)
+- **F2** timing misread (deadline / horizon)
+- **F3** precedence misread
+- **F4** requirement or capability misread
+- **F5** standby rule missed
+- **F6** endurance misread
+- **F7** incomplete plan (missing / duplicate task)
+- **F8** planning error with a correct model

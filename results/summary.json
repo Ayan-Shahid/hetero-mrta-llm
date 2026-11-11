@@ -1,7 +1,9 @@
 {
  "split": "test",
- "n_runs": 120,
- "models": [],
+ "n_runs": 680,
+ "models": [
+  "qwen2.5-7b"
+ ],
  "classical": {
   "milp": {
    "S": {
@@ -159,6 +161,391 @@
      "gap_mean": 0.14680284474681501
     }
    }
+  },
+  "qwen2.5-7b": {
+   "llm-direct": {
+    "S": {
+     "feasible_mean": 0.03125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.03125,
+     "gap_mean": 0.0
+    },
+    "M": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "L": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "all": {
+     "feasible_mean": 0.0125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.0125,
+     "gap_mean": 0.0
+    }
+   },
+   "llm-formulate": {
+    "S": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "M": {
+     "feasible_mean": 0.03125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0,
+     "gap_mean": 0.0897588593720332
+    },
+    "L": {
+     "feasible_mean": 0.0625,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0,
+     "gap_mean": 0.5269565217391303
+    },
+    "all": {
+     "feasible_mean": 0.025,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.0,
+     "gap_mean": 0.30835769055558176
+    }
+   },
+   "llm-pefa": {
+    "S": {
+     "feasible_mean": 0.09375,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0625,
+     "gap_mean": 0.17755269749804456
+    },
+    "M": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "L": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "all": {
+     "feasible_mean": 0.0375,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.025,
+     "gap_mean": 0.17755269749804456
+    }
+   },
+   "agent:full": {
+    "S": {
+     "feasible_mean": 0.375,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.34375,
+     "gap_mean": 0.010014703627239939
+    },
+    "M": {
+     "feasible_mean": 0.375,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.28125,
+     "gap_mean": 0.08153382046651698
+    },
+    "L": {
+     "feasible_mean": 0.125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0625,
+     "gap_mean": 0.11363636363636363
+    },
+    "all": {
+     "feasible_mean": 0.325,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.2625,
+     "gap_mean": 0.050994423707608094
+    }
+   },
+   "agent:no-g1": {
+    "S": {
+     "feasible_mean": 0.0625,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0625,
+     "gap_mean": 0.01173469387755102
+    },
+    "M": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "L": {
+     "feasible_mean": 0.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0,
+     "gap_mean": null
+    },
+    "all": {
+     "feasible_mean": 0.025,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.025,
+     "gap_mean": 0.01173469387755102
+    }
+   },
+   "agent:no-g2": {
+    "S": {
+     "feasible_mean": 0.6875,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.59375,
+     "gap_mean": 0.012190823186605582
+    },
+    "M": {
+     "feasible_mean": 0.34375,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.25,
+     "gap_mean": 0.10936639013997834
+    },
+    "L": {
+     "feasible_mean": 0.3125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.25,
+     "gap_mean": 0.025294819392564494
+    },
+    "all": {
+     "feasible_mean": 0.475,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.3875,
+     "gap_mean": 0.04204480259494492
+    }
+   },
+   "agent:no-g3": {
+    "S": {
+     "feasible_mean": 0.28125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.21875,
+     "gap_mean": 0.065758695608994
+    },
+    "M": {
+     "feasible_mean": 0.3125,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 32,
+     "success5_mean": 0.15625,
+     "gap_mean": 0.0787057889012549
+    },
+    "L": {
+     "feasible_mean": 0.0625,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0625,
+     "gap_mean": 0.04589990808284273
+    },
+    "all": {
+     "feasible_mean": 0.25,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 80,
+     "success5_mean": 0.1625,
+     "gap_mean": 0.07123930287881688
+    }
+   }
   }
+ },
+ "by_style": {
+  "qwen2.5-7b": {
+   "llm-direct": {
+    "drop": -0.025,
+    "p": 1.0,
+    "explicit_only": 0,
+    "informal_only": 1
+   },
+   "llm-formulate": {
+    "drop": 0.05,
+    "p": 0.5,
+    "explicit_only": 2,
+    "informal_only": 0
+   },
+   "llm-pefa": {
+    "drop": -0.025,
+    "p": 1.0,
+    "explicit_only": 0,
+    "informal_only": 1
+   },
+   "agent:full": {
+    "drop": 0.4,
+    "p": 0.0004024505615234375,
+    "explicit_only": 18,
+    "informal_only": 2
+   },
+   "agent:no-g1": {
+    "drop": -0.05,
+    "p": 0.5,
+    "explicit_only": 0,
+    "informal_only": 2
+   },
+   "agent:no-g2": {
+    "drop": 0.44999999999999996,
+    "p": 0.0002771615982055664,
+    "explicit_only": 21,
+    "informal_only": 3
+   },
+   "agent:no-g3": {
+    "drop": 0.19999999999999998,
+    "p": 0.076812744140625,
+    "explicit_only": 12,
+    "informal_only": 4
+   }
+  }
+ },
+ "gap1_tests": {
+  "qwen2.5-7b": {
+   "llm-pefa": {
+    "pairs": 80,
+    "feasible_delta": 0.2875,
+    "ci": [
+     0.175,
+     0.4125
+    ],
+    "mcnemar_p": 1.5236437320709229e-05,
+    "wilcoxon_p": 1.0
+   },
+   "llm-direct": {
+    "pairs": 80,
+    "feasible_delta": 0.3125,
+    "ci": [
+     0.2125,
+     0.425
+    ],
+    "mcnemar_p": 4.172325134277344e-07,
+    "wilcoxon_p": 1.0
+   },
+   "llm-formulate": {
+    "pairs": 80,
+    "feasible_delta": 0.3,
+    "ci": [
+     0.2,
+     0.4125
+    ],
+    "mcnemar_p": 8.046627044677734e-07,
+    "wilcoxon_p": 1.0
+   }
+  }
+ },
+ "gap2_crosscheck": {
+  "qwen2.5-7b": {
+   "runs": 80,
+   "with_disagreements": 64,
+   "f1_first": 0.9149363636363637,
+   "f1_final": 0.9003114285714285,
+   "improved": 17,
+   "worsened": 33
+  }
+ },
+ "ablation": {
+  "qwen2.5-7b": {
+   "agent:no-g1": {
+    "feasible": 0.025,
+    "full": 0.325,
+    "p": 8.046627044677734e-07
+   },
+   "agent:no-g2": {
+    "feasible": 0.475,
+    "full": 0.325,
+    "p": 0.022655844688415527
+   },
+   "agent:no-g3": {
+    "feasible": 0.25,
+    "full": 0.325,
+    "p": 0.28627872467041016
+   }
+  }
+ },
+ "gap3_drop_test": {
+  "qwen2.5-7b": {
+   "agent_drop": 0.4,
+   "pefa_drop": -0.025,
+   "wilcoxon_p": 0.0004059061236362975
+  }
+ },
+ "gap_resolution": {
+  "model": "qwen2.5-7b",
+  "rows": [
+   {
+    "Gap": "Gap 1: no comparison with optimal / classical allocation",
+    "Method / component": "G1 verified solver portfolio (mrta/gaps/g1_portfolio.py)",
+    "Metric": "Feasible plans; success@5 (feasible and \u22645% above optimum)",
+    "Base paper result": "3.8%; 2.5%",
+    "Our result": "32.5%; 26.2%",
+    "Addressed?": "Partially"
+   },
+   {
+    "Gap": "Gap 2: plans and extracted models are not formally verified",
+    "Method / component": "G2 cross-check + plan gate (mrta/gaps/g2_verify.py)",
+    "Metric": "Infeasible-plan rate (ground truth)",
+    "Base paper result": "96.2%",
+    "Our result": "67.5% (without G2: 52.5%)",
+    "Addressed?": "Not"
+   },
+   {
+    "Gap": "Gap 3: informal language barely tested",
+    "Method / component": "G3 staged extraction + clarification (mrta/gaps/g3_language.py)",
+    "Metric": "Drop in feasible plans, explicit \u2192 informal brief",
+    "Base paper result": "-2.5 pp",
+    "Our result": "40.0 pp (McNemar p = 0.000402)",
+    "Addressed?": "Not"
+   }
+  ]
  }
 }

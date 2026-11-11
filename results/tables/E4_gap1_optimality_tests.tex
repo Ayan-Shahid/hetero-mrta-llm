@@ -1,0 +1,11 @@
+\begin{tabular}{llllllllll}
+\toprule
+Model & Comparison & Pairs & Feasible $\Delta$ (pp) & 95\% CI (pp) & Agent-only / other-only & McNemar p & Gap pairs & Median gap $\Delta$ (pp) & Wilcoxon p \\
+\midrule
+qwen2.5-7b & Agent (full) vs COHERENT-style PEFA & 80 & 28.7 & [17.5, 41.2] & 26 / 3 & 1.52e-05 & 0 & - & 1 \\
+qwen2.5-7b & Agent (full) vs LLM-direct & 80 & 31.2 & [21.2, 42.5] & 26 / 1 & 4.17e-07 & 0 & - & 1 \\
+qwen2.5-7b & Agent (full) vs LLM-formulate & 80 & 30.0 & [20.0, 41.2] & 25 / 1 & 8.05e-07 & 1 & -9.0 & 1 \\
+classical & Iterated Hungarian vs reference & 40 & -25.0 & - & - & - & 30 & 8.0 & - \\
+classical & SSI auction vs reference & 40 & -7.5 & - & - & - & 37 & 8.5 & - \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,8 @@
+Model,Method,Runs,LLM calls,Prompt tokens,Completion tokens,LLM latency s,Solver time s,Plan time s (median),Tool calls,Format failures/run,No-plan or error %,Cost USD/run
+qwen2.5-7b,LLM-direct,80,1.0,1073,129,6.1,0.00,6.1,-,0.00,0.0,0.0000
+qwen2.5-7b,LLM-formulate,80,1.0,1340,1223,43.1,0.79,45.4,-,0.00,28.7,0.0000
+qwen2.5-7b,COHERENT-style PEFA,80,4.8,7484,595,28.1,0.00,21.1,-,0.00,0.0,0.0000
+qwen2.5-7b,Agent (full),80,14.1,56965,3834,155.2,1.38,136.2,10.2,0.00,47.5,0.0000
+qwen2.5-7b,Agent without G1 (no solvers),80,13.2,51874,3836,155.8,0.00,47.3,9.4,0.00,35.0,0.0000
+qwen2.5-7b,Agent without G2 (no verification),80,9.9,33671,2122,88.3,2.38,26.1,6.9,0.00,25.0,0.0000
+qwen2.5-7b,"Agent without G3 (single-pass model, no questions)",80,10.9,49730,3392,133.9,0.67,85.7,10.2,0.00,55.0,0.0000

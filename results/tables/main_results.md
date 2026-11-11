@@ -1,16 +1,44 @@
 **Main results on the test split (mean ± std over repeats)**
 
-| Model     | Method             | Tier   |   Runs |   Repeats |   Feasible % |   Success@5 % |   Mean gap % |   Median gap % |   Plan time s |   LLM calls |
-|:----------|:-------------------|:-------|-------:|----------:|-------------:|--------------:|-------------:|---------------:|--------------:|------------:|
-| classical | MILP (exact)       | S      |     16 |         1 |        100   |         100   |          0   |            0   |           0   |           0 |
-| classical | MILP (exact)       | M      |     16 |         1 |        100   |         100   |          0   |            0   |           0.6 |           0 |
-| classical | MILP (exact)       | L      |      8 |         1 |        100   |         100   |          0   |            0   |          27.7 |           0 |
-| classical | MILP (exact)       | all    |     40 |         1 |        100   |         100   |          0   |            0   |           0.3 |           0 |
-| classical | Iterated Hungarian | S      |     16 |         1 |         87.5 |          75   |          8   |            0   |           0   |           0 |
-| classical | Iterated Hungarian | M      |     16 |         1 |         62.5 |           6.2 |         11.4 |           10   |           0   |           0 |
-| classical | Iterated Hungarian | L      |      8 |         1 |         75   |           0   |         39.5 |           35.9 |           0   |           0 |
-| classical | Iterated Hungarian | all    |     40 |         1 |         75   |          32.5 |         15.5 |            8   |           0   |           0 |
-| classical | SSI auction        | S      |     16 |         1 |         93.8 |          87.5 |          1.3 |            0   |           0   |           0 |
-| classical | SSI auction        | M      |     16 |         1 |         87.5 |          12.5 |         17.3 |           13.3 |           0   |           0 |
-| classical | SSI auction        | L      |      8 |         1 |        100   |          12.5 |         35.2 |           27.9 |           0   |           0 |
-| classical | SSI auction        | all    |     40 |         1 |         92.5 |          42.5 |         14.7 |            8.5 |           0   |           0 |
+| Model      | Method                                             | Tier   |   Runs |   Repeats |   Feasible % |   Success@5 % | Mean gap %   | Median gap %   |   Plan time s |   LLM calls |
+|:-----------|:---------------------------------------------------|:-------|-------:|----------:|-------------:|--------------:|:-------------|:---------------|--------------:|------------:|
+| classical  | MILP (exact)                                       | S      |     16 |         1 |        100   |         100   | 0.0          | 0.0            |           0   |         0   |
+| classical  | MILP (exact)                                       | M      |     16 |         1 |        100   |         100   | 0.0          | 0.0            |           0.6 |         0   |
+| classical  | MILP (exact)                                       | L      |      8 |         1 |        100   |         100   | 0.0          | 0.0            |          27.7 |         0   |
+| classical  | MILP (exact)                                       | all    |     40 |         1 |        100   |         100   | 0.0          | 0.0            |           0.3 |         0   |
+| classical  | Iterated Hungarian                                 | S      |     16 |         1 |         87.5 |          75   | 8.0          | 0.0            |           0   |         0   |
+| classical  | Iterated Hungarian                                 | M      |     16 |         1 |         62.5 |           6.2 | 11.4         | 10.0           |           0   |         0   |
+| classical  | Iterated Hungarian                                 | L      |      8 |         1 |         75   |           0   | 39.5         | 35.9           |           0   |         0   |
+| classical  | Iterated Hungarian                                 | all    |     40 |         1 |         75   |          32.5 | 15.5         | 8.0            |           0   |         0   |
+| classical  | SSI auction                                        | S      |     16 |         1 |         93.8 |          87.5 | 1.3          | 0.0            |           0   |         0   |
+| classical  | SSI auction                                        | M      |     16 |         1 |         87.5 |          12.5 | 17.3         | 13.3           |           0   |         0   |
+| classical  | SSI auction                                        | L      |      8 |         1 |        100   |          12.5 | 35.2         | 27.9           |           0   |         0   |
+| classical  | SSI auction                                        | all    |     40 |         1 |         92.5 |          42.5 | 14.7         | 8.5            |           0   |         0   |
+| qwen2.5-7b | LLM-direct                                         | S      |     32 |         1 |          3.1 |           3.1 | 0.0          | 0.0            |           4.3 |         1   |
+| qwen2.5-7b | LLM-direct                                         | M      |     32 |         1 |          0   |           0   | -            | -              |           6.9 |         1   |
+| qwen2.5-7b | LLM-direct                                         | L      |     16 |         1 |          0   |           0   | -            | -              |           8   |         1   |
+| qwen2.5-7b | LLM-direct                                         | all    |     80 |         1 |          1.2 |           1.2 | 0.0          | 0.0            |           6.1 |         1   |
+| qwen2.5-7b | LLM-formulate                                      | S      |     32 |         1 |          0   |           0   | -            | -              |          23.3 |         1   |
+| qwen2.5-7b | LLM-formulate                                      | M      |     32 |         1 |          3.1 |           0   | 9.0          | 9.0            |          48.3 |         1   |
+| qwen2.5-7b | LLM-formulate                                      | L      |     16 |         1 |          6.2 |           0   | 52.7         | 52.7           |          72.9 |         1   |
+| qwen2.5-7b | LLM-formulate                                      | all    |     80 |         1 |          2.5 |           0   | 30.8         | 30.8           |          45.4 |         1   |
+| qwen2.5-7b | COHERENT-style PEFA                                | S      |     32 |         1 |          9.4 |           6.2 | 17.8         | 0.0            |          15.5 |         4.6 |
+| qwen2.5-7b | COHERENT-style PEFA                                | M      |     32 |         1 |          0   |           0   | -            | -              |          22.6 |         4.8 |
+| qwen2.5-7b | COHERENT-style PEFA                                | L      |     16 |         1 |          0   |           0   | -            | -              |          32.5 |         5   |
+| qwen2.5-7b | COHERENT-style PEFA                                | all    |     80 |         1 |          3.8 |           2.5 | 17.8         | 0.0            |          21.1 |         4.8 |
+| qwen2.5-7b | Agent (full)                                       | S      |     32 |         1 |         37.5 |          34.4 | 1.0          | 0.0            |          95.2 |        14.1 |
+| qwen2.5-7b | Agent (full)                                       | M      |     32 |         1 |         37.5 |          28.1 | 8.2          | 0.0            |         144.2 |        13.8 |
+| qwen2.5-7b | Agent (full)                                       | L      |     16 |         1 |         12.5 |           6.2 | 11.4         | 11.4           |         228.9 |        14.5 |
+| qwen2.5-7b | Agent (full)                                       | all    |     80 |         1 |         32.5 |          26.2 | 5.1          | 0.0            |         136.2 |        14.1 |
+| qwen2.5-7b | Agent without G1 (no solvers)                      | S      |     32 |         1 |          6.2 |           6.2 | 1.2          | 1.2            |          40.2 |        12.8 |
+| qwen2.5-7b | Agent without G1 (no solvers)                      | M      |     32 |         1 |          0   |           0   | -            | -              |          48.7 |        13.5 |
+| qwen2.5-7b | Agent without G1 (no solvers)                      | L      |     16 |         1 |          0   |           0   | -            | -              |          66.9 |        13.6 |
+| qwen2.5-7b | Agent without G1 (no solvers)                      | all    |     80 |         1 |          2.5 |           2.5 | 1.2          | 1.2            |          47.3 |        13.2 |
+| qwen2.5-7b | Agent without G2 (no verification)                 | S      |     32 |         1 |         68.8 |          59.4 | 1.2          | 0.0            |          14.7 |         9.3 |
+| qwen2.5-7b | Agent without G2 (no verification)                 | M      |     32 |         1 |         34.4 |          25   | 10.9         | 0.0            |          26.9 |        10   |
+| qwen2.5-7b | Agent without G2 (no verification)                 | L      |     16 |         1 |         31.2 |          25   | 2.5          | 0.0            |          61.3 |        10.8 |
+| qwen2.5-7b | Agent without G2 (no verification)                 | all    |     80 |         1 |         47.5 |          38.8 | 4.2          | 0.0            |          26.1 |         9.9 |
+| qwen2.5-7b | Agent without G3 (single-pass model, no questions) | S      |     32 |         1 |         28.1 |          21.9 | 6.6          | 0.0            |          69.1 |        10.9 |
+| qwen2.5-7b | Agent without G3 (single-pass model, no questions) | M      |     32 |         1 |         31.2 |          15.6 | 7.9          | 4.6            |          97.5 |        10.8 |
+| qwen2.5-7b | Agent without G3 (single-pass model, no questions) | L      |     16 |         1 |          6.2 |           6.2 | 4.6          | 4.6            |         145.5 |        11.2 |
+| qwen2.5-7b | Agent without G3 (single-pass model, no questions) | all    |     80 |         1 |         25   |          16.2 | 7.1          | 0.0            |          85.7 |        10.9 |

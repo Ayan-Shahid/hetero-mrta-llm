@@ -1,7 +1,14 @@
 **Test split: feasible plans by tier, success@5 and gap (mean ± std over repeats)**
 
-| Model     | Method             | Feasible S   | Feasible M   | Feasible L   |   Feasible (all) |   Success@5 (all) | Mean gap   |   Tokens/run |   Repeats |
-|:----------|:-------------------|:-------------|:-------------|:-------------|-----------------:|------------------:|:-----------|-------------:|----------:|
-| classical | MILP (exact)       | 100%         | 100%         | 100%         |            100   |             100   | 0.0%       |            0 |         1 |
-| classical | Iterated Hungarian | 88%          | 62%          | 75%          |             75   |              32.5 | 15.5%      |            0 |         1 |
-| classical | SSI auction        | 94%          | 88%          | 100%         |             92.5 |              42.5 | 14.7%      |            0 |         1 |
+| Model      | Method                                             | Feasible S   | Feasible M   | Feasible L   |   Feasible (all) |   Success@5 (all) | Mean gap   |   Tokens/run |   Repeats |
+|:-----------|:---------------------------------------------------|:-------------|:-------------|:-------------|-----------------:|------------------:|:-----------|-------------:|----------:|
+| classical  | MILP (exact)                                       | 100%         | 100%         | 100%         |            100   |             100   | 0.0%       |            0 |         1 |
+| classical  | Iterated Hungarian                                 | 88%          | 62%          | 75%          |             75   |              32.5 | 15.5%      |            0 |         1 |
+| classical  | SSI auction                                        | 94%          | 88%          | 100%         |             92.5 |              42.5 | 14.7%      |            0 |         1 |
+| qwen2.5-7b | LLM-direct                                         | 3%           | 0%           | 0%           |              1.2 |               1.2 | 0.0%       |         1202 |         1 |
+| qwen2.5-7b | LLM-formulate                                      | 0%           | 3%           | 6%           |              2.5 |               0   | 30.8%      |         2563 |         1 |
+| qwen2.5-7b | COHERENT-style PEFA                                | 9%           | 0%           | 0%           |              3.8 |               2.5 | 17.8%      |         8079 |         1 |
+| qwen2.5-7b | Agent (full)                                       | 38%          | 38%          | 12%          |             32.5 |              26.2 | 5.1%       |        60798 |         1 |
+| qwen2.5-7b | Agent without G1 (no solvers)                      | 6%           | 0%           | 0%           |              2.5 |               2.5 | 1.2%       |        55710 |         1 |
+| qwen2.5-7b | Agent without G2 (no verification)                 | 69%          | 34%          | 31%          |             47.5 |              38.8 | 4.2%       |        35793 |         1 |
+| qwen2.5-7b | Agent without G3 (single-pass model, no questions) | 28%          | 31%          | 6%           |             25   |              16.2 | 7.1%       |        53122 |         1 |

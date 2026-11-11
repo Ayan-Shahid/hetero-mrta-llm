@@ -1,0 +1,4 @@
+Gap,Method / component,Metric,Base paper result,Our result,Addressed?
+Gap 1: no comparison with optimal / classical allocation,G1 verified solver portfolio (mrta/gaps/g1_portfolio.py),Feasible plans; success@5 (feasible and ≤5% above optimum),3.8%; 2.5%,32.5%; 26.2%,Partially
+Gap 2: plans and extracted models are not formally verified,G2 cross-check + plan gate (mrta/gaps/g2_verify.py),Infeasible-plan rate (ground truth),96.2%,67.5% (without G2: 52.5%),Not
+Gap 3: informal language barely tested,G3 staged extraction + clarification (mrta/gaps/g3_language.py),"Drop in feasible plans, explicit → informal brief",-2.5 pp,40.0 pp (McNemar p = 0.000402),Not
