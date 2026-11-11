@@ -182,6 +182,7 @@ def clean_spec(data: dict[str, Any]) -> dict[str, Any]:
             loc["zone"] = _ZONE.get(z, z)
         for f in ("x", "y"):
             loc[f] = _num(loc.get(f))
+    out["standby"] = [s for s in out["standby"] if not (isinstance(s.get("count"), (int, float)) and s["count"] <= 0)]
     for s in out["standby"]:
         if isinstance(s.get("robot_type"), str):
             ty = s["robot_type"].strip().lower()

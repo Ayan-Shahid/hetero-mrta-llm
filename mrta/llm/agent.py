@@ -182,9 +182,16 @@ class Agent:
                     "hint": "fix only these items with edits on base \"current\"; capabilities must be "
                             "camera, thermal, carry or manipulate"}
         problems = sanity_problems(spec)
-        if problems and st.spec_rejections >= 2:
-            problems.append("hint: if no robot can do a task, re-read that robot's line in the brief for its "
-                            "equipment and how much it can carry, and fix it with a set edit on robot:<id>")
+        if any(p.startswith("no robot in your model can do") for p in problems):
+            # Quote what the brief says about the robots (the pilot showed the agent repeating the same
+            # model when it was only told "no robot can do T8"); the agent still has to read it.
+            ids = [r.id for r in spec.robots]
+            lines = [ln.strip() for ln in st.brief.splitlines() if any(f"{i} " in ln or f"{i}," in ln or
+                                                                      f"{i}:" in ln for i in ids)]
+            problems.append("what the brief says about the robots: " + " | ".join(lines)[:900])
+            problems.append("fix the robot whose equipment or payload you misread with "
+                            "{\"op\": \"set\", \"target\": \"robot:<id>\", \"field\": \"capabilities\" or "
+                            "\"payload\", \"value\": ...}")
         if problems:
             st.spec_rejections += 1
             st.spec_dict = cleaned  # keep it so edits on base "current" can fix the problems

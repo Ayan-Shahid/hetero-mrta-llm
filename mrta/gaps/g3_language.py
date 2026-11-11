@@ -14,6 +14,14 @@ instructions). This component has two parts:
    rule the question names (what a human who wrote the mission would say), so it cannot
    answer vague questions and never volunteers facts that were not asked about.
 
+3. Grounding check (inside ``draft_model``): every deadline, precedence edge and standby rule
+   in the draft must be supported by the brief's text - the deadline by a time-limit phrase in
+   that task's own sentence, a precedence edge by the earlier task's id in the later task's
+   sentence, standby by the word "standby". Unsupported facts are removed and reported.
+   Added after the first pilot, where invented deadlines and standby rules were the most
+   common extraction errors (docs/devlog.md). It assumes, as in every benchmark brief, that
+   each task's sentence names its id.
+
 Switches: AgentConfig.g3_staged, AgentConfig.g3_clarify.
 """
 
@@ -39,6 +47,55 @@ def _stage(meter, system: str, brief: str, purpose: str, context: dict[str, Any]
         return (data if isinstance(data, dict) else None), ""
     except ValueError as err:
         return None, f"{purpose}: {err}"
+
+
+_DEADLINE_CUE = re.compile(r"deadline|within the first|finished by|no later than|at the latest|has to be (?:done|"
+                           r"finished|completed) (?:by|within)", re.I)
+_ORDER_CUE = re.compile(r"after|once|only when|until|before|is done|finished|arrived|first", re.I)
+
+
+def task_sentences(brief: str, task_ids: list[str]) -> dict[str, str]:
+    """The text that describes each task: the line (or sentence) whose first task id is that task."""
+    out: dict[str, str] = {}
+    ids = {t.lower(): t for t in task_ids}
+    pattern = re.compile(r"\b(" + "|".join(re.escape(t) for t in task_ids) + r")\b", re.I) if task_ids else None
+    if pattern is None:
+        return out
+    for line in brief.splitlines():
+        for chunk in re.split(r"(?<=[.;])\s+(?=\(?T\d)", line):
+            m = pattern.search(chunk)
+            if m:
+                tid = ids[m.group(1).lower()]
+                out[tid] = (out.get(tid, "") + " " + chunk).strip()
+    return out
+
+
+def ground_in_brief(draft: dict[str, Any], brief: str) -> tuple[dict[str, Any], list[str]]:
+    """Remove deadlines, precedence edges and standby rules that the brief's text does not support."""
+    notes: list[str] = []
+    tasks = [t for t in draft.get("tasks", []) if isinstance(t, dict)]
+    ids = [str(t.get("id")) for t in tasks if t.get("id")]
+    text = task_sentences(brief, ids)
+    for t in tasks:
+        tid = str(t.get("id"))
+        if t.get("deadline") is not None and tid in text and not _DEADLINE_CUE.search(text[tid]):
+            notes.append(f"removed the deadline of {tid}: its sentence in the brief states no time limit")
+            t["deadline"] = None
+    kept = []
+    for p in draft.get("precedence", []) or []:
+        if not isinstance(p, dict):
+            continue
+        before, after = str(p.get("before")), str(p.get("after"))
+        line = text.get(after, "")
+        if line and not (re.search(rf"\b{re.escape(before)}\b", line, re.I) and _ORDER_CUE.search(line)):
+            notes.append(f"removed '{before} before {after}': the brief's sentence for {after} does not mention {before}")
+            continue
+        kept.append(p)
+    draft["precedence"] = kept
+    if draft.get("standby") and "standby" not in brief.lower() and "stand by" not in brief.lower():
+        notes.append("removed the standby rule: the brief does not mention standby")
+        draft["standby"] = []
+    return draft, notes
 
 
 def staged_extraction(meter, brief: str, context: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
@@ -72,6 +129,8 @@ def staged_extraction(meter, brief: str, context: dict[str, Any]) -> tuple[dict[
     draft = {"id": "draft", "horizon": cons.get("horizon") or fleet.get("horizon"),
              "locations": fleet.get("locations", []), "robots": fleet.get("robots", []), "tasks": tasks,
              "precedence": cons.get("precedence") or [], "standby": cons.get("standby") or []}
+    draft, notes = ground_in_brief(draft, brief)
+    problems += [f"note: {n}" for n in notes]
     try:
         draft = clean_spec(draft)
         spec = Scenario.model_validate(draft)

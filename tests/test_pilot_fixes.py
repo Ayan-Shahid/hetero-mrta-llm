@@ -67,3 +67,45 @@ def test_add_robot_edit_from_the_pilot():
                                     {"op": "add", "target": "robot", "value": {"id": "X9"}}])
     assert any(r["id"] == "X9" for r in new["robots"])
     assert problems and "already exists" in problems[0]
+
+
+def test_grounding_keeps_every_true_fact_and_removes_invented_ones():
+    import copy
+
+    from mrta.gaps.g3_language import ground_in_brief
+
+    for rec in load("data/benchmark", split="dev"):
+        for style in ("explicit", "informal"):
+            gt = json.loads(rec.scenario.model_dump_json())
+            _, notes = ground_in_brief(copy.deepcopy(gt), rec.briefs[style])
+            assert notes == [], (rec.id, style, notes)
+            fake = copy.deepcopy(gt)
+            for t in fake["tasks"]:
+                if t["deadline"] is None:
+                    t["deadline"] = 600.0
+            fake["precedence"].append({"before": fake["tasks"][1]["id"], "after": fake["tasks"][0]["id"]})
+            out, notes = ground_in_brief(fake, rec.briefs[style])
+            assert [t["deadline"] for t in out["tasks"]] == [t["deadline"] for t in gt["tasks"]]
+            assert out["precedence"] == gt["precedence"]
+
+
+def test_standby_that_blocks_every_capable_robot_is_reported():
+    from mrta.gaps.g2_verify import sanity_problems
+
+    m = _spec("S-001")
+    m["standby"] = [{"robot_type": t, "count": 5} for t in {r["type"] for r in m["robots"]}]
+    problems = sanity_problems(Scenario.model_validate(m))
+    assert any("standby" in p for p in problems)
+
+
+def test_robot_lines_are_quoted_when_no_robot_can_do_a_task():
+    rec = load("data/benchmark", ids=["S-001"])[0]
+    out = MethodResult(plan=None, status="")
+    agent = Agent(make_client("mock-oracle"), rec.scenario, rec.briefs["informal"], "informal",
+                  AGENT_PRESETS["no-g2-crosscheck"], None, out)
+    m = _spec("S-001")
+    for r in m["robots"]:
+        r["capabilities"] = [c for c in r["capabilities"] if c != "carry"]
+    obs = agent.t_submit_spec({"spec": m})
+    assert obs["ok"] is False
+    assert any(p.startswith("what the brief says about the robots") and "D1" in p for p in obs["problems"])

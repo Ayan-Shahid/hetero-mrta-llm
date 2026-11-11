@@ -26,8 +26,22 @@ from ..schema import Plan, Scenario
 
 def sanity_problems(spec: Scenario) -> list[str]:
     problems = []
+    n_type: dict[str, int] = {}
+    for r in spec.robots:
+        n_type[r.type] = n_type.get(r.type, 0) + 1
+    blocked = set()
+    for s in spec.standby:
+        have = n_type.get(s.robot_type, 0)
+        if s.count > have:
+            problems.append(f"standby asks for {s.count} {s.robot_type} but your model has {have}")
+        if s.count >= have:
+            blocked.add(s.robot_type)
     for t in spec.tasks:
-        if not any(eligible(spec, r, t) for r in spec.robots):
+        able = [r for r in spec.robots if eligible(spec, r, t)]
+        if able and all(r.type in blocked for r in able):
+            problems.append(f"the standby rule keeps every robot that can do {t.id} free "
+                            f"({', '.join(r.id for r in able)}); check the standby rule against the brief")
+        if not able:
             problems.append(f"no robot in your model can do {t.id} (needs {t.required}, payload {t.payload:g} kg, "
                             f"at {t.location})")
         if t.deadline is not None and t.deadline < t.duration:
