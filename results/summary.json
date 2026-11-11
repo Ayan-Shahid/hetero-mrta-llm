@@ -1,0 +1,164 @@
+{
+ "split": "test",
+ "n_runs": 120,
+ "models": [],
+ "classical": {
+  "milp": {
+   "S": {
+    "feasible": 16,
+    "n": 16,
+    "gap_mean": 0.0
+   },
+   "M": {
+    "feasible": 16,
+    "n": 16,
+    "gap_mean": 0.0
+   },
+   "L": {
+    "feasible": 8,
+    "n": 8,
+    "gap_mean": 0.0
+   }
+  },
+  "hungarian": {
+   "S": {
+    "feasible": 14,
+    "n": 16,
+    "gap_mean": 0.08017389901400973
+   },
+   "M": {
+    "feasible": 10,
+    "n": 16,
+    "gap_mean": 0.11442051792713692
+   },
+   "L": {
+    "feasible": 6,
+    "n": 8,
+    "gap_mean": 0.3952616472292092
+   }
+  },
+  "auction": {
+   "S": {
+    "feasible": 15,
+    "n": 16,
+    "gap_mean": 0.012745992304385655
+   },
+   "M": {
+    "feasible": 14,
+    "n": 16,
+    "gap_mean": 0.17329186916627728
+   },
+   "L": {
+    "feasible": 8,
+    "n": 8,
+    "gap_mean": 0.3518036503423111
+   }
+  }
+ },
+ "main": {
+  "classical": {
+   "milp": {
+    "S": {
+     "feasible_mean": 1.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 1.0,
+     "gap_mean": 0.0
+    },
+    "M": {
+     "feasible_mean": 1.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 1.0,
+     "gap_mean": 0.0
+    },
+    "L": {
+     "feasible_mean": 1.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 8,
+     "success5_mean": 1.0,
+     "gap_mean": 0.0
+    },
+    "all": {
+     "feasible_mean": 1.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 40,
+     "success5_mean": 1.0,
+     "gap_mean": 0.0
+    }
+   },
+   "hungarian": {
+    "S": {
+     "feasible_mean": 0.875,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.75,
+     "gap_mean": 0.08017389901400973
+    },
+    "M": {
+     "feasible_mean": 0.625,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.0625,
+     "gap_mean": 0.11442051792713692
+    },
+    "L": {
+     "feasible_mean": 0.75,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 8,
+     "success5_mean": 0.0,
+     "gap_mean": 0.3952616472292092
+    },
+    "all": {
+     "feasible_mean": 0.75,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 40,
+     "success5_mean": 0.325,
+     "gap_mean": 0.1546069882947587
+    }
+   },
+   "auction": {
+    "S": {
+     "feasible_mean": 0.9375,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.875,
+     "gap_mean": 0.012745992304385655
+    },
+    "M": {
+     "feasible_mean": 0.875,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 16,
+     "success5_mean": 0.125,
+     "gap_mean": 0.17329186916627728
+    },
+    "L": {
+     "feasible_mean": 1.0,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 8,
+     "success5_mean": 0.125,
+     "gap_mean": 0.3518036503423111
+    },
+    "all": {
+     "feasible_mean": 0.925,
+     "feasible_std": 0.0,
+     "repeats": 1,
+     "runs": 40,
+     "success5_mean": 0.425,
+     "gap_mean": 0.14680284474681501
+    }
+   }
+  }
+ }
+}

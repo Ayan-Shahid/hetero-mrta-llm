@@ -1,0 +1,13 @@
+**E1: classical allocators on the ground-truth model**
+
+| Method             | Tier   |   Scenarios | Feasible   |   Mean gap % |   Median gap % |   Mean time s | Proved optimal   |
+|:-------------------|:-------|------------:|:-----------|-------------:|---------------:|--------------:|:-----------------|
+| MILP (exact)       | S      |          16 | 16/16      |          0   |            0   |          0.03 | 16/16            |
+| MILP (exact)       | M      |          16 | 16/16      |          0   |            0   |          3.54 | 16/16            |
+| MILP (exact)       | L      |           8 | 8/8        |          0   |            0   |         28.78 | 6/8              |
+| Iterated Hungarian | S      |          16 | 14/16      |          8   |            0   |          0    | -                |
+| Iterated Hungarian | M      |          16 | 10/16      |         11.4 |           10   |          0    | -                |
+| Iterated Hungarian | L      |           8 | 6/8        |         39.5 |           35.9 |          0    | -                |
+| SSI auction        | S      |          16 | 15/16      |          1.3 |            0   |          0    | -                |
+| SSI auction        | M      |          16 | 14/16      |         17.3 |           13.3 |          0    | -                |
+| SSI auction        | L      |           8 | 8/8        |         35.2 |           27.9 |          0.02 | -                |
