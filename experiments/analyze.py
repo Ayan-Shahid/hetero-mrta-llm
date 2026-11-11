@@ -3,6 +3,7 @@
 
     python experiments/analyze.py                         # every model found in results/runs/
     python experiments/analyze.py --models qwen2.5-7b     # only some models
+    python experiments/analyze.py --repeats 1             # only finished repeats (sweep still running)
 
 Reads   results/runs/classical/E1.csv and results/runs/<model>/E*.csv
 Writes  results/tables/*.md, *.csv, *.tex     (main results, E4 per gap, E5 ablation, E6 efficiency,
@@ -608,10 +609,14 @@ def main() -> None:
     ap.add_argument("--split", default="test")
     ap.add_argument("--primary", default="", help="model used for the gap-resolution table")
     ap.add_argument("--out", default="results")
+    ap.add_argument("--repeats", type=int, default=0,
+                    help="use only LLM repeats 0..N-1 (0 = all); keeps a partly finished repeat out of mean +- std")
     args = ap.parse_args()
 
     models = [m for m in args.models.split(",") if m] or None
     cls, llm = load_runs(ROOT / args.runs, models)
+    if args.repeats and len(llm):
+        llm = llm[llm["repeat"].astype(int) < args.repeats].reset_index(drop=True)
     df, _ = prepare(cls, llm, args.split)
     tables, figs = ROOT / args.out / "tables", ROOT / args.out / "figures"
     summary: dict = {"split": args.split, "n_runs": int(len(df)),

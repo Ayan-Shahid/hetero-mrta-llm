@@ -124,6 +124,7 @@ def main() -> None:
     ap.add_argument("--runs", default="results/runs")
     ap.add_argument("--logs", default="logs")
     ap.add_argument("--out", default="results/failures")
+    ap.add_argument("--repeats", type=int, default=0, help="use only repeats 0..N-1 (0 = all)")
     args = ap.parse_args()
     global LOGS
     LOGS = ROOT / args.logs
@@ -133,6 +134,8 @@ def main() -> None:
         sys.exit(f"no runs in {d}")
     df = pd.concat(frames, ignore_index=True)
     df = df[df["split"] == "test"]
+    if args.repeats:
+        df = df[df["repeat"].astype(int) < args.repeats]
     df["key"] = df["method"] + df["config"].fillna("").map(lambda c: f":{c}" if c else "")
     df["feasible"] = df["feasible"].astype(str) == "True"
     truth = {}
