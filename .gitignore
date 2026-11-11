@@ -13,3 +13,6 @@ results/scratch/
 logs/*
 !logs/sample/
 results/runs/pilot/
+# Trajectories of the reported runs (test sweep and dev pilots) are committed in full
+!logs/qwen2.5-7b/
+!logs/pilot/
