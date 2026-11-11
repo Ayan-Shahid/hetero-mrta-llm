@@ -78,6 +78,11 @@ python experiments/analyze.py --primary qwen2.5-7b
 python experiments/failures.py --model qwen2.5-7b
 ```
 
+While the sweep is still running, add `--repeats N` to both scripts so they use only finished repeats
+(0 to N−1). Otherwise a partly finished repeat would enter mean ± std. The tables in the phase2-final
+release were made with `--repeats 1`. At that point stages 1 and 2 had finished (E1–E3 repeat 1, E5) and
+stage 3 was running. See the status section of the README.
+
 | Experiment (brief, section 4.2) | Produced by | Main outputs |
 |---|---|---|
 | E1 Baseline | `run.py --exp E1` | `results/tables/E1_classical.*`, rows `LLM-direct` and `LLM-formulate` in `main_results.*` |
@@ -98,7 +103,9 @@ holds every headline number.
   M-000 to M-003, L-000 and L-001); the test split has the other 40. Prompts and settings were only
   ever checked on dev scenarios.
 - **Decoding:** temperature 0.2. Repeat `r` sends `seed = r`, which also goes into the cache key.
-  Main configurations are run 3 times and reported as mean ± std over repeats.
+  Main configurations are planned for 3 runs each, reported as mean ± std over repeats. At the
+  phase2-final tag only repeat 1 was complete for every configuration. That is a deviation from the
+  brief, and the README states it.
 - **Solver limits:** the MILP limit is 60 s for the classical baseline. Inside the agent, the limit
   comes from the instance size (`mrta/gaps/g1_portfolio.py::milp_budget`).
 - **Base paper:** COHERENT's PEFA loop is re-implemented and run on our benchmark (`llm-pefa`). Its
