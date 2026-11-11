@@ -1,0 +1,189 @@
+% Phase 2 paper - IEEEtran conference template, 8-10 pages including references.
+%
+% THIS FILE IS A SKELETON. The %-comments under each heading are notes: the facts, numbers and citations
+% each section needs. Write every paragraph yourself, in your own words, then delete the notes.
+% Numbers: never type a result by hand. Use \R{key} (keys listed in numbers_index.md), so every number
+% in the paper comes from results/ and is reproducible with the scripts.
+%
+% Build: bash paper/build_assets.sh  (copies tables, figures, numbers from results/), then upload the
+% paper/ folder to Overleaf (or: cd paper && latexmk -pdf main.tex).
+
+\documentclass[conference]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{cite}
+\graphicspath{{figures/}}
+\input{numbers}
+
+\begin{document}
+
+\title{TITLE: your own title}
+% Notes: your Phase 1 title, or a sharper one now that results exist. Name the system and the claim.
+
+\author{
+\IEEEauthorblockN{Your Name (Roll No.)}
+\IEEEauthorblockA{Project G1-XX \\ FAST-NUCES \\ email@nu.edu.pk}
+% Brief, section 5.1: title page must include title, project code, and names, roll numbers and emails
+% of all group members.
+}
+
+\maketitle
+
+\begin{abstract}
+% 150-250 words, one paragraph, in this order:
+% - problem: heterogeneous robot teams + natural-language mission briefs; LLM planners (e.g. COHERENT)
+%   are evaluated on success rates only, never against optimal allocation, and do not verify plans
+% - approach: tool-using agent; formal model -> verified solver portfolio; cross-check by an independent
+%   second reading; staged extraction + clarification for informal briefs
+% - evaluation: 50-scenario benchmark (\R{bench/test} test scenarios x explicit/informal briefs),
+%   model(s) used, base paper reproduced (COHERENT-style PEFA)
+% - main numbers: agent feasible \R{<model>/agent:full/feasible/all}\% vs PEFA
+%   \R{<model>/llm-pefa/feasible/all}\%; success@5; drop explicit->informal; ablation highlight
+% - contribution sentence
+\end{abstract}
+
+\begin{IEEEkeywords}
+multi-robot task allocation, large language models, LLM agents, heterogeneous robots, verification
+\end{IEEEkeywords}
+
+\section{Introduction}
+% ~0.9 column. Points, in order:
+% - motivation: mixed fleets (drones, rovers, mobile manipulators, fixed arms) at inspection /
+%   maintenance sites; operators describe missions in words, not MILPs
+% - LLM planners now allocate tasks from language: COHERENT \cite{liu2025coherent}, LaMMA-P
+%   \cite{zhang2025lammap}, EMOS \cite{chen2025emos}, LiP-LLM \cite{obata2025lipllm}
+% - the three gaps (from Phase 1), one sentence each with evidence:
+%   G1 no comparison with optimal/classical allocation (COHERENT: success + steps only; LiP-LLM:
+%      execution time not considered)
+%   G2 no formal verification (COHERENT checks single actions; IROS'25 MILP builder 82% extraction
+%      accuracy \cite{peng2025milp}; Nl2Hltl2Plan open-loop \cite{xu2025nl2hltl2plan})
+%   G3 informal language barely tested (LiP-LLM 0.93 -> 0.44 on ambiguous instructions)
+% - research questions RQ1-RQ3 (one per gap; reuse your Phase 1 wording, Table in B.11)
+% - contributions (bulleted list, 3-4 items): benchmark + paired explicit/informal briefs with ground
+%   truth; agent with switchable gap components; evaluation against exact/heuristic allocators and the
+%   reproduced base paper on the same data; open code (repo link)
+
+\section{Related Work}
+% ~1 column, synthesis of the Phase 1 review, grouped by theme (not paper by paper):
+% (a) LLM planners for multi-robot teams: COHERENT (PEFA loop, BEHAVIOR-1K \cite{li2022behavior1k}),
+%     SMART-LLM \cite{kannan2024smartllm}, RoCo \cite{mandi2024roco}, centralised vs decentralised
+%     \cite{chen2024scalable}, EMOS, VIKI-R \cite{vikir2025}, hierarchical planner \cite{kawabe2026hierarchical}
+% (b) LLM + symbolic solver: LaMMA-P (PDDL), LiP-LLM (LP), Nl2Hltl2Plan (LTL), LLM+P \cite{liu2023llmp},
+%     CaStL \cite{guo2025castl}
+% (c) LLMs writing optimisation models: OptiMUS \cite{ahmaditeshnizi2024optimus}, Autoformulation
+%     \cite{astorga2025autoformulation}, DRoC \cite{jiang2025droc}, AFL \cite{zhang2026afl}, MILP for MRTA
+%     \cite{peng2025milp}
+% (d) classical MRTA: taxonomies \cite{gerkey2004taxonomy,korsah2013taxonomy,nunes2017taxonomy};
+%     Hungarian \cite{kuhn1955hungarian}; auctions \cite{lagoudakis2005auction,choi2009cbba}
+% (e) agents: ReAct \cite{yao2023react}, Toolformer \cite{schick2023toolformer}, Reflexion
+%     \cite{shinn2023reflexion}, self-consistency \cite{wang2023selfconsistency} (related to our cross-check),
+%     SayCan \cite{ahn2022saycan}, Inner Monologue \cite{huang2022innermonologue}
+% End with: what none of them does (the three gaps), and where this paper sits.
+
+\section{Problem Formulation}
+% ~0.8 column. Use docs/formal_model.md (rewrite in your notation):
+% - instance: robots (mobility air/ground/fixed, capabilities, speed, payload, endurance, start),
+%   tasks (location, required capabilities, payload, duration, optional deadline), precedence pairs,
+%   standby rules, horizon H
+% - plan = ordered route per robot; timing rule (start = max(arrival, predecessors finished))
+% - constraints C1-C8 (coverage, capability, payload, reachability, standby, precedence/deadlock,
+%   deadlines/horizon, endurance); objective makespan C_max
+% - class: ST-SR-TA with cross-schedule dependencies \cite{korsah2013taxonomy}, NP-hard
+% - input to the LLM methods: only the brief (explicit or informal); output: a plan; the checker
+%   judges it against the hidden ground truth
+% - hypotheses H1-H3 (one per RQ, from Phase 1 B.11)
+
+\section{Proposed System}
+% ~1.3 columns + Fig. 1 (full width).
+% - Fig. 1: \includegraphics{architecture.pdf}; caption names the gap components and the baselines
+% - agent loop: JSON {thought, action, args}, one tool per turn, max 12 steps, state (draft, model,
+%   solution, checks, questions), trajectory logging
+% - tools table (README "Architecture"): draft_model, submit_spec (+ edit language), cross-check,
+%   solve, check + finish gate, ask_human, finish
+% - G1 component (mrta/gaps/g1_portfolio.py): portfolio auction -> Hungarian -> MILP with time budget
+%   min(60, max(2, 0.25 |T||R|)) s; returns best plan feasible on the agent's model
+% - G2 component (g2_verify.py): sanity checks; independent second reading (different prompt),
+%   fact-by-fact diff (tasks, robots, precedence, standby, horizon); agent must review before solving;
+%   finish gate refuses a plan violating the model once
+% - G3 component (g3_language.py): 3 passes (fleet/map; tasks; deadlines/precedence/standby) with a
+%   reading guide; edits instead of retyping; ask_human <= 2 questions, simulated owner answers only
+%   with brief lines naming the asked ids
+% - robustness: parse-failure reminders, action aliases, fallbacks (portfolio on stored model; draft)
+% - each component switchable (AgentConfig presets used in E5)
+
+\section{Experimental Setup}
+% ~0.8 column.
+% - benchmark v2: Table (benchmark_summary.tex) - 50 scenarios, S20/M20/L10, dev 10 / test 40, fixed;
+%   generation + witness + why (docs/benchmark.md); difficulty: random plans feasible
+%   \R{bench/random-feasible/S}/\R{bench/random-feasible/M}/\R{bench/random-feasible/L}\%;
+%   auction infeasible on \R{bench/auction-infeasible} scenarios
+% - informal briefs: how written (docs/benchmark.md section 4), one short example pair
+% - methods: classical (MILP 60 s, Hungarian, auction) on ground truth; LLM-direct; LLM-formulate;
+%   COHERENT-style PEFA (state what was kept: assigner + executability feedback + 5-round history,
+%   and what was not: separate executor LLMs, BEHAVIOR-1K); agent full; ablations
+% - models: exact ids (e.g. qwen2.5:7b-instruct via Ollama, 16k context; gemini-2.5-flash),
+%   temperature 0.2, seeds 0-2, max tokens; hardware (your laptop)
+% - repeats: 3 for E1-E3, 1 for E5; all prompts in mrta/llm/prompts.py; no tuning on test
+
+\section{Evaluation Methodology}
+% ~0.5 column.
+% - feasibility: plan passes all C1-C8 on the ground truth (same checker for every method)
+% - gap to optimal: (makespan - ref)/ref, ref = best classical makespan (MILP optimum on
+%   \R{classical/milp/feasible/S}, ... proved optimal counts from E1_classical)
+% - success@5 = feasible and gap <= 5%
+% - model fidelity: fact-level precision/recall/F1 and recall per fact type (mrta/spec_eval.py)
+% - efficiency: LLM calls, tokens, latency, solver time, tool calls, cost
+% - statistics: mean +- std over repeats; McNemar exact test \cite{mcnemar1947} for paired feasibility;
+%   Wilcoxon signed-rank \cite{wilcoxon1945} for gaps; bootstrap 95% CI
+% - base paper comparison: reproduced by us on the same scenarios/metrics (say so explicitly);
+%   COHERENT's own BEHAVIOR-1K numbers are not comparable (different task and metric)
+
+\section{Results}
+% ~1.5 columns, organised BY GAP (brief, section 5.2):
+% - Table: main_results_compact.tex (or main_results.tex if space)
+% - Gap 1: agent vs PEFA / direct / formulate - \R{<model>/gap1/vs-llm-pefa/delta} pp, CI, p;
+%   gap to optimal vs heuristics by tier (Fig. feasibility_by_tier); answer RQ1, H1 supported or not
+% - Gap 2: violations by type (E4_gap2_violations_by_type.tex); what the cross-check caught
+%   (E4_gap2_crosscheck.tex: F1 before -> after \R{<model>/gap2/f1_first} -> \R{<model>/gap2/f1_final});
+%   answer RQ2
+% - Gap 3: explicit vs informal (E4_gap3_explicit_vs_informal.tex, Fig. explicit_vs_informal);
+%   recall by fact type (E4_gap3_recall_by_constraint.tex); answer RQ3
+% - gap-resolution table (gap_resolution.tex) - REQUIRED in the paper
+% - report negative or partial results honestly (brief: they are not penalised)
+
+\section{Ablation and Comparative Analysis}
+% ~0.7 column.
+% - Table E5_ablation.tex + Fig. ablation: effect of removing G1, G2, G3 one at a time (p-values)
+% - efficiency trade-off: E6_efficiency.tex + Fig. tokens_vs_feasibility (cost of the agent's extra
+%   calls vs reliability gained); MILP time vs portfolio
+% - second model (if run): does the ranking of methods hold?
+
+\section{Failure Analysis}
+% ~0.7 column. From results/failures/<model>/:
+% - table of categories F1-F8 with counts (categories.md) for the agent and for PEFA
+% - 2 success + 2 failure cases (cases/*.md): short trajectory excerpts (which step went wrong)
+% - for each major category: likely cause + how it could be fixed (future work)
+
+\section{Limitations and Threats to Validity}
+% ~0.5 column. From docs/benchmark.md section 3:
+% - generated benchmark, one domain, regular phrasing; all numbers present in briefs
+% - auction feasible on most scenarios -> feasibility mostly measures reading the brief
+% - capability guide written with knowledge of the phrase banks
+% - simulated mission owner
+% - base paper re-implemented, not its original code/simulator; no BEHAVIOR-1K
+% - model size / one local model; temperature 0.2; 3 repeats
+% - no physical robots; ROS 2 execution not evaluated
+
+\section{Conclusion}
+% ~0.3 column: one sentence per gap with the key number; future work (dynamic re-planning with
+% mission events, ROS 2 / Gazebo execution, larger and human-written brief sets, other domains).
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}
