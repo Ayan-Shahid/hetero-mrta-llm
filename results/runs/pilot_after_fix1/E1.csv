@@ -1,0 +1,46 @@
+exp,run_id,repeat,scenario,tier,split,n_robots,n_tasks,n_precedence,n_deadlines,standby,method,config,input,provider,model,seed,status,feasible,n_violations,violations,makespan,total_travel,plan_time_s,solver_time_s,llm_calls,prompt_tokens,completion_tokens,llm_latency_s,iterations,cost_usd,mip_gap,spec_f1,spec_precision,spec_recall,spec_f1_first,recall_task_req,recall_task_deadline,recall_task_payload,recall_task_duration,recall_precedence,recall_standby,recall_robot_cap,recall_horizon,n_tool_calls,tool_calls,questions,gate_blocks,spec_rejections,crosscheck,disagreements_first,disagreements_final,parse_failures,solution_method,error
+E1,E1__llm-direct__S-000__explicit__r0,0,S-000,S,dev,3,5,0,1,False,llm-direct,,explicit,ollama,qwen2.5-7b,0,ok,False,1,"{""unknown_robot"": 1}",228.4,185.58,0.0004,0.0,1,862,104,4.068,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-direct__S-000__informal__r0,0,S-000,S,dev,3,5,0,1,False,llm-direct,,informal,ollama,qwen2.5-7b,0,ok,False,1,"{""payload"": 1}",227.19,315.98,0.0005,0.0,1,638,110,2.348,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-formulate__S-000__informal__r0,0,S-000,S,dev,3,5,0,1,False,llm-formulate,,informal,ollama,qwen2.5-7b,0,spec_invalid,False,,{},,,0.0011,0.0,1,905,730,15.088,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,"3 validation errors for Scenario
+standby.0.count
+  Input should be greater than or equal to 1 [type=greater_than_equal, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.14/v/greater_than_equal
+standby.1.count
+  Input should be greater than or equal to 1 "
+E1,E1__llm-direct__S-001__explicit__r0,0,S-001,S,dev,3,5,1,1,False,llm-direct,,explicit,ollama,qwen2.5-7b,0,ok,False,2,"{""missing"": 1, ""payload"": 1}",362.0,593.06,0.0002,0.0,1,895,112,2.959,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-direct__S-001__informal__r0,0,S-001,S,dev,3,5,1,1,False,llm-direct,,informal,ollama,qwen2.5-7b,0,ok,False,2,"{""payload"": 2}",,,0.0002,0.0,1,663,89,2.197,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-formulate__S-001__explicit__r0,0,S-001,S,dev,3,5,1,1,False,llm-formulate,,explicit,ollama,qwen2.5-7b,0,solver_failed,False,,{},,,0.0068,0.0065,1,1162,769,15.022,1,0.0,,0.9505,0.9231,0.9796,,1.0,1.0,1.0,1.0,0.0,,1.0,1.0,,,,,,,,,,,infeasible: 
+E1,E1__llm-formulate__S-000__explicit__r0,0,S-000,S,dev,3,5,0,1,False,llm-formulate,,explicit,ollama,qwen2.5-7b,0,solver_failed,False,,{},,,0.0094,0.009,1,1129,734,14.334,1,0.0,,0.96,0.9231,1.0,,1.0,1.0,1.0,1.0,,,1.0,1.0,,,,,,,,,,,infeasible: 
+E1,E1__llm-formulate__S-001__informal__r0,0,S-001,S,dev,3,5,1,1,False,llm-formulate,,informal,ollama,qwen2.5-7b,0,solver_failed,False,,{},,,0.0004,0.0,1,930,795,14.5,1,0.0,,0.8119,0.7885,0.8367,,1.0,0.6,1.0,1.0,0.0,,1.0,1.0,,,,,,,,,,,"infeasible: no robot can do ['T2'] within capabilities, deadlines and endurance"
+E1,E1__llm-direct__M-000__explicit__r0,0,M-000,M,dev,5,10,1,4,True,llm-direct,,explicit,ollama,qwen2.5-7b,0,ok,False,5,"{""deadline"": 1, ""missing"": 3, ""unreachable"": 1}",,,0.0005,0.0,1,1287,164,4.374,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-direct__M-000__informal__r0,0,M-000,M,dev,5,10,1,4,True,llm-direct,,informal,ollama,qwen2.5-7b,0,ok,False,3,"{""missing"": 2, ""unreachable"": 1}",,,0.0003,0.0,1,932,141,3.496,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-formulate__M-000__informal__r0,0,M-000,M,dev,5,10,1,4,True,llm-formulate,,informal,ollama,qwen2.5-7b,0,solver_failed,False,,{},,,0.0005,0.0001,1,1199,1198,22.937,1,0.0,,0.7956,0.809,0.7826,,0.9091,0.6,1.0,1.0,0.0,1.0,0.8462,0.0,,,,,,,,,,,"infeasible: no robot can do ['T1', 'T10', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9'] within capabilities, deadlines and endurance"
+E1,E1__llm-direct__M-001__explicit__r0,0,M-001,M,dev,5,10,0,4,True,llm-direct,,explicit,ollama,qwen2.5-7b,0,ok,False,8,"{""capability"": 4, ""deadline"": 2, ""horizon"": 1, ""standby"": 1}",,,0.0036,0.0,1,1298,169,4.421,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-direct__M-001__informal__r0,0,M-001,M,dev,5,10,0,4,True,llm-direct,,informal,ollama,qwen2.5-7b,0,ok,False,6,"{""capability"": 1, ""missing"": 3, ""standby"": 1, ""standby_conflict"": 1}",758.0,1394.9,0.0002,0.0,1,968,180,4.004,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-formulate__M-001__explicit__r0,0,M-001,M,dev,5,10,0,4,True,llm-formulate,,explicit,ollama,qwen2.5-7b,0,spec_invalid,False,,{},,,0.0003,0.0,1,1565,1320,26.947,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,"2 validation errors for Scenario
+robots.1.speed
+  Input should be a valid number [type=float_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.14/v/float_type
+robots.1.endurance
+  Input should be a valid number [type=float_type, input_value="
+E1,E1__llm-formulate__M-001__informal__r0,0,M-001,M,dev,5,10,0,4,True,llm-formulate,,informal,ollama,qwen2.5-7b,0,spec_invalid,False,,{},,,0.0002,0.0,1,1235,1248,24.638,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,"1 validation error for Scenario
+robots.1.endurance
+  Input should be a valid number [type=float_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.14/v/float_type"
+E1,E1__llm-direct__L-000__explicit__r0,0,L-000,L,dev,8,16,1,5,False,llm-direct,,explicit,ollama,qwen2.5-7b,0,ok,False,7,"{""capability"": 1, ""missing"": 6}",,,0.0002,0.0,1,1741,195,5.387,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-direct__L-000__informal__r0,0,L-000,L,dev,8,16,1,5,False,llm-direct,,informal,ollama,qwen2.5-7b,0,ok,False,12,"{""capability"": 3, ""deadline"": 1, ""missing"": 6, ""payload"": 2}",839.33,966.56,0.0002,0.0,1,1259,147,3.813,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-formulate__L-000__explicit__r0,0,L-000,L,dev,8,16,1,5,False,llm-formulate,,explicit,ollama,qwen2.5-7b,0,spec_invalid,False,,{},,,0.0003,0.0,1,2008,1989,42.295,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,"3 validation errors for Scenario
+robots.2.speed
+  Input should be a valid number [type=float_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.14/v/float_type
+robots.2.payload
+  Input should be a valid number [type=float_type, input_value=No"
+E1,E1__llm-formulate__L-000__informal__r0,0,L-000,L,dev,8,16,1,5,False,llm-formulate,,informal,ollama,qwen2.5-7b,0,spec_invalid,False,,{},,,0.0003,0.0,1,1526,2153,45.546,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,"1 validation error for Scenario
+robots.2.endurance
+  Input should be a valid number [type=float_type, input_value=None, input_type=NoneType]
+    For further information visit https://errors.pydantic.dev/2.14/v/float_type"
+E1,E1__llm-direct__L-001__explicit__r0,0,L-001,L,dev,8,16,2,6,True,llm-direct,,explicit,ollama,qwen2.5-7b,0,ok,False,13,"{""capability"": 7, ""deadlock"": 1, ""missing"": 1, ""payload"": 3, ""unreachable"": 1}",,,0.0002,0.0,1,1858,201,6.116,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-direct__L-001__informal__r0,0,L-001,L,dev,8,16,2,6,True,llm-direct,,informal,ollama,qwen2.5-7b,0,ok,False,11,"{""capability"": 8, ""deadline"": 1, ""payload"": 1, ""unreachable"": 1}",,,0.0002,0.0,1,1358,164,4.667,1,0.0,,,,,,,,,,,,,,,,,,,,,,,,
+E1,E1__llm-formulate__L-001__explicit__r0,0,L-001,L,dev,8,16,2,6,True,llm-formulate,,explicit,ollama,qwen2.5-7b,0,solver_failed,False,,{},,,0.0088,0.0084,1,2125,2005,46.685,1,0.0,,0.9898,0.9932,0.9865,,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,,,,,,,,,,,infeasible: 
+E1,E1__llm-formulate__L-001__informal__r0,0,L-001,L,dev,8,16,2,6,True,llm-formulate,,informal,ollama,qwen2.5-7b,0,solver_failed,False,,{},,,0.0004,0.0001,1,1625,2289,53.89,1,0.0,,0.7034,0.7183,0.6892,,0.75,0.5625,1.0,1.0,0.0,1.0,0.6,0.0,,,,,,,,,,,"infeasible: no robot can do ['T1', 'T10', 'T11', 'T12', 'T13', 'T14', 'T15', 'T16', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9'] within capabilities, deadlines and endurance"
+E1,E1__llm-formulate__M-000__explicit__r0,0,M-000,M,dev,5,10,1,4,True,llm-formulate,,explicit,ollama,qwen2.5-7b,0,ok,False,1,"{""deadlock"": 1}",,,0.0415,0.0409,1,1554,1270,25.15,1,0.0,,0.9891,0.9891,0.9891,,1.0,1.0,1.0,1.0,0.0,1.0,1.0,1.0,,,,,,,,,,,
