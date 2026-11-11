@@ -1,0 +1,52 @@
+// Architecture of the proposed system and the baselines. Laid out to print at full page width
+// (IEEE figure*, ~7 in): node text stays at about 9-10 pt in print.
+// Render: dot -Tpng -Gdpi=200 docs/architecture.dot -o docs/img/architecture.png
+//         dot -Tpdf docs/architecture.dot -o docs/img/architecture.pdf
+digraph G {
+  graph [rankdir=TB, fontname="Helvetica", fontsize=24, nodesep=0.25, ranksep=0.35, pad=0.15, newrank=true,
+         splines=true, bgcolor="white", compound=true, ordering=out];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=27, penwidth=1.6, margin="0.12,0.06",
+         fillcolor="#FFFFFF", color="#3B4A5A"];
+  edge  [fontname="Helvetica", fontsize=19, penwidth=1.6, color="#3B4A5A", arrowsize=0.9];
+
+  brief  [label="Mission brief\n(explicit or informal)", fillcolor="#F2F2F2"];
+
+  subgraph cluster_agent {
+    label="Proposed planning agent"; labeljust=l; style="rounded,filled"; fillcolor="#E8F3FF"; color="#2A78D6";
+    penwidth=2; fontcolor="#1F3A5F";
+    llm   [label="LLM planner (JSON tool loop)\n+ agent state", fillcolor="#2A78D6", fontcolor="white", color="#1F3A5F"];
+    draft [label="[G3] draft_model\nstaged extraction", fillcolor="#FFF4E0", color="#D98E04"];
+    spec  [label="submit_spec\nvalidate, edits", fillcolor="#FFFFFF"];
+    cross [label="[G2] cross-check\n2nd reading, diff", fillcolor="#FDE8EE", color="#C0395B"];
+    solve [label="[G1] solve\nverified portfolio", fillcolor="#E6F6EE", color="#1B8A5A"];
+    check [label="[G2] check +\nfinish gate", fillcolor="#FDE8EE", color="#C0395B"];
+    ask   [label="[G3] ask_human\n<= 2 questions", fillcolor="#FFF4E0", color="#D98E04"];
+    llm -> draft; llm -> spec; llm -> solve; llm -> check; llm -> ask;
+    spec -> cross;
+    { rank=same; draft; spec; solve; check; ask; }
+  }
+
+  owner [label="Mission owner\n(simulated or user)", fillcolor="#F2F2F2"];
+  plan  [label="Verified plan", fillcolor="#1F3A5F", fontcolor="white"];
+
+  subgraph cluster_base {
+    label="Baselines"; labeljust=l; style="rounded,filled"; fillcolor="#F5F5F5"; color="#9A9A9A";
+    direct [label="LLM-direct"];
+    form   [label="LLM-formulate\n(-> MILP)"];
+    pefa   [label="COHERENT-style\nPEFA loop"];
+    clas   [label="MILP | Hungarian |\nauction (ground truth)"];
+    { rank=same; direct; form; pefa; clas; }
+  }
+
+  sim [label="Checker + timeline simulator vs ground truth (C1-C8)  ->  metrics", fillcolor="#F2F2F2"];
+
+  brief -> llm;
+  brief -> direct [lhead=cluster_base];
+  ask -> owner [dir=both];
+  check -> plan [label=" finish"];
+  { rank=same; cross; plan; owner; }
+  plan -> sim;
+  direct -> sim; form -> sim; pefa -> sim; clas -> sim;
+  cross -> form [style=invis, weight=10];
+  plan -> pefa [style=invis];
+}
